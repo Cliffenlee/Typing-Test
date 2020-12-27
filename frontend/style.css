@@ -1,0 +1,274 @@
+* {
+    margin: 0;
+  }
+  
+#main {
+    background-color: #edf2fd;
+    background: url("images/HuskeyBackground.png") center center no-repeat;
+    min-height: 657px;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 30vh;
+}
+
+#title {
+    font-family: 'SF UI Display Light';
+    color: lightgray;
+    font-size: 56px;
+    padding: 10vh 0vw 0vh 0vw;
+    margin: 0vh 0vw 0vh 0vw;
+}
+
+#subtitle {
+    font-family: 'SF UI Display Bold';
+    color: #3C64B1;
+    font-size: 100px;
+    margin: 0vh 0vw 5vh 0vw;
+}
+
+#caption {
+    font-family: 'SF UI Display Light';
+    color: #A9A9A9;
+    font-size: 14px;
+}
+#game {
+    margin: 10vh 0vh;
+
+}
+#body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    font-family: 'Open Sans', sans-serif;
+    font-size: xx-large;
+}
+
+#body {
+    margin: 8vh 20vw;
+    background-color: rgb(224, 224, 224);
+    padding: 6vh;
+    border-radius: 20px;
+}
+
+span {
+    margin: 1px;
+}
+
+.current {
+    border-bottom: black, 1px;
+
+}
+
+.correct {
+    background-color: aliceblue;
+
+}
+
+.incorrect{
+    background-color: rgba(230, 123, 123, 0.678);
+}
+
+#inputArea {
+    margin-top: -50vh;
+    color:white;
+    border: white;
+    outline:none;
+    resize: none;
+    position: fixed;
+    font-size: 1px;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: xx-large;
+}
+
+
+.flex1, .flex2, .flex3 {
+    margin: 0vh 5vw;
+    display: flex;
+    flex-direction: column ;
+    text-align: center;
+    font-weight: 700;
+    color: dimgray;
+}
+
+.navLinks {
+    /* display: flex; */
+    margin: 2vh 0vh;
+    padding: 0;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+
+.navLinks li {
+    display: inline-block;
+    padding: 0px 5vw;
+    color: #3C64B1;
+    font-family: "SF UI Display Light";
+    font-size: 14px;
+}
+
+header{
+    background-color: #f4faff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0vw 10vw;
+    margin: 0 0;
+}
+
+img {
+    max-height: auto;
+    width: 4vw;
+}
+
+button {
+    font-size: 25px;
+}
+
+a.buttonLogIn{  
+    display:inline-block;
+    padding:0.35em 1.2em;
+    border:0.1em solid #3C64B1;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family: "SF UI Display Light";
+    color:#3C64B1;
+    text-align:center;
+    transition: all 0.2s;
+}
+
+a.buttonLogIn:hover{
+    color:grey;
+    background-color:#FFFFFF;
+    border:0.1em solid grey;
+}
+
+.flex-options {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#timeMode, #wordMode {
+    /* background-color: #FBFBFD; */
+    background-color: #FBFBFD;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20vh;
+    width: 40vw;
+}
+
+#titleTime, #titleWord {
+    color: #a0a0a052;
+    font-family: "SF UI Display Bold";
+    font-size: 240px;
+}
+
+#subtitleTime, #subtitleWord {
+    color: #3C64B1;
+    font-family: "SF UI Display Bold";
+    font-size: 64px;
+    margin-bottom: 2vh;
+}
+
+#captionTime, #captionWord {
+    color: #A0A0A0;
+    font-family: "SF UI Display Light";
+    font-size: 18px;
+    margin-bottom: 5vh;
+}
+
+#buttonTime, #buttonWord {
+    background-color: #3C64B1;
+    color: #FFFFFF;
+    font-family: "SF UI Display Light";
+    font-size: 18px;
+    text-align:center;
+    text-decoration: none;
+    padding:0.35em 1.2em;
+}
+
+#divButtonTime, #divButtonWord{
+    margin-bottom: 5vh;
+}
+#dividerTime, #dividerMode {
+    margin:auto;
+    text-align: center;
+    width: 25vw;
+}
+
+#spacer {
+    /* margin: 0vh 2vw; */
+}
+
+@font-face {
+font-family: 'SF UI Display Ultralight';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Ultralight'), url('fonts/sf-ui-display-ultralight-58646b19bf205.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'SF UI Display Thin';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Thin'), url('fonts/sf-ui-display-thin-58646e9b26e8b.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'SF UI Display Light';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Light'), url('fonts/sf-ui-display-light-58646b33e0551.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'SF UI Display Medium';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Medium'), url('fonts/sf-ui-display-medium-58646be638f96.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'SF UI Display Semibold';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Semibold'), url('fonts/sf-ui-display-semibold-58646eddcae92.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'SF UI Display Bold';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Bold'), url('fonts/sf-ui-display-bold-58646a511e3d9.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'SF UI Display Heavy';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Heavy'), url('fonts/sf-ui-display-heavy-586470160b9e5.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'SF UI Display Black';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Black'), url('fonts/sf-ui-display-black-58646a6b80d5a.woff') format('woff');
+}

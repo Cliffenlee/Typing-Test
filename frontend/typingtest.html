@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <title>Typing Test</title>
+</head>
+<body id="mainBody">
+<textarea id="inputArea" autofocus ></textarea>
+<header>
+    <img id="logo" src="images/HuskeyLogo.png" alt="">
+    <nav>
+        <ul class="navLinks">
+            <li>Time mode</li>
+            <li>Word mode</li>
+        </ul>
+    </nav>
+    <a href="" class="buttonLogIn">Log In</a>
+</header>
+
+<div id="main">
+    <p id="title" data-aos="fade-up"data-aos-duration="800">Welcome to</p>
+    <p id="subtitle"data-aos="fade-up" data-aos-duration="800">HUSKEY.</p>
+    <p id="caption" data-aos="fade-up" data-aos-duration="800"> <span style="color:#3C64B1;font-family: 'SF UI Display Light';font-weight:600;">HUSKEY</span> aims to improve typing speed and accuracy. Transform your typing skills today.</p>
+</div>
+
+<div class=flex-options>
+    <div id="timeMode" data-aos="fade-up-right" data-aos-duration="800">
+        <div id="dividerTime">
+            <p id="titleTime" >t.</p>
+            <p id="subtitleTime">Time Mode.</p>
+            <p id="captionTime">Type as many words as you can in one minute. <br><br> Your Words Per Minute (WPM) will be calculated at the end of the test.</p>
+            <div id="divButtonTime"><a href="" id="buttonTime">Start Typing</a></div>  
+        </div>
+  
+    </div>
+    <div id="wordMode" data-aos="fade-down-left" data-aos-duration="800">
+        <div id="dividerMode">
+            <p id="titleWord" >w.</p>
+            <p id="subtitleWord">Word Mode.</p>
+            <p id="captionWord">Complete the given passage as fast as possible. <br><br> Your Words Per Minute (WPM) will be calculated at the end of the test.</p>
+            <div id="divButtonWord"><a href="" id="buttonWord">Start Typing</a></div>  
+        </div>
+    </div>
+</div>
+<div id="game" style="display:none">
+    <div class="flex-container" id="stats">
+        <div class="flex1">
+            <div id="speed">Speed</div>
+            <div id="wpm">0 wpm</div>
+        </div>
+        <div class="flex2">
+            <div id="timer">Timer</div>
+            <div id="time">0</div>
+        </div>
+        <div class="flex3">
+            <div id="accuracy">Accuracy</div>
+            <div id="percent">0 %</div>
+        </div>
+    </div>
+    
+    <div id="body">
+        <div id="passage">
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="script.js"></script>
+<script src="scroll.js"></script>
+
+</html>
