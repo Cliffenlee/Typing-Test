@@ -903,6 +903,7 @@ var timer = 60;
 var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
+var sound = "typewriter";
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
@@ -915,8 +916,6 @@ document.getElementsByClassName("closebtn")[0].addEventListener("click", functio
   document.getElementById("mySidenav").style.width = "0";
 });
 document.getElementsByClassName("buttonTheme")[0].addEventListener("click", function () {
-  console.log(theme);
-
   if (theme == "light") {
     document.getElementsByTagName("header")[0].style.backgroundColor = "rgba(0, 0, 0, 0.92)";
     document.getElementById("logo").style.display = "none";
@@ -1114,6 +1113,14 @@ inputItem.onpaste = function (e) {
 };
 
 inputItem.addEventListener("keydown", function (e) {
+  if (!completed) {
+    if (e.code == "Space") {
+      playSpaceBar();
+    } else {
+      playKeyPress();
+    }
+  }
+
   if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
     e.preventDefault();
   }
@@ -1145,7 +1152,6 @@ inputItem.addEventListener("input", function () {
   input = document.getElementById("inputArea").value.split("");
   var latest = spanList[input.length - 1];
   var quota = Math.floor((parseInt(getComputedStyle(document.getElementById("bodyTime")).height) + parseInt(getComputedStyle(document.getElementById("bodyTime")).padding) * 4) / (43.2 * 2)) - 1;
-  console.log(document.getElementById("main").style.height);
 
   if (!started && wordMode) {
     started = true;
@@ -1499,7 +1505,6 @@ function updateScroller() {
     var height = parseInt(getComputedStyle(document.getElementById("main")).height);
     body.style.height = height + "px";
     scroller.resizeRequest = 0;
-    console.log(height);
   }
 
   var scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
@@ -1532,6 +1537,43 @@ function onResize() {
     requestId = requestAnimationFrame(updateScroller);
   }
 }
+
+function playKeyPress() {
+  var title = "";
+
+  if (sound == "apple") {
+    title += "./macPress";
+  } else if (sound == "mechanical") {
+    title += "./buttonPress";
+  } else if (sound == "typewriter") {
+    title += "./typewriterPress";
+  }
+
+  var select = Math.floor(Math.random() * 5 + 1);
+  title += select + ".mp3";
+  var audio = new Audio(title);
+  audio.loop = false;
+  audio.play();
+  return;
+}
+
+function playSpaceBar() {
+  var title = "";
+
+  if (sound == "apple") {
+    title += "./macPressSpaceBar";
+  } else if (sound == "mechanical") {
+    title += "./buttonPressSpaceBar";
+  } else if (sound == "typewriter") {
+    title += "./typewriterPressSpaceBar";
+  }
+
+  title += ".mp3";
+  var audio = new Audio(title);
+  audio.loop = false;
+  audio.play();
+  return;
+}
 },{"regenerator-runtime":"../node_modules/regenerator-runtime/runtime.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -1560,7 +1602,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52321" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55622" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

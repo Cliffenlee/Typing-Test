@@ -24,6 +24,7 @@ var timer = 60;
 var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
+var sound = "typewriter"
 
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
@@ -31,14 +32,13 @@ window.onbeforeunload = () => {
 
 document.getElementById("slideOut").addEventListener("click", () => {
     document.getElementById("mySidenav").style.width = "250px";
-  })
-  
+})
+
 document.getElementsByClassName("closebtn")[0].addEventListener("click", () => {
     document.getElementById("mySidenav").style.width = "0";
 })
 
 document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () => {
-    console.log(theme)
     if (theme == "light") {
         document.getElementsByTagName("header")[0].style.backgroundColor = "rgba(0, 0, 0, 0.92)";
         document.getElementById("logo").style.display = "none"
@@ -90,7 +90,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
 
         var sheet = document.styleSheets[0]
         sheet.removeRule(9)
-        sheet.insertRule(".correct { background-color: rgba(60, 101, 177, 0.4);}",1)
+        sheet.insertRule(".correct { background-color: rgba(60, 101, 177, 0.4);}", 1)
 
         document.getElementById("passageTime").style.color = "#A0A0A0"
         document.getElementById("passageTime").style.color = "#A0A0A0"
@@ -98,7 +98,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementsByTagName("html")[0].style.backgroundColor = "rgba(0, 0, 0, 0.9)"
 
         theme = "dark"
-    } else if (theme == "dark"){
+    } else if (theme == "dark") {
         document.getElementsByTagName("header")[0].style.backgroundColor = "#F4F5F4";
 
         document.getElementById("logo").style.display = ""
@@ -152,7 +152,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
 
         var sheet = document.styleSheets[0]
         sheet.removeRule(1)
-        sheet.insertRule(".correct { background-color: #3c65b12a;}",9)
+        sheet.insertRule(".correct { background-color: #3c65b12a;}", 9)
 
         theme = "light"
 
@@ -234,6 +234,15 @@ document.getElementsByTagName("img")[1].addEventListener("click", () => {
 
 inputItem.onpaste = e => e.preventDefault();
 inputItem.addEventListener("keydown", (e) => {
+
+    if (started && !completed) {
+        if (e.code == "Space") {
+            playSpaceBar()
+        } else {
+            playKeyPress()
+        }
+    }
+
     if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
         e.preventDefault();
     }
@@ -266,7 +275,6 @@ inputItem.addEventListener("input", () => {
     input = document.getElementById("inputArea").value.split("")
     var latest = spanList[input.length - 1]
     var quota = Math.floor((parseInt(getComputedStyle(document.getElementById("bodyTime")).height) + parseInt(getComputedStyle(document.getElementById("bodyTime")).padding) * 4) / (43.2 * 2)) - 1
-    console.log(document.getElementById("main").style.height)
 
     if (!started && wordMode) {
         started = true
@@ -548,7 +556,6 @@ function updateScroller() {
         var height = parseInt(getComputedStyle(document.getElementById("main")).height)
         body.style.height = height + "px";
         scroller.resizeRequest = 0;
-        console.log(height);
     }
 
     var scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
@@ -580,4 +587,41 @@ function onResize() {
     if (!requestId) {
         requestId = requestAnimationFrame(updateScroller);
     }
+}
+
+function playKeyPress() {
+        var title = ""
+        if (sound == "apple") {
+            title += "./macPress"
+        } else if (sound == "mechanical") {
+            title += "./buttonPress"
+        } else if (sound == "typewriter") {
+            title += "./typewriterPress"
+        }
+
+        var select = Math.floor(Math.random() * 5 + 1)
+        title += select + ".mp3"
+        var audio = new Audio(title)
+        audio.loop = false
+        audio.play()
+
+        return
+}
+
+function playSpaceBar() {
+    var title = ""
+    if (sound == "apple") {
+        title += "./macPressSpaceBar"
+    } else if (sound == "mechanical") {
+        title += "./buttonPressSpaceBar"
+    } else if (sound == "typewriter") {
+        title += "./typewriterPressSpaceBar"
+    }
+
+    title += ".mp3"
+    var audio = new Audio(title)
+    audio.loop = false
+    audio.play()
+
+    return
 }
