@@ -368,68 +368,7 @@
         padding-top: 8vh;
     }
 
-    @font-face {
-    font-family: 'SF UI Display Ultralight';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Ultralight'), url('/sf-ui-display-ultralight-58646b19bf205.7c8a5d86.woff') format('woff');
-    }
 
-
-    @font-face {
-    font-family: 'SF UI Display Thin';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Thin'), url('/sf-ui-display-thin-58646e9b26e8b.19ed4384.woff') format('woff');
-    }
-
-
-    @font-face {
-    font-family: 'SF UI Display Light';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Light'), url('/sf-ui-display-light-58646b33e0551.ae355989.woff') format('woff');
-    }
-
-
-    @font-face {
-    font-family: 'SF UI Display Medium';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Medium'), url('/sf-ui-display-medium-58646be638f96.3d4efbfa.woff') format('woff');
-    }
-
-
-    @font-face {
-    font-family: 'SF UI Display Semibold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Semibold'), url('/sf-ui-display-semibold-58646eddcae92.554c1c05.woff') format('woff');
-    }
-
-
-    @font-face {
-    font-family: 'SF UI Display Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Bold'), url('/sf-ui-display-bold-58646a511e3d9.8c4cd02a.woff') format('woff');
-    }
-
-
-    @font-face {
-    font-family: 'SF UI Display Heavy';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Heavy'), url('/sf-ui-display-heavy-586470160b9e5.5c06e164.woff') format('woff');
-    }
-
-
-    @font-face {
-    font-family: 'SF UI Display Black';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Black'), url('/sf-ui-display-black-58646a6b80d5a.a3c29067.woff') format('woff');
-    }
 }
 
 @media only screen and (max-width: 992px) {
@@ -526,6 +465,7 @@
         background-color: yellow;
 
     }
+    
 
     .correct {
         background-color: #3c65b12a;
@@ -849,68 +789,69 @@
         margin-left: 50px;
     }
 
-    @font-face {
+}
+
+@font-face {
     font-family: 'SF UI Display Ultralight';
     font-style: normal;
     font-weight: normal;
     src: local('SF UI Display Ultralight'), url('/sf-ui-display-ultralight-58646b19bf205.7c8a5d86.woff') format('woff');
-    }
+}
 
 
-    @font-face {
-    font-family: 'SF UI Display Thin';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Thin'), url('/sf-ui-display-thin-58646e9b26e8b.19ed4384.woff') format('woff');
-    }
+@font-face {
+font-family: 'SF UI Display Thin';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Thin'), url('/sf-ui-display-thin-58646e9b26e8b.19ed4384.woff') format('woff');
+}
 
 
-    @font-face {
-    font-family: 'SF UI Display Light';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Light'), url('/sf-ui-display-light-58646b33e0551.ae355989.woff') format('woff');
-    }
+@font-face {
+font-family: 'SF UI Display Light';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Light'), url('/sf-ui-display-light-58646b33e0551.ae355989.woff') format('woff');
+}
 
 
-    @font-face {
-    font-family: 'SF UI Display Medium';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Medium'), url('/sf-ui-display-medium-58646be638f96.3d4efbfa.woff') format('woff');
-    }
+@font-face {
+font-family: 'SF UI Display Medium';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Medium'), url('/sf-ui-display-medium-58646be638f96.3d4efbfa.woff') format('woff');
+}
 
 
-    @font-face {
-    font-family: 'SF UI Display Semibold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Semibold'), url('/sf-ui-display-semibold-58646eddcae92.554c1c05.woff') format('woff');
-    }
+@font-face {
+font-family: 'SF UI Display Semibold';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Semibold'), url('/sf-ui-display-semibold-58646eddcae92.554c1c05.woff') format('woff');
+}
 
 
-    @font-face {
-    font-family: 'SF UI Display Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Bold'), url('/sf-ui-display-bold-58646a511e3d9.8c4cd02a.woff') format('woff');
-    }
+@font-face {
+font-family: 'SF UI Display Bold';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Bold'), url('/sf-ui-display-bold-58646a511e3d9.8c4cd02a.woff') format('woff');
+}
 
 
-    @font-face {
-    font-family: 'SF UI Display Heavy';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Heavy'), url('/sf-ui-display-heavy-586470160b9e5.5c06e164.woff') format('woff');
-    }
+@font-face {
+font-family: 'SF UI Display Heavy';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Heavy'), url('/sf-ui-display-heavy-586470160b9e5.5c06e164.woff') format('woff');
+}
 
 
-    @font-face {
-    font-family: 'SF UI Display Black';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Black'), url('/sf-ui-display-black-58646a6b80d5a.a3c29067.woff') format('woff');
-    }
+@font-face {
+font-family: 'SF UI Display Black';
+font-style: normal;
+font-weight: normal;
+src: local('SF UI Display Black'), url('/sf-ui-display-black-58646a6b80d5a.a3c29067.woff') format('woff');
 }
 
 /*# sourceMappingURL=/style.251b6741.css.map */

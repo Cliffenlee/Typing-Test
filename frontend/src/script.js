@@ -88,6 +88,9 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("bodyTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
         document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
 
+        var sheet = document.styleSheets[0]
+        sheet.removeRule(9)
+        sheet.insertRule(".correct { background-color: rgba(60, 101, 177, 0.4);}",1)
 
         document.getElementById("passageTime").style.color = "#A0A0A0"
         document.getElementById("passageTime").style.color = "#A0A0A0"
@@ -131,8 +134,8 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("accuracy").style.backgroundColor = "#F6F6F7"
         document.getElementById("accuracy").style.color = "#3C64B1"
         document.getElementById("body").style.backgroundColor = "#FBFBFD"
-        document.getElementById("passage").style.color = "#A0A0A0"
 
+        document.getElementById("passage").style.color = "#A0A0A0"
         document.getElementsByClassName("gameTitle")[1].style.color = "#3C64B1"
         document.getElementById("miniFlexTime").style.backgroundColor = "#3C64B1"
         document.getElementById("timeTime").style.color = "#3C64B1"
@@ -146,6 +149,10 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("passageTime").style.color = "#A0A0A0"
 
         document.getElementsByTagName("html")[0].style.backgroundColor = "white"
+
+        var sheet = document.styleSheets[0]
+        sheet.removeRule(1)
+        sheet.insertRule(".correct { background-color: #3c65b12a;}",9)
 
         theme = "light"
 
