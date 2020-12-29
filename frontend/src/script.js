@@ -24,7 +24,7 @@ var timer = 60;
 var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
-var sound = "typewriter"
+var sound = "mechanical"
 
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
@@ -233,32 +233,7 @@ document.getElementsByTagName("img")[1].addEventListener("click", () => {
 })
 
 inputItem.onpaste = e => e.preventDefault();
-inputItem.addEventListener("keydown", (e) => {
 
-    if (started && !completed) {
-        if (e.code == "Space") {
-            playSpaceBar()
-        } else {
-            playKeyPress()
-        }
-    }
-
-    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
-        e.preventDefault();
-    }
-
-    if (ctrl) {
-        if (e.key === "a") {
-            e.preventDefault();
-        }
-
-        if (e.key === "Backspace") {
-            e.preventDefault();
-        }
-    } else if (e.key === "Control") {
-        ctrl = true;
-    }
-})
 
 inputItem.addEventListener("keyup", (e) => {
     if (e.key === "Control") {
@@ -362,6 +337,29 @@ inputItem.addEventListener("input", () => {
             wordMode = false;
             timeMode = false;
         }
+    }
+})
+
+inputItem.addEventListener("keydown", (e) => {
+
+    if (started && !completed) {
+        playKeyPress()
+    }
+
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
+        e.preventDefault();
+    }
+
+    if (ctrl) {
+        if (e.key === "a") {
+            e.preventDefault();
+        }
+
+        if (e.key === "Backspace") {
+            e.preventDefault();
+        }
+    } else if (e.key === "Control") {
+        ctrl = true;
     }
 })
 
@@ -615,7 +613,7 @@ function playSpaceBar() {
     } else if (sound == "mechanical") {
         title += "./buttonPressSpaceBar"
     } else if (sound == "typewriter") {
-        title += "./typewriterPressSpaceBar"
+        title += "./typewriterPressSpaceBar2"
     }
 
     title += ".mp3"

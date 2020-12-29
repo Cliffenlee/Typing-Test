@@ -903,7 +903,7 @@ var timer = 60;
 var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
-var sound = "typewriter";
+var sound = "mechanical";
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
@@ -1112,31 +1112,6 @@ inputItem.onpaste = function (e) {
   return e.preventDefault();
 };
 
-inputItem.addEventListener("keydown", function (e) {
-  if (!completed) {
-    if (e.code == "Space") {
-      playSpaceBar();
-    } else {
-      playKeyPress();
-    }
-  }
-
-  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
-    e.preventDefault();
-  }
-
-  if (ctrl) {
-    if (e.key === "a") {
-      e.preventDefault();
-    }
-
-    if (e.key === "Backspace") {
-      e.preventDefault();
-    }
-  } else if (e.key === "Control") {
-    ctrl = true;
-  }
-});
 inputItem.addEventListener("keyup", function (e) {
   if (e.key === "Control") {
     ctrl = false;
@@ -1249,6 +1224,27 @@ inputItem.addEventListener("input", function () {
       wordMode = false;
       timeMode = false;
     }
+  }
+});
+inputItem.addEventListener("keydown", function (e) {
+  if (started && !completed) {
+    playKeyPress();
+  }
+
+  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
+    e.preventDefault();
+  }
+
+  if (ctrl) {
+    if (e.key === "a") {
+      e.preventDefault();
+    }
+
+    if (e.key === "Backspace") {
+      e.preventDefault();
+    }
+  } else if (e.key === "Control") {
+    ctrl = true;
   }
 });
 
@@ -1565,7 +1561,7 @@ function playSpaceBar() {
   } else if (sound == "mechanical") {
     title += "./buttonPressSpaceBar";
   } else if (sound == "typewriter") {
-    title += "./typewriterPressSpaceBar";
+    title += "./typewriterPressSpaceBar2";
   }
 
   title += ".mp3";
@@ -1602,7 +1598,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55622" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62763" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
