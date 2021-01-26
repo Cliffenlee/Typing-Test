@@ -3,9 +3,9 @@ const regeneratorRuntime = require("regenerator-runtime");
 // Scrollbar.init(document.querySelector('#mainBody'));
 AOS.init();
 
-const paragraph_api = "http://metaphorpsum.com/paragraphs/1/4"
+const paragraph_api = "https://litipsum.com/api/1"
 
-const paragraph_api_word = "http://metaphorpsum.com/paragraphs/1/25"
+const paragraph_api_time = "https://litipsum.com/api/5"
 
 var started = false
 var completed = false
@@ -410,7 +410,8 @@ function getParagraphs(para_api) {
 
 async function getNextParagraph() {
     const paragraph = await getParagraphs(paragraph_api)
-    const paragraphList = paragraph.split("\n\n")
+    paragraph.replace("“", '"')
+    const paragraphList = paragraph.split("\n")
     document.getElementById("passage").innerText = ""
     for (let miniParagraph of paragraphList) {
         let para = document.createElement('p')
@@ -430,10 +431,12 @@ async function getNextParagraph() {
 }
 
 async function getNextParagraphTime() {
-    const paragraph = await getParagraphs(paragraph_api_word)
+    const paragraph = await getParagraphs(paragraph_api_time)
+    paragraph.replace("“", '"')
     const paragraphList = paragraph.split("\n\n")
     document.getElementById("passageTime").innerText = ""
     for (let miniParagraph of paragraphList) {
+        let div = document.createElement('div')
         let para = document.createElement('p')
         for (let character of miniParagraph) {
             let itemSpan = document.createElement('span')
@@ -443,7 +446,8 @@ async function getNextParagraphTime() {
 
         }
 
-        document.getElementById("passageTime").appendChild(para)
+        div.appendChild(para)
+        document.getElementById("passageTime").appendChild(div)
     }
 
     document.getElementById("bodyTime").scrollTo(0, 0)

@@ -884,8 +884,8 @@ var regeneratorRuntime = require("regenerator-runtime"); // import Scrollbar fro
 
 
 AOS.init();
-var paragraph_api = "http://metaphorpsum.com/paragraphs/1/4";
-var paragraph_api_word = "http://metaphorpsum.com/paragraphs/1/25";
+var paragraph_api = "https://litipsum.com/api/1";
+var paragraph_api_time = "https://litipsum.com/api/5";
 var started = false;
 var completed = false;
 var inputItem = document.getElementById("inputArea");
@@ -1309,7 +1309,8 @@ function _getNextParagraph() {
 
           case 2:
             paragraph = _context.sent;
-            paragraphList = paragraph.split("\n\n");
+            paragraph.replace("“", '"');
+            paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
             _iterator4 = _createForOfIteratorHelper(paragraphList);
 
@@ -1343,7 +1344,7 @@ function _getNextParagraph() {
 
             return _context.abrupt("return");
 
-          case 8:
+          case 9:
           case "end":
             return _context.stop();
         }
@@ -1359,17 +1360,18 @@ function getNextParagraphTime() {
 
 function _getNextParagraphTime() {
   _getNextParagraphTime = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var paragraph, paragraphList, _iterator6, _step6, miniParagraph, para, _iterator7, _step7, character, itemSpan;
+    var paragraph, paragraphList, _iterator6, _step6, miniParagraph, div, para, _iterator7, _step7, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return getParagraphs(paragraph_api_word);
+            return getParagraphs(paragraph_api_time);
 
           case 2:
             paragraph = _context2.sent;
+            paragraph.replace("“", '"');
             paragraphList = paragraph.split("\n\n");
             document.getElementById("passageTime").innerText = "";
             _iterator6 = _createForOfIteratorHelper(paragraphList);
@@ -1377,6 +1379,7 @@ function _getNextParagraphTime() {
             try {
               for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
                 miniParagraph = _step6.value;
+                div = document.createElement('div');
                 para = document.createElement('p');
                 _iterator7 = _createForOfIteratorHelper(miniParagraph);
 
@@ -1394,7 +1397,8 @@ function _getNextParagraphTime() {
                   _iterator7.f();
                 }
 
-                document.getElementById("passageTime").appendChild(para);
+                div.appendChild(para);
+                document.getElementById("passageTime").appendChild(div);
               }
             } catch (err) {
               _iterator6.e(err);
@@ -1406,7 +1410,7 @@ function _getNextParagraphTime() {
             document.getElementById("body").scrollTo(0, 0);
             return _context2.abrupt("return");
 
-          case 10:
+          case 11:
           case "end":
             return _context2.stop();
         }
