@@ -18,8 +18,9 @@
     <div id="sideNav">
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn">&times;</a>
-            <a href="#">Time Mode</a>
-            <a href="#">Word Mode</a>
+            <a id="choiceHome" >Home</a>
+            <a id="choice1">Time Mode</a>
+            <a id="choice2">Word Mode</a>
             <!-- <label id="options">
                 <input type="checkbox" class="buttonTheme">
                 <span class="slider"></span>
@@ -57,7 +58,7 @@
         </div>
 
         <div id=flex-options>
-            <div id="timeMode" >
+            <div data-aos="fade-right" data-aos-duration="800" id="timeMode" >
                 <div id="dividerTime">
                     <p id="titleTime">t.</p>
                     <p id="subtitleTime">Time Mode.</p>
@@ -66,7 +67,7 @@
                 </div>
 
             </div>
-            <div id="wordMode" >
+            <div data-aos="fade-left" data-aos-duration="800" id="wordMode" >
                 <div id="dividerMode">
                     <p id="titleWord">w.</p>
                     <p id="subtitleWord">Word Mode.</p>

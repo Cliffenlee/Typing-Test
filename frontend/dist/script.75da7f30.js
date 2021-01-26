@@ -1045,6 +1045,19 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
     document.getElementById("darkIcon").style.display = "";
   }
 });
+document.getElementById("choice1").addEventListener("click", function () {
+  window.scrollTo(0, 0);
+  document.getElementById("mySidenav").style.width = 0;
+  reset();
+  resetTime();
+  document.getElementById("gameWord").style.display = "none";
+  document.getElementById("main").style.display = "none";
+  document.getElementById("flex-options").style.display = "none";
+  document.getElementById("gameTime").style.display = "";
+  inputItem.focus();
+  wordMode = false;
+  timeMode = true;
+});
 document.getElementsByTagName("li")[0].addEventListener("click", function () {
   window.scrollTo(0, 0);
   reset();
@@ -1056,6 +1069,19 @@ document.getElementsByTagName("li")[0].addEventListener("click", function () {
   inputItem.focus();
   wordMode = false;
   timeMode = true;
+});
+document.getElementById("choice2").addEventListener("click", function () {
+  window.scrollTo(0, 0);
+  reset();
+  resetWord();
+  document.getElementById("mySidenav").style.width = 0;
+  document.getElementById("gameTime").style.display = "none";
+  document.getElementById("main").style.display = "none";
+  document.getElementById("flex-options").style.display = "none";
+  document.getElementById("gameWord").style.display = "";
+  inputItem.focus();
+  timeMode = false;
+  wordMode = true;
 });
 document.getElementsByTagName("li")[1].addEventListener("click", function () {
   window.scrollTo(0, 0);
@@ -1092,6 +1118,14 @@ document.getElementById("buttonTime").addEventListener("click", function () {
   inputItem.focus();
   timeMode = true;
   wordMode = false;
+});
+document.getElementById("choiceHome").addEventListener("click", function () {
+  reset();
+  document.getElementById("mySidenav").style.width = 0;
+  document.getElementById("main").style.display = "";
+  document.getElementById("flex-options").style.display = "";
+  document.getElementById("gameWord").style.display = "none";
+  document.getElementById("gameTime").style.display = "none";
 });
 document.getElementsByTagName("img")[0].addEventListener("click", function () {
   reset();
@@ -1164,19 +1198,21 @@ inputItem.addEventListener("input", function () {
     }, 1000);
   }
 
-  if (latest.offsetTop > prevOffSet) {
-    prevOffSet = latest.offsetTop;
-    line++;
+  if (latest != null) {
+    if (latest.offsetTop > prevOffSet) {
+      prevOffSet = latest.offsetTop;
+      line++;
 
-    if (line > quota) {
-      scrollDown();
-    }
-  } else if (latest.offsetTop < prevOffSet) {
-    prevOffSet = latest.offsetTop;
-    line--;
+      if (line > quota) {
+        scrollDown();
+      }
+    } else if (latest.offsetTop < prevOffSet) {
+      prevOffSet = latest.offsetTop;
+      line--;
 
-    if (line >= quota) {
-      scrollUp();
+      if (line >= quota) {
+        scrollUp();
+      }
     }
   }
 
@@ -1227,7 +1263,9 @@ inputItem.addEventListener("input", function () {
   }
 });
 inputItem.addEventListener("keydown", function (e) {
-  if (started && !completed) {
+  var inputArea = document.getElementById("inputArea");
+
+  if (inputArea === document.activeElement && !completed) {
     playKeyPress();
   }
 
@@ -1483,15 +1521,13 @@ var requestId = null;
 TweenLite.set(scroller.target, {
   rotation: 0.01,
   force3D: true
-});
-window.addEventListener("load", onLoad);
-
-function onLoad() {
-  updateScroller();
-  window.focus();
-  window.addEventListener("resize", onResize);
-  document.addEventListener("scroll", onScroll);
-}
+}); // window.addEventListener("load", onLoad);
+// function onLoad() {
+//     updateScroller();
+//     window.focus();
+//     window.addEventListener("resize", onResize);
+//     document.addEventListener("scroll", onScroll);
+// }
 
 function updateScroller() {
   var resized = scroller.resizeRequest > 0;
@@ -1598,7 +1634,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62763" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62380" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -384,6 +384,10 @@
     }::-webkit-scrollbar {
         display:none;
     }
+    
+    #choice1, #choice2, #choiceHome{
+        font-family: 'SF UI Display Light';
+    }
 
     #sideNav {
         position: absolute;
@@ -762,7 +766,7 @@
         z-index: 1;
         top: 0;
         left: 0;
-        background-color: #111;
+        background-color: #3c65b1ed;
         overflow-x: hidden;
         transition: 0.5s;
         padding-top: 60px;
@@ -772,7 +776,7 @@
         padding: 8px 8px 8px 32px;
         text-decoration: none;
         font-size: 25px;
-        color: #818181;
+        color: #f1f1f1e5;
         display: block;
         transition: 0.3s;
     }

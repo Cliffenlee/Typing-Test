@@ -163,6 +163,20 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
 
 })
 
+document.getElementById("choice1").addEventListener("click", () => {
+    window.scrollTo(0, 0);
+    document.getElementById("mySidenav").style.width = 0;
+    reset();
+    resetTime();
+    document.getElementById("gameWord").style.display = "none"
+    document.getElementById("main").style.display = "none"
+    document.getElementById("flex-options").style.display = "none"
+    document.getElementById("gameTime").style.display = "";
+    inputItem.focus();
+    wordMode = false;
+    timeMode = true;
+});
+
 document.getElementsByTagName("li")[0].addEventListener("click", () => {
     window.scrollTo(0, 0);
     reset();
@@ -174,6 +188,20 @@ document.getElementsByTagName("li")[0].addEventListener("click", () => {
     inputItem.focus();
     wordMode = false;
     timeMode = true;
+});
+
+document.getElementById("choice2").addEventListener("click", () => {
+    window.scrollTo(0, 0);
+    reset();
+    resetWord();
+    document.getElementById("mySidenav").style.width = 0;
+    document.getElementById("gameTime").style.display = "none"
+    document.getElementById("main").style.display = "none"
+    document.getElementById("flex-options").style.display = "none"
+    document.getElementById("gameWord").style.display = "";
+    inputItem.focus();
+    timeMode = false;
+    wordMode = true;
 });
 
 document.getElementsByTagName("li")[1].addEventListener("click", () => {
@@ -215,6 +243,15 @@ document.getElementById("buttonTime").addEventListener("click", () => {
     timeMode = true;
     wordMode = false;
 });
+
+document.getElementById("choiceHome").addEventListener("click", () => {
+    reset();
+    document.getElementById("mySidenav").style.width = 0;
+    document.getElementById("main").style.display = "";
+    document.getElementById("flex-options").style.display = "";
+    document.getElementById("gameWord").style.display = "none";
+    document.getElementById("gameTime").style.display = "none";
+})
 
 document.getElementsByTagName("img")[0].addEventListener("click", () => {
     reset();
@@ -287,20 +324,21 @@ inputItem.addEventListener("input", () => {
             }
         }, 1000)
     }
-
-    if (latest.offsetTop > prevOffSet) {
-        prevOffSet = latest.offsetTop;
-        line++;
-
-        if (line > quota) {
-            scrollDown();
-        }
-    } else if (latest.offsetTop < prevOffSet) {
-        prevOffSet = latest.offsetTop;
-        line--;
-
-        if (line >= quota) {
-            scrollUp();
+    if (latest != null) {
+        if (latest.offsetTop > prevOffSet) {
+            prevOffSet = latest.offsetTop;
+            line++;
+    
+            if (line > quota) {
+                scrollDown();
+            }
+        } else if (latest.offsetTop < prevOffSet) {
+            prevOffSet = latest.offsetTop;
+            line--;
+    
+            if (line >= quota) {
+                scrollUp();
+            }
         }
     }
 
@@ -341,8 +379,8 @@ inputItem.addEventListener("input", () => {
 })
 
 inputItem.addEventListener("keydown", (e) => {
-
-    if (started && !completed) {
+    var inputArea = document.getElementById("inputArea")
+    if (inputArea === document.activeElement && !completed) {
         playKeyPress()
     }
 
@@ -537,13 +575,13 @@ TweenLite.set(scroller.target, {
     force3D: true
 });
 
-window.addEventListener("load", onLoad);
-function onLoad() {
-    updateScroller();
-    window.focus();
-    window.addEventListener("resize", onResize);
-    document.addEventListener("scroll", onScroll);
-}
+// window.addEventListener("load", onLoad);
+// function onLoad() {
+//     updateScroller();
+//     window.focus();
+//     window.addEventListener("resize", onResize);
+//     document.addEventListener("scroll", onScroll);
+// }
 
 function updateScroller() {
 
