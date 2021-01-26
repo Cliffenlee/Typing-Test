@@ -903,7 +903,7 @@ var timer = 60;
 var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
-var sound = "mechanical";
+var sound = "typewriter";
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
@@ -1634,7 +1634,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62380" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62146" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

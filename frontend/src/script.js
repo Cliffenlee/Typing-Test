@@ -24,7 +24,7 @@ var timer = 60;
 var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
-var sound = "mechanical"
+var sound = "typewriter"
 
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
