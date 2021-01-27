@@ -1304,11 +1304,29 @@ function _getNextParagraph() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            paragraph = "";
+
+          case 1:
+            if (!(paragraph.length < 150)) {
+              _context.next = 7;
+              break;
+            }
+
+            _context.next = 4;
             return getParagraphs(paragraph_api);
 
-          case 2:
+          case 4:
             paragraph = _context.sent;
+            _context.next = 1;
+            break;
+
+          case 7:
+            if (paragraph.length > 200) {
+              console.log(paragraph);
+              paragraph = shorten(paragraph);
+              console.log("MODIFIED: " + paragraph);
+            }
+
             paragraph.replace("“", '"');
             paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
@@ -1344,7 +1362,7 @@ function _getNextParagraph() {
 
             return _context.abrupt("return");
 
-          case 9:
+          case 14:
           case "end":
             return _context.stop();
         }
@@ -1352,6 +1370,12 @@ function _getNextParagraph() {
     }, _callee);
   }));
   return _getNextParagraph.apply(this, arguments);
+}
+
+function shorten(paragraph) {
+  var modified = paragraph.substring(300, paragraph.length);
+  var stoppingIndex = modified.indexOf(".");
+  return paragraph.substring(modified, 300 + stoppingIndex + 1);
 }
 
 function getNextParagraphTime() {
@@ -1638,7 +1662,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62146" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50587" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -409,7 +409,17 @@ function getParagraphs(para_api) {
 }
 
 async function getNextParagraph() {
-    const paragraph = await getParagraphs(paragraph_api)
+    let paragraph = ""
+    while (paragraph.length < 150) {
+        paragraph = await getParagraphs(paragraph_api)
+    }
+
+    if (paragraph.length > 200) {
+        console.log(paragraph)
+        paragraph = shorten(paragraph)
+        console.log("MODIFIED: " + paragraph)
+    }
+
     paragraph.replace("“", '"')
     const paragraphList = paragraph.split("\n")
     document.getElementById("passage").innerText = ""
@@ -428,6 +438,12 @@ async function getNextParagraph() {
     }
 
     return;
+}
+
+function shorten(paragraph) {
+     let modified = paragraph.substring(300, paragraph.length)
+     let stoppingIndex = modified.indexOf(".")
+     return paragraph.substring(modified, 300 + stoppingIndex + 1)
 }
 
 async function getNextParagraphTime() {
