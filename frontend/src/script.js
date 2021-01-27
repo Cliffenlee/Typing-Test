@@ -17,6 +17,7 @@ var countId;
 var speed;
 var input;
 var incorrect = 0;
+var incorrectChain = 0;
 var timeMode = false;
 var wordMode = false;
 var theme = "light"
@@ -25,10 +26,30 @@ var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
 var sound = "typewriter"
+var modalSuccess = document.getElementById("modalSuccess");
+var modalFailed = document.getElementById("modalFailed");
+var spanSuccess = document.getElementsByClassName("close")[0];
+var spanFailed = document.getElementsByClassName("close")[1];
 
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
 }
+
+window.onclick = function (event) {
+    if (event.target == modalSuccess || event.target == modalFailed) {
+        modalExit()
+    } else {
+        inputItem.focus()
+    }
+}
+
+spanSuccess.addEventListener("click", () => {
+    modalExit();
+})
+
+spanFailed.addEventListener("click", () => {
+    modalExit();
+})
 
 document.getElementById("slideOut").addEventListener("click", () => {
     document.getElementById("mySidenav").style.width = "250px";
@@ -55,8 +76,8 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("subtitle").style.color = "#F5F5F7"
         document.getElementById("huskey").style.color = "#F5F5F7"
         document.getElementById("flex-options").style.backgroundColor = "rgba(0,0,0,0.2)"
-        document.getElementById("subtitleTime").style.color = "#F2F2F2"
-        document.getElementById("subtitleWord").style.color = "#F2F2F2"
+        document.getElementById("subtitleTime").style.color = "#fefefea4"
+        document.getElementById("subtitleWord").style.color = "#fefefea4"
         document.getElementById("wordMode").style.backgroundColor = "rgba(0,0,0,0.2)"
         document.getElementById("timeMode").style.backgroundColor = "rgba(0,0,0,0.2)"
         document.getElementById("buttonTime").style.backgroundColor = "rgba(255,255,255,0.5)"
@@ -64,27 +85,31 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("buttonTime").style.color = "rgba(0,0,0,0.7)"
         document.getElementById("buttonWord").style.color = "rgba(0,0,0,0.7)"
 
-        document.getElementsByClassName("gameTitle")[0].style.color = "#FFFFFF"
+        document.getElementsByClassName("gameTitle")[0].style.color = "#cccccc"
+        document.getElementById("timerTime").style.color = "#cccccc"
+        document.getElementById("secondsTime").style.color = "#cccccc"
+        document.getElementById("timer").style.color = "#cccccc"
+        document.getElementById("seconds").style.color = "#cccccc"
         document.getElementById("miniFlex").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
-        document.getElementById("time").style.color = "#FFFFFF"
-        document.getElementById("wpm").style.color = "#FFFFFF"
-        document.getElementById("percent").style.color = "#FFFFFF"
-        document.getElementById("speed").style.color = "#FFFFFF"
+        document.getElementById("time").style.color = "#cccccc"
+        document.getElementById("wpm").style.color = "#cccccc"
+        document.getElementById("percent").style.color = "#cccccc"
+        document.getElementById("speed").style.color = "#cccccc"
         document.getElementById("speed").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
         document.getElementById("accuracy").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
-        document.getElementById("accuracy").style.color = "#FFFFFF"
+        document.getElementById("accuracy").style.color = "#cccccc"
         document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
         document.getElementById("passage").style.color = "#A0A0A0"
 
-        document.getElementsByClassName("gameTitle")[1].style.color = "#FFFFFF"
+        document.getElementsByClassName("gameTitle")[1].style.color = "#cccccc"
         document.getElementById("miniFlexTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
-        document.getElementById("timeTime").style.color = "#FFFFFF"
-        document.getElementById("wpmTime").style.color = "#FFFFFF"
-        document.getElementById("percentTime").style.color = "#FFFFFF"
-        document.getElementById("speedTime").style.color = "#FFFFFF"
+        document.getElementById("timeTime").style.color = "#cccccc"
+        document.getElementById("wpmTime").style.color = "#cccccc"
+        document.getElementById("percentTime").style.color = "#cccccc"
+        document.getElementById("speedTime").style.color = "#cccccc"
         document.getElementById("speedTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
         document.getElementById("accuracyTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
-        document.getElementById("accuracyTime").style.color = "#FFFFFF"
+        document.getElementById("accuracyTime").style.color = "#cccccc"
         document.getElementById("bodyTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
         document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
 
@@ -92,7 +117,6 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         sheet.removeRule(9)
         sheet.insertRule(".correct { background-color: rgba(60, 101, 177, 0.4);}", 1)
 
-        document.getElementById("passageTime").style.color = "#A0A0A0"
         document.getElementById("passageTime").style.color = "#A0A0A0"
         document.getElementById("darkIcon").style.display = "none"
         document.getElementsByTagName("html")[0].style.backgroundColor = "rgba(0, 0, 0, 0.9)"
@@ -135,6 +159,10 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("accuracy").style.color = "#3C64B1"
         document.getElementById("body").style.backgroundColor = "#FBFBFD"
 
+        document.getElementById("timer").style.color = "#FFFFFF"
+        document.getElementById("seconds").style.color = "#FFFFFF"
+        document.getElementById("timerTime").style.color = "#FFFFFF"
+        document.getElementById("secondsTime").style.color = "#FFFFFF"
         document.getElementById("passage").style.color = "#A0A0A0"
         document.getElementsByClassName("gameTitle")[1].style.color = "#3C64B1"
         document.getElementById("miniFlexTime").style.backgroundColor = "#3C64B1"
@@ -316,26 +344,27 @@ inputItem.addEventListener("input", () => {
             document.getElementById("accuracyTime").innerText = accuracy
 
             if (timer == 0) {
+                generateCompletedModal()
                 completed = true;
                 started = false;
                 clearInterval(countId);
-                wordMode = false;
-                timeMode = false;
+
             }
         }, 1000)
     }
+
     if (latest != null) {
         if (latest.offsetTop > prevOffSet) {
             prevOffSet = latest.offsetTop;
             line++;
-    
+
             if (line > quota) {
                 scrollDown();
             }
         } else if (latest.offsetTop < prevOffSet) {
             prevOffSet = latest.offsetTop;
             line--;
-    
+
             if (line >= quota) {
                 scrollUp();
             }
@@ -343,6 +372,7 @@ inputItem.addEventListener("input", () => {
     }
 
     if (!completed) {
+
         let incorrectCount = 0;
 
         for (let item of spanList) {
@@ -358,34 +388,41 @@ inputItem.addEventListener("input", () => {
                     spanList[item].classList.remove("incorrect")
                     spanList[item].classList.remove("correct")
                 } else if (input[item] != spanList[item].innerText) {
+                    incorrectChain++
                     spanList[item].classList.remove("correct")
                     spanList[item].classList.add("incorrect")
                 } else if (input[item] === spanList[item].innerText) {
+                    incorrectChain = 0
                     spanList[item].classList.remove("incorrect")
                     spanList[item].classList.add("correct")
                 }
             }
-
         }
 
-        if (wordMode && input.length >= spanList.length) {
+        if (incorrectChain >= 15) {
+            generateFailedModal()
             completed = true;
             started = false;
             clearInterval(countId);
-            wordMode = false;
-            timeMode = false;
+            return
+        } else {
+            incorrectChain = 0
+        }
+
+        if (wordMode && input.length >= spanList.length) {
+            generateCompletedModal()
+            completed = true;
+            started = false;
+            clearInterval(countId);
         }
     }
 })
 
 inputItem.addEventListener("keydown", (e) => {
-    var inputArea = document.getElementById("inputArea")
-    if (inputArea === document.activeElement && !completed) {
-        playKeyPress()
-    }
-
-    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
+    if (e.key === "Control") {
+        ctrl = true
         e.preventDefault();
+        return
     }
 
     if (ctrl) {
@@ -396,8 +433,17 @@ inputItem.addEventListener("keydown", (e) => {
         if (e.key === "Backspace") {
             e.preventDefault();
         }
-    } else if (e.key === "Control") {
-        ctrl = true;
+
+        return
+    }
+
+    var inputArea = document.getElementById("inputArea")
+    if (started && inputArea === document.activeElement && !completed) {
+        playKeyPress()
+    }
+
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
+        e.preventDefault();
     }
 })
 
@@ -415,12 +461,12 @@ async function getNextParagraph() {
     }
 
     if (paragraph.length > 200) {
-        console.log(paragraph)
         paragraph = shorten(paragraph)
-        console.log("MODIFIED: " + paragraph)
-    }
+    }	
 
-    paragraph.replace("“", '"')
+    paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
+    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
+    																		
     const paragraphList = paragraph.split("\n")
     document.getElementById("passage").innerText = ""
     for (let miniParagraph of paragraphList) {
@@ -433,7 +479,6 @@ async function getNextParagraph() {
 
         }
 
-
         document.getElementById("passage").appendChild(para)
     }
 
@@ -441,14 +486,26 @@ async function getNextParagraph() {
 }
 
 function shorten(paragraph) {
-     let modified = paragraph.substring(300, paragraph.length)
-     let stoppingIndex = modified.indexOf(".")
-     return paragraph.substring(modified, 300 + stoppingIndex + 1)
+    let modified = paragraph.substring(200, paragraph.length)
+    let stoppingIndex1 = modified.indexOf(".") == -1 ? 999999999 : modified.indexOf(".")
+    let stoppingIndex2 = modified.indexOf("!") == -1 ? 999999999 : modified.indexOf("!")
+    let stoppingIndex3 = modified.indexOf("?") == -1 ? 999999999 : modified.indexOf("?")
+    let stoppingIndex4 = modified.indexOf(";") == -1 ? 999999999 : modified.indexOf(";")
+
+
+    let min = Math.min(stoppingIndex1, stoppingIndex2, stoppingIndex3, stoppingIndex4)
+    if (modified.charAt(min + 1) == '"' || modified.charAt(min + 1) == "'") {
+        min++
+    }
+
+    return paragraph.substring(0, 200 + min + 1)
 }
 
 async function getNextParagraphTime() {
-    const paragraph = await getParagraphs(paragraph_api_time)
-    paragraph.replace("“", '"')
+    let paragraph = await getParagraphs(paragraph_api_time)
+    paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
+    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
+    
     const paragraphList = paragraph.split("\n\n")
     document.getElementById("passageTime").innerText = ""
     for (let miniParagraph of paragraphList) {
@@ -491,7 +548,9 @@ function reset() {
     wordMode = false;
     timeMode = false;
     timer = 60;
+    incorrectChain = 0
     scrollOffSet = 0;
+
     return;
 }
 
@@ -509,6 +568,7 @@ function resetWord() {
     started = false;
     wordMode = false;
     timeMode = false;
+    incorrectChain = 0
     scrollOffSet = 0;
 
     return;
@@ -524,6 +584,7 @@ function resetTime() {
 
     getNextParagraphTime();
 
+    incorrectChain = 0
     completed = false;
     started = false;
     wordMode = false;
@@ -646,22 +707,22 @@ function onResize() {
 }
 
 function playKeyPress() {
-        var title = ""
-        if (sound == "apple") {
-            title += "./macPress"
-        } else if (sound == "mechanical") {
-            title += "./buttonPress"
-        } else if (sound == "typewriter") {
-            title += "./typewriterPress"
-        }
+    var title = ""
+    if (sound == "apple") {
+        title += "./macPress"
+    } else if (sound == "mechanical") {
+        title += "./buttonPress"
+    } else if (sound == "typewriter") {
+        title += "./typewriterPress"
+    }
 
-        var select = Math.floor(Math.random() * 5 + 1)
-        title += select + ".mp3"
-        var audio = new Audio(title)
-        audio.loop = false
-        audio.play()
+    var select = Math.floor(Math.random() * 5 + 1)
+    title += select + ".mp3"
+    var audio = new Audio(title)
+    audio.loop = false
+    audio.play()
 
-        return
+    return
 }
 
 function playSpaceBar() {
@@ -680,4 +741,28 @@ function playSpaceBar() {
     audio.play()
 
     return
+}
+
+function generateCompletedModal() {
+    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm! Good job.`
+    modalSuccess.style.display = "block"
+    return
+}
+
+function generateFailedModal() {
+    modalFailed.style.display = "block"
+    return
+}
+
+function modalExit() {
+    modalSuccess.style.display = "none";
+    modalFailed.style.display = "none";
+
+    if (timeMode) {
+        resetTime()
+        timeMode = true
+    } else if (wordMode) {
+        resetWord()
+        wordMode = true
+    }
 }

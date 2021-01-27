@@ -129,10 +129,27 @@
         </div>
     </div>
 
-    <div class="modal" id="modal">
+    <div class="modal" id="modalSuccess">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Congrats!</p>
+            <div class="modal-header-success">
+                <span id="modalCloseSuccess" class="close">&times;</span>
+                <h2 id="resultsSuccess">Congrats! You completed the passage.</h2>
+            </div>
+            <div class="modal-body">
+                <p id="statsSuccess"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalFailed">
+        <div class="modal-content">
+            <div class="modal-header-failed">
+                <span id="modalCloseFailed" class="close">&times;</span>
+                <h2 id="resultsFailed">Too many errors! Please try again.</h2>
+            </div>
+            <div class="modal-body">
+                <p id="statsFailed">Don't give up! Practice makes perfect! Try typing at a slower pace.</p>
+            </div>
         </div>
     </div>
 

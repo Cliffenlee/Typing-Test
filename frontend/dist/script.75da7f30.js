@@ -896,6 +896,7 @@ var countId;
 var speed;
 var input;
 var incorrect = 0;
+var incorrectChain = 0;
 var timeMode = false;
 var wordMode = false;
 var theme = "light";
@@ -904,11 +905,29 @@ var scrollOffSet = 0;
 var prevOffSet = 0;
 var line = 0;
 var sound = "typewriter";
+var modalSuccess = document.getElementById("modalSuccess");
+var modalFailed = document.getElementById("modalFailed");
+var spanSuccess = document.getElementsByClassName("close")[0];
+var spanFailed = document.getElementsByClassName("close")[1];
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
 };
 
+window.onclick = function (event) {
+  if (event.target == modalSuccess || event.target == modalFailed) {
+    modalExit();
+  } else {
+    inputItem.focus();
+  }
+};
+
+spanSuccess.addEventListener("click", function () {
+  modalExit();
+});
+spanFailed.addEventListener("click", function () {
+  modalExit();
+});
 document.getElementById("slideOut").addEventListener("click", function () {
   document.getElementById("mySidenav").style.width = "250px";
 });
@@ -942,40 +961,43 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
     document.getElementById("subtitle").style.color = "#F5F5F7";
     document.getElementById("huskey").style.color = "#F5F5F7";
     document.getElementById("flex-options").style.backgroundColor = "rgba(0,0,0,0.2)";
-    document.getElementById("subtitleTime").style.color = "#F2F2F2";
-    document.getElementById("subtitleWord").style.color = "#F2F2F2";
+    document.getElementById("subtitleTime").style.color = "#fefefea4";
+    document.getElementById("subtitleWord").style.color = "#fefefea4";
     document.getElementById("wordMode").style.backgroundColor = "rgba(0,0,0,0.2)";
     document.getElementById("timeMode").style.backgroundColor = "rgba(0,0,0,0.2)";
     document.getElementById("buttonTime").style.backgroundColor = "rgba(255,255,255,0.5)";
     document.getElementById("buttonWord").style.backgroundColor = "rgba(255,255,255,0.5)";
     document.getElementById("buttonTime").style.color = "rgba(0,0,0,0.7)";
     document.getElementById("buttonWord").style.color = "rgba(0,0,0,0.7)";
-    document.getElementsByClassName("gameTitle")[0].style.color = "#FFFFFF";
+    document.getElementsByClassName("gameTitle")[0].style.color = "#cccccc";
+    document.getElementById("timerTime").style.color = "#cccccc";
+    document.getElementById("secondsTime").style.color = "#cccccc";
+    document.getElementById("timer").style.color = "#cccccc";
+    document.getElementById("seconds").style.color = "#cccccc";
     document.getElementById("miniFlex").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
-    document.getElementById("time").style.color = "#FFFFFF";
-    document.getElementById("wpm").style.color = "#FFFFFF";
-    document.getElementById("percent").style.color = "#FFFFFF";
-    document.getElementById("speed").style.color = "#FFFFFF";
+    document.getElementById("time").style.color = "#cccccc";
+    document.getElementById("wpm").style.color = "#cccccc";
+    document.getElementById("percent").style.color = "#cccccc";
+    document.getElementById("speed").style.color = "#cccccc";
     document.getElementById("speed").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
     document.getElementById("accuracy").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
-    document.getElementById("accuracy").style.color = "#FFFFFF";
+    document.getElementById("accuracy").style.color = "#cccccc";
     document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
     document.getElementById("passage").style.color = "#A0A0A0";
-    document.getElementsByClassName("gameTitle")[1].style.color = "#FFFFFF";
+    document.getElementsByClassName("gameTitle")[1].style.color = "#cccccc";
     document.getElementById("miniFlexTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
-    document.getElementById("timeTime").style.color = "#FFFFFF";
-    document.getElementById("wpmTime").style.color = "#FFFFFF";
-    document.getElementById("percentTime").style.color = "#FFFFFF";
-    document.getElementById("speedTime").style.color = "#FFFFFF";
+    document.getElementById("timeTime").style.color = "#cccccc";
+    document.getElementById("wpmTime").style.color = "#cccccc";
+    document.getElementById("percentTime").style.color = "#cccccc";
+    document.getElementById("speedTime").style.color = "#cccccc";
     document.getElementById("speedTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
     document.getElementById("accuracyTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
-    document.getElementById("accuracyTime").style.color = "#FFFFFF";
+    document.getElementById("accuracyTime").style.color = "#cccccc";
     document.getElementById("bodyTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
     document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
     var sheet = document.styleSheets[0];
     sheet.removeRule(9);
     sheet.insertRule(".correct { background-color: rgba(60, 101, 177, 0.4);}", 1);
-    document.getElementById("passageTime").style.color = "#A0A0A0";
     document.getElementById("passageTime").style.color = "#A0A0A0";
     document.getElementById("darkIcon").style.display = "none";
     document.getElementsByTagName("html")[0].style.backgroundColor = "rgba(0, 0, 0, 0.9)";
@@ -1025,6 +1047,10 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
     document.getElementById("accuracy").style.backgroundColor = "#F6F6F7";
     document.getElementById("accuracy").style.color = "#3C64B1";
     document.getElementById("body").style.backgroundColor = "#FBFBFD";
+    document.getElementById("timer").style.color = "#FFFFFF";
+    document.getElementById("seconds").style.color = "#FFFFFF";
+    document.getElementById("timerTime").style.color = "#FFFFFF";
+    document.getElementById("secondsTime").style.color = "#FFFFFF";
     document.getElementById("passage").style.color = "#A0A0A0";
     document.getElementsByClassName("gameTitle")[1].style.color = "#3C64B1";
     document.getElementById("miniFlexTime").style.backgroundColor = "#3C64B1";
@@ -1189,11 +1215,10 @@ inputItem.addEventListener("input", function () {
       document.getElementById("accuracyTime").innerText = accuracy;
 
       if (timer == 0) {
+        generateCompletedModal();
         completed = true;
         started = false;
         clearInterval(countId);
-        wordMode = false;
-        timeMode = false;
       }
     }, 1000);
   }
@@ -1244,33 +1269,40 @@ inputItem.addEventListener("input", function () {
           spanList[item].classList.remove("incorrect");
           spanList[item].classList.remove("correct");
         } else if (input[item] != spanList[item].innerText) {
+          incorrectChain++;
           spanList[item].classList.remove("correct");
           spanList[item].classList.add("incorrect");
         } else if (input[item] === spanList[item].innerText) {
+          incorrectChain = 0;
           spanList[item].classList.remove("incorrect");
           spanList[item].classList.add("correct");
         }
       }
     }
 
-    if (wordMode && input.length >= spanList.length) {
+    if (incorrectChain >= 15) {
+      generateFailedModal();
       completed = true;
       started = false;
       clearInterval(countId);
-      wordMode = false;
-      timeMode = false;
+      return;
+    } else {
+      incorrectChain = 0;
+    }
+
+    if (wordMode && input.length >= spanList.length) {
+      generateCompletedModal();
+      completed = true;
+      started = false;
+      clearInterval(countId);
     }
   }
 });
 inputItem.addEventListener("keydown", function (e) {
-  var inputArea = document.getElementById("inputArea");
-
-  if (inputArea === document.activeElement && !completed) {
-    playKeyPress();
-  }
-
-  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
+  if (e.key === "Control") {
+    ctrl = true;
     e.preventDefault();
+    return;
   }
 
   if (ctrl) {
@@ -1281,8 +1313,18 @@ inputItem.addEventListener("keydown", function (e) {
     if (e.key === "Backspace") {
       e.preventDefault();
     }
-  } else if (e.key === "Control") {
-    ctrl = true;
+
+    return;
+  }
+
+  var inputArea = document.getElementById("inputArea");
+
+  if (started && inputArea === document.activeElement && !completed) {
+    playKeyPress();
+  }
+
+  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
+    e.preventDefault();
   }
 });
 
@@ -1322,12 +1364,11 @@ function _getNextParagraph() {
 
           case 7:
             if (paragraph.length > 200) {
-              console.log(paragraph);
               paragraph = shorten(paragraph);
-              console.log("MODIFIED: " + paragraph);
             }
 
-            paragraph.replace("“", '"');
+            paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
+            paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
             paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
             _iterator4 = _createForOfIteratorHelper(paragraphList);
@@ -1362,7 +1403,7 @@ function _getNextParagraph() {
 
             return _context.abrupt("return");
 
-          case 14:
+          case 15:
           case "end":
             return _context.stop();
         }
@@ -1373,9 +1414,18 @@ function _getNextParagraph() {
 }
 
 function shorten(paragraph) {
-  var modified = paragraph.substring(300, paragraph.length);
-  var stoppingIndex = modified.indexOf(".");
-  return paragraph.substring(modified, 300 + stoppingIndex + 1);
+  var modified = paragraph.substring(200, paragraph.length);
+  var stoppingIndex1 = modified.indexOf(".") == -1 ? 999999999 : modified.indexOf(".");
+  var stoppingIndex2 = modified.indexOf("!") == -1 ? 999999999 : modified.indexOf("!");
+  var stoppingIndex3 = modified.indexOf("?") == -1 ? 999999999 : modified.indexOf("?");
+  var stoppingIndex4 = modified.indexOf(";") == -1 ? 999999999 : modified.indexOf(";");
+  var min = Math.min(stoppingIndex1, stoppingIndex2, stoppingIndex3, stoppingIndex4);
+
+  if (modified.charAt(min + 1) == '"' || modified.charAt(min + 1) == "'") {
+    min++;
+  }
+
+  return paragraph.substring(0, 200 + min + 1);
 }
 
 function getNextParagraphTime() {
@@ -1395,7 +1445,8 @@ function _getNextParagraphTime() {
 
           case 2:
             paragraph = _context2.sent;
-            paragraph.replace("“", '"');
+            paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
+            paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
             paragraphList = paragraph.split("\n\n");
             document.getElementById("passageTime").innerText = "";
             _iterator6 = _createForOfIteratorHelper(paragraphList);
@@ -1434,7 +1485,7 @@ function _getNextParagraphTime() {
             document.getElementById("body").scrollTo(0, 0);
             return _context2.abrupt("return");
 
-          case 11:
+          case 12:
           case "end":
             return _context2.stop();
         }
@@ -1459,6 +1510,7 @@ function reset() {
   wordMode = false;
   timeMode = false;
   timer = 60;
+  incorrectChain = 0;
   scrollOffSet = 0;
   return;
 }
@@ -1474,6 +1526,7 @@ function resetWord() {
   started = false;
   wordMode = false;
   timeMode = false;
+  incorrectChain = 0;
   scrollOffSet = 0;
   return;
 }
@@ -1485,6 +1538,7 @@ function resetTime() {
   document.getElementById("inputArea").value = "";
   clearInterval(countId);
   getNextParagraphTime();
+  incorrectChain = 0;
   completed = false;
   started = false;
   wordMode = false;
@@ -1634,6 +1688,30 @@ function playSpaceBar() {
   audio.play();
   return;
 }
+
+function generateCompletedModal() {
+  document.getElementById("statsSuccess").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm! Good job.");
+  modalSuccess.style.display = "block";
+  return;
+}
+
+function generateFailedModal() {
+  modalFailed.style.display = "block";
+  return;
+}
+
+function modalExit() {
+  modalSuccess.style.display = "none";
+  modalFailed.style.display = "none";
+
+  if (timeMode) {
+    resetTime();
+    timeMode = true;
+  } else if (wordMode) {
+    resetWord();
+    wordMode = true;
+  }
+}
 },{"regenerator-runtime":"../node_modules/regenerator-runtime/runtime.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -1662,7 +1740,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50587" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52078" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
