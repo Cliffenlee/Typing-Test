@@ -753,19 +753,6 @@ function playSpaceBar() {
 }
 
 function generateCompletedModal() {
-    let avgWpm = 0
-    let avgAccuracy = 0
-    for (let wpm of wpmAxis) {
-        avgWpm += wpm
-    } 
-
-    for (let acc of accuracyAxis) {
-        avgAccuracy += acc
-    }
-
-    avgWpm = Math.floor(avgWpm/wpmAxis.length)
-    avgAccuracy = Math.floor(avgAccuracy/accuracyAxis.length)
-
     if (theme == "light") {
         statsChart = new Chart(chart, {
             responsive: true,
@@ -851,11 +838,11 @@ function generateCompletedModal() {
     
 
     let remark = ""
-    if (avgWpm > 100 && avgAccuracy > 95) {
+    if (speed > 100 && accuracy > 95) {
         remark = "WOW! You're blazing fast!"
-    } else if (avgWpm > 90 && avgAccuracy > 95) {
+    } else if (speed > 90 && accuracy > 95) {
         remark =  "Well done! That was remarkable."
-    } else if ( avgWpm > 75 && avgAccuracy > 85 ) {
+    } else if ( speed > 75 && accuracy > 85 ) {
         remark = "Great job! You're getting better!"
     } else {
         remark = "Not bad! Keep on practicing!"
@@ -868,10 +855,10 @@ function generateCompletedModal() {
         document.getElementById("resultsSuccessDark").innerHTML = `Awesome! Thats another minute of practice today.`
     }
 
-    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${avgWpm} wpm</span> with <span style="color: #c45850;">${avgAccuracy}% accuracy</span>!`
+    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${speed} wpm</span> with <span style="color: #c45850;">${accuracy}% accuracy</span>!`
     document.getElementById("remark").innerHTML = remark
     
-    document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${avgWpm} wpm</span> with <span style="color: #c45850;">${avgAccuracy}% accuracy</span>!`
+    document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${speed} wpm</span> with <span style="color: #c45850;">${accuracy}% accuracy</span>!`
     document.getElementById("remarkDark").innerHTML = `<span style="color: #CCCCCC;">${remark}</span>`
 
     if (theme == 'light') {
