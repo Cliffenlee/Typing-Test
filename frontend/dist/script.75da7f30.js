@@ -894,6 +894,7 @@ var startingTime;
 var currentTime;
 var countId;
 var speed;
+var accuracy;
 var input;
 var incorrect = 0;
 var incorrectChain = 0;
@@ -907,25 +908,85 @@ var line = 0;
 var sound = "typewriter";
 var modalSuccess = document.getElementById("modalSuccess");
 var modalFailed = document.getElementById("modalFailed");
+var modalSuccessDark = document.getElementById("modalSuccessDark");
+var modalFailedDark = document.getElementById("modalFailedDark");
 var spanSuccess = document.getElementsByClassName("close")[0];
 var spanFailed = document.getElementsByClassName("close")[1];
+var spanSuccessDark = document.getElementsByClassName("close")[2];
+var spanFailedDark = document.getElementsByClassName("close")[3];
+var modalHome = document.getElementsByClassName("button1");
+var modalTryAgain = document.getElementsByClassName("button2");
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
 };
 
 window.onclick = function (event) {
-  if (event.target == modalSuccess || event.target == modalFailed) {
+  if (event.target == modalSuccess || event.target == modalFailed || event.target == modalSuccessDark || event.target == modalFailedDark) {
     modalExit();
   } else {
     inputItem.focus();
   }
 };
 
+var _iterator = _createForOfIteratorHelper(modalHome),
+    _step;
+
+try {
+  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+    var button = _step.value;
+    button.addEventListener("click", function () {
+      home();
+      modalExit();
+    });
+  }
+} catch (err) {
+  _iterator.e(err);
+} finally {
+  _iterator.f();
+}
+
+var _iterator2 = _createForOfIteratorHelper(modalTryAgain),
+    _step2;
+
+try {
+  for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+    var _button = _step2.value;
+
+    _button.addEventListener("click", function () {
+      if (wordMode) {
+        reset();
+        resetWord();
+        inputItem.focus();
+        timeMode = false;
+        wordMode = true;
+      } else if (timeMode) {
+        reset();
+        resetTime();
+        inputItem.focus();
+        timeMode = true;
+        wordMode = false;
+      }
+
+      modalExit();
+    });
+  }
+} catch (err) {
+  _iterator2.e(err);
+} finally {
+  _iterator2.f();
+}
+
 spanSuccess.addEventListener("click", function () {
   modalExit();
 });
 spanFailed.addEventListener("click", function () {
+  modalExit();
+});
+spanSuccessDark.addEventListener("click", function () {
+  modalExit();
+});
+spanFailedDark.addEventListener("click", function () {
   modalExit();
 });
 document.getElementById("slideOut").addEventListener("click", function () {
@@ -941,18 +1002,18 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
     document.getElementById("logoDark").style.display = "";
     var navLinks = document.getElementsByClassName("buttonMode");
 
-    var _iterator = _createForOfIteratorHelper(navLinks),
-        _step;
+    var _iterator3 = _createForOfIteratorHelper(navLinks),
+        _step3;
 
     try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var links = _step.value;
+      for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+        var links = _step3.value;
         links.style.color = "#F5F5F7";
       }
     } catch (err) {
-      _iterator.e(err);
+      _iterator3.e(err);
     } finally {
-      _iterator.f();
+      _iterator3.f();
     }
 
     document.getElementsByClassName("buttonTheme")[0].style.borderColor = "#F5F5F7";
@@ -995,9 +1056,26 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
     document.getElementById("accuracyTime").style.color = "#cccccc";
     document.getElementById("bodyTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
     document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)";
-    var sheet = document.styleSheets[0];
-    sheet.removeRule(9);
-    sheet.insertRule(".correct { background-color: rgba(60, 101, 177, 0.4);}", 1);
+    var spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime");
+
+    var _iterator4 = _createForOfIteratorHelper(spanList),
+        _step4;
+
+    try {
+      for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+        var item = _step4.value;
+
+        if (item.classList.contains("correct")) {
+          item.classList.remove("correct");
+          item.classList.add("correctDark");
+        }
+      }
+    } catch (err) {
+      _iterator4.e(err);
+    } finally {
+      _iterator4.f();
+    }
+
     document.getElementById("passageTime").style.color = "#A0A0A0";
     document.getElementById("darkIcon").style.display = "none";
     document.getElementsByTagName("html")[0].style.backgroundColor = "rgba(0, 0, 0, 0.9)";
@@ -1009,18 +1087,18 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
 
     var _navLinks = document.getElementsByClassName("buttonMode");
 
-    var _iterator2 = _createForOfIteratorHelper(_navLinks),
-        _step2;
+    var _iterator5 = _createForOfIteratorHelper(_navLinks),
+        _step5;
 
     try {
-      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-        var _links = _step2.value;
+      for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+        var _links = _step5.value;
         _links.style.color = "#3C64B1";
       }
     } catch (err) {
-      _iterator2.e(err);
+      _iterator5.e(err);
     } finally {
-      _iterator2.f();
+      _iterator5.f();
     }
 
     document.getElementsByClassName("buttonTheme")[0].style.borderColor = "#3C64B1";
@@ -1063,10 +1141,33 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
     document.getElementById("accuracyTime").style.color = "#3C64B1";
     document.getElementById("bodyTime").style.backgroundColor = "#FBFBFD";
     document.getElementById("passageTime").style.color = "#A0A0A0";
-    document.getElementsByTagName("html")[0].style.backgroundColor = "white";
-    var sheet = document.styleSheets[0];
-    sheet.removeRule(1);
-    sheet.insertRule(".correct { background-color: #3c65b12a;}", 9);
+    document.getElementsByTagName("html")[0].style.backgroundColor = "white"; // let lightCorrects = document.getElementsByClassName("correctDark")
+    // for (let lightCorrect of lightCorrects) {
+    //     lightCorrect.classList.remove("correctDark")
+    //     lightCorrect.classList.add("correct")
+    // }
+
+    var _spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime");
+
+    var _iterator6 = _createForOfIteratorHelper(_spanList),
+        _step6;
+
+    try {
+      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+        var _item = _step6.value;
+
+        if (_item.classList.contains("correctDark")) {
+          _item.classList.remove("correctDark");
+
+          _item.classList.add("correct");
+        }
+      }
+    } catch (err) {
+      _iterator6.e(err);
+    } finally {
+      _iterator6.f();
+    }
+
     theme = "light";
     document.getElementById("darkIcon").style.display = "";
   }
@@ -1146,12 +1247,7 @@ document.getElementById("buttonTime").addEventListener("click", function () {
   wordMode = false;
 });
 document.getElementById("choiceHome").addEventListener("click", function () {
-  reset();
-  document.getElementById("mySidenav").style.width = 0;
-  document.getElementById("main").style.display = "";
-  document.getElementById("flex-options").style.display = "";
-  document.getElementById("gameWord").style.display = "none";
-  document.getElementById("gameTime").style.display = "none";
+  home();
 });
 document.getElementsByTagName("img")[0].addEventListener("click", function () {
   reset();
@@ -1195,7 +1291,7 @@ inputItem.addEventListener("input", function () {
       currentTime = new Date();
       document.getElementById("timer").innerText = Math.floor((currentTime - startingTime) / 1000);
       speed = Math.floor((input.length - incorrect) / 5 / ((currentTime - startingTime) / 1000 / 60));
-      var accuracy = Math.floor((input.length - incorrect) / input.length * 100);
+      accuracy = Math.floor((input.length - incorrect) / input.length * 100);
       speed = speed < 0 ? 0 : speed;
       accuracy = accuracy < 0 ? 0 : accuracy;
       document.getElementById("speed").innerHTML = speed;
@@ -1208,7 +1304,7 @@ inputItem.addEventListener("input", function () {
       currentTime = new Date();
       document.getElementById("timerTime").innerText = --timer;
       speed = Math.floor((input.length - incorrect) / 5 / ((currentTime - startingTime) / 1000 / 60));
-      var accuracy = Math.floor((input.length - incorrect) / input.length * 100);
+      accuracy = Math.floor((input.length - incorrect) / input.length * 100);
       speed = speed < 0 ? 0 : speed;
       accuracy = accuracy < 0 ? 0 : accuracy;
       document.getElementById("speedTime").innerHTML = speed;
@@ -1244,21 +1340,21 @@ inputItem.addEventListener("input", function () {
   if (!completed) {
     var incorrectCount = 0;
 
-    var _iterator3 = _createForOfIteratorHelper(spanList),
-        _step3;
+    var _iterator7 = _createForOfIteratorHelper(spanList),
+        _step7;
 
     try {
-      for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-        var _item = _step3.value;
+      for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+        var _item2 = _step7.value;
 
-        if (_item.classList.contains("incorrect")) {
+        if (_item2.classList.contains("incorrect")) {
           incorrectCount++;
         }
       }
     } catch (err) {
-      _iterator3.e(err);
+      _iterator7.e(err);
     } finally {
-      _iterator3.f();
+      _iterator7.f();
     }
 
     incorrect = incorrectCount;
@@ -1268,14 +1364,17 @@ inputItem.addEventListener("input", function () {
         if (input[item] == null) {
           spanList[item].classList.remove("incorrect");
           spanList[item].classList.remove("correct");
+          spanList[item].classList.remove("correctDark");
         } else if (input[item] != spanList[item].innerText) {
-          incorrectChain++;
+          incorrectChain++; // theme == "dark" ? spanList[item].classList.remove("correctDark") : spanList[item].classList.remove("correct")
+
           spanList[item].classList.remove("correct");
+          spanList[item].classList.remove("correctDark");
           spanList[item].classList.add("incorrect");
         } else if (input[item] === spanList[item].innerText) {
           incorrectChain = 0;
           spanList[item].classList.remove("incorrect");
-          spanList[item].classList.add("correct");
+          theme == "dark" ? spanList[item].classList.add("correctDark") : spanList[item].classList.add("correct");
         }
       }
     }
@@ -1317,9 +1416,7 @@ inputItem.addEventListener("keydown", function (e) {
     return;
   }
 
-  var inputArea = document.getElementById("inputArea");
-
-  if (started && inputArea === document.activeElement && !completed) {
+  if (inputItem === document.activeElement && !completed) {
     playKeyPress();
   }
 
@@ -1340,7 +1437,7 @@ function getNextParagraph() {
 
 function _getNextParagraph() {
   _getNextParagraph = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var paragraph, paragraphList, _iterator4, _step4, miniParagraph, para, _iterator5, _step5, character, itemSpan;
+    var paragraph, paragraphList, _iterator8, _step8, miniParagraph, para, _iterator9, _step9, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -1367,38 +1464,38 @@ function _getNextParagraph() {
               paragraph = shorten(paragraph);
             }
 
-            paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
+            paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
             paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
-            _iterator4 = _createForOfIteratorHelper(paragraphList);
+            _iterator8 = _createForOfIteratorHelper(paragraphList);
 
             try {
-              for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-                miniParagraph = _step4.value;
+              for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+                miniParagraph = _step8.value;
                 para = document.createElement('p');
-                _iterator5 = _createForOfIteratorHelper(miniParagraph);
+                _iterator9 = _createForOfIteratorHelper(miniParagraph);
 
                 try {
-                  for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-                    character = _step5.value;
+                  for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+                    character = _step9.value;
                     itemSpan = document.createElement('span');
                     itemSpan.className = "charSpan";
                     itemSpan.innerText = character;
                     para.appendChild(itemSpan);
                   }
                 } catch (err) {
-                  _iterator5.e(err);
+                  _iterator9.e(err);
                 } finally {
-                  _iterator5.f();
+                  _iterator9.f();
                 }
 
                 document.getElementById("passage").appendChild(para);
               }
             } catch (err) {
-              _iterator4.e(err);
+              _iterator8.e(err);
             } finally {
-              _iterator4.f();
+              _iterator8.f();
             }
 
             return _context.abrupt("return");
@@ -1434,7 +1531,7 @@ function getNextParagraphTime() {
 
 function _getNextParagraphTime() {
   _getNextParagraphTime = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var paragraph, paragraphList, _iterator6, _step6, miniParagraph, div, para, _iterator7, _step7, character, itemSpan;
+    var paragraph, paragraphList, _iterator10, _step10, miniParagraph, div, para, _iterator11, _step11, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -1445,40 +1542,40 @@ function _getNextParagraphTime() {
 
           case 2:
             paragraph = _context2.sent;
-            paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
+            paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
             paragraphList = paragraph.split("\n\n");
             document.getElementById("passageTime").innerText = "";
-            _iterator6 = _createForOfIteratorHelper(paragraphList);
+            _iterator10 = _createForOfIteratorHelper(paragraphList);
 
             try {
-              for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-                miniParagraph = _step6.value;
+              for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+                miniParagraph = _step10.value;
                 div = document.createElement('div');
                 para = document.createElement('p');
-                _iterator7 = _createForOfIteratorHelper(miniParagraph);
+                _iterator11 = _createForOfIteratorHelper(miniParagraph);
 
                 try {
-                  for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-                    character = _step7.value;
+                  for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
+                    character = _step11.value;
                     itemSpan = document.createElement('span');
                     itemSpan.className = "charSpanTime";
                     itemSpan.innerText = character;
                     para.appendChild(itemSpan);
                   }
                 } catch (err) {
-                  _iterator7.e(err);
+                  _iterator11.e(err);
                 } finally {
-                  _iterator7.f();
+                  _iterator11.f();
                 }
 
                 div.appendChild(para);
                 document.getElementById("passageTime").appendChild(div);
               }
             } catch (err) {
-              _iterator6.e(err);
+              _iterator10.e(err);
             } finally {
-              _iterator6.f();
+              _iterator10.f();
             }
 
             document.getElementById("bodyTime").scrollTo(0, 0);
@@ -1505,6 +1602,7 @@ function reset() {
   document.getElementById("body").scrollTo(0, 0);
   document.getElementById("passage").innerText = "";
   document.getElementById("passageTime").innerText = "";
+  inputItem.focus();
   completed = false;
   started = false;
   wordMode = false;
@@ -1690,19 +1788,53 @@ function playSpaceBar() {
 }
 
 function generateCompletedModal() {
-  document.getElementById("statsSuccess").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm! Good job.");
-  modalSuccess.style.display = "block";
+  var remark = "";
+
+  if (speed > 100 && accuracy > 95) {
+    remark = "WOW! You're blazing fast!";
+  } else if (speed > 90 && accuracy > 95) {
+    remark = "Well done! That was remarkable.";
+  } else if (speed > 75 && accuracy > 85) {
+    remark = "Great job! You're getting better!";
+  } else {
+    remark = "Good job! Let's strive keep improving!";
+  }
+
+  if (wordMode) {
+    document.getElementById("resultsSuccess").innerHTML = "Congrats! You've completed the passage.";
+    document.getElementById("resultsSuccessDark").innerHTML = "Congrats! You've completed the passage.";
+  } else if (timeMode) {
+    document.getElementById("resultsSuccess").innerHTML = "Awesome! Thats one more minute of practice today.";
+    document.getElementById("resultsSuccessDark").innerHTML = "Awesome! Thats one extra minute of practice today.";
+  }
+
+  document.getElementById("statsSuccess").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm with ").concat(accuracy, "% accuracy! </br></br> ").concat(remark);
+  document.getElementById("statsSuccessDark").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm with ").concat(accuracy, "% accuracy! </br></br> ").concat(remark);
+
+  if (theme == 'light') {
+    modalSuccess.style.display = "block";
+  } else {
+    modalSuccessDark.style.display = "block";
+  }
+
   return;
 }
 
 function generateFailedModal() {
-  modalFailed.style.display = "block";
+  if (theme == 'light') {
+    modalFailed.style.display = "block";
+  } else {
+    modalFailedDark.style.display = "block";
+  }
+
   return;
 }
 
 function modalExit() {
   modalSuccess.style.display = "none";
   modalFailed.style.display = "none";
+  modalSuccessDark.style.display = "none";
+  modalFailedDark.style.display = "none";
 
   if (timeMode) {
     resetTime();
@@ -1711,6 +1843,15 @@ function modalExit() {
     resetWord();
     wordMode = true;
   }
+}
+
+function home() {
+  reset();
+  document.getElementById("mySidenav").style.width = 0;
+  document.getElementById("main").style.display = "";
+  document.getElementById("flex-options").style.display = "";
+  document.getElementById("gameWord").style.display = "none";
+  document.getElementById("gameTime").style.display = "none";
 }
 },{"regenerator-runtime":"../node_modules/regenerator-runtime/runtime.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -1740,7 +1881,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52078" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49253" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -15,6 +15,7 @@ var startingTime;
 var currentTime;
 var countId;
 var speed;
+var accuracy;
 var input;
 var incorrect = 0;
 var incorrectChain = 0;
@@ -28,19 +29,53 @@ var line = 0;
 var sound = "typewriter"
 var modalSuccess = document.getElementById("modalSuccess");
 var modalFailed = document.getElementById("modalFailed");
+var modalSuccessDark = document.getElementById("modalSuccessDark");
+var modalFailedDark = document.getElementById("modalFailedDark");
 var spanSuccess = document.getElementsByClassName("close")[0];
 var spanFailed = document.getElementsByClassName("close")[1];
+var spanSuccessDark = document.getElementsByClassName("close")[2];
+var spanFailedDark = document.getElementsByClassName("close")[3];
+var modalHome = document.getElementsByClassName("button1");
+var modalTryAgain = document.getElementsByClassName("button2");
+
 
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
 }
 
 window.onclick = function (event) {
-    if (event.target == modalSuccess || event.target == modalFailed) {
+    if (event.target == modalSuccess || event.target == modalFailed || event.target == modalSuccessDark || event.target == modalFailedDark) {
         modalExit()
     } else {
         inputItem.focus()
     }
+}
+
+for (let button of modalHome) {
+    button.addEventListener("click", () => {
+        home()
+        modalExit()
+    })
+}
+
+for (let button of modalTryAgain) {
+    button.addEventListener("click", () => {
+        if (wordMode) {
+            reset()
+            resetWord()
+            inputItem.focus();
+            timeMode = false;
+            wordMode = true;
+        } else if (timeMode) {
+            reset()
+            resetTime()
+            inputItem.focus();
+            timeMode = true;
+            wordMode = false;
+        }
+
+        modalExit()
+    })
 }
 
 spanSuccess.addEventListener("click", () => {
@@ -48,6 +83,14 @@ spanSuccess.addEventListener("click", () => {
 })
 
 spanFailed.addEventListener("click", () => {
+    modalExit();
+})
+
+spanSuccessDark.addEventListener("click", () => {
+    modalExit();
+})
+
+spanFailedDark.addEventListener("click", () => {
     modalExit();
 })
 
@@ -113,9 +156,14 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("bodyTime").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
         document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
 
-        var sheet = document.styleSheets[0]
-        sheet.removeRule(9)
-        sheet.insertRule(".correct { background-color: rgba(60, 101, 177, 0.4);}", 1)
+        let spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime")
+        
+        for (let item of spanList) {
+            if (item.classList.contains("correct")) {
+                item.classList.remove("correct")
+                item.classList.add("correctDark")
+            }
+        }
 
         document.getElementById("passageTime").style.color = "#A0A0A0"
         document.getElementById("darkIcon").style.display = "none"
@@ -178,9 +226,20 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
 
         document.getElementsByTagName("html")[0].style.backgroundColor = "white"
 
-        var sheet = document.styleSheets[0]
-        sheet.removeRule(1)
-        sheet.insertRule(".correct { background-color: #3c65b12a;}", 9)
+        // let lightCorrects = document.getElementsByClassName("correctDark")
+        // for (let lightCorrect of lightCorrects) {
+        //     lightCorrect.classList.remove("correctDark")
+        //     lightCorrect.classList.add("correct")
+        // }
+        
+        let spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime")
+        
+        for (let item of spanList) {
+            if (item.classList.contains("correctDark")) {
+                item.classList.remove("correctDark")
+                item.classList.add("correct")
+            }
+        }
 
         theme = "light"
 
@@ -273,13 +332,10 @@ document.getElementById("buttonTime").addEventListener("click", () => {
 });
 
 document.getElementById("choiceHome").addEventListener("click", () => {
-    reset();
-    document.getElementById("mySidenav").style.width = 0;
-    document.getElementById("main").style.display = "";
-    document.getElementById("flex-options").style.display = "";
-    document.getElementById("gameWord").style.display = "none";
-    document.getElementById("gameTime").style.display = "none";
+    home()
 })
+
+
 
 document.getElementsByTagName("img")[0].addEventListener("click", () => {
     reset();
@@ -323,7 +379,7 @@ inputItem.addEventListener("input", () => {
             currentTime = new Date();
             document.getElementById("timer").innerText = Math.floor((currentTime - startingTime) / 1000)
             speed = Math.floor((((input.length - incorrect) / 5)) / (((currentTime - startingTime) / 1000) / 60))
-            let accuracy = Math.floor(((input.length - incorrect) / input.length) * 100)
+            accuracy = Math.floor(((input.length - incorrect) / input.length) * 100)
             speed = speed < 0 ? 0 : speed
             accuracy = accuracy < 0 ? 0 : accuracy
             document.getElementById("speed").innerHTML = speed
@@ -337,7 +393,7 @@ inputItem.addEventListener("input", () => {
             currentTime = new Date();
             document.getElementById("timerTime").innerText = --timer
             speed = Math.floor((((input.length - incorrect) / 5)) / (((currentTime - startingTime) / 1000) / 60))
-            let accuracy = Math.floor(((input.length - incorrect) / input.length) * 100)
+            accuracy = Math.floor(((input.length - incorrect) / input.length) * 100)
             speed = speed < 0 ? 0 : speed
             accuracy = accuracy < 0 ? 0 : accuracy
             document.getElementById("speedTime").innerHTML = speed
@@ -387,14 +443,18 @@ inputItem.addEventListener("input", () => {
                 if (input[item] == null) {
                     spanList[item].classList.remove("incorrect")
                     spanList[item].classList.remove("correct")
+                    spanList[item].classList.remove("correctDark")
+                    
                 } else if (input[item] != spanList[item].innerText) {
                     incorrectChain++
+                    // theme == "dark" ? spanList[item].classList.remove("correctDark") : spanList[item].classList.remove("correct")
                     spanList[item].classList.remove("correct")
+                    spanList[item].classList.remove("correctDark")
                     spanList[item].classList.add("incorrect")
                 } else if (input[item] === spanList[item].innerText) {
                     incorrectChain = 0
                     spanList[item].classList.remove("incorrect")
-                    spanList[item].classList.add("correct")
+                    theme == "dark" ? spanList[item].classList.add("correctDark") : spanList[item].classList.add("correct")
                 }
             }
         }
@@ -437,8 +497,7 @@ inputItem.addEventListener("keydown", (e) => {
         return
     }
 
-    var inputArea = document.getElementById("inputArea")
-    if (started && inputArea === document.activeElement && !completed) {
+    if (inputItem === document.activeElement && !completed) {
         playKeyPress()
     }
 
@@ -464,7 +523,7 @@ async function getNextParagraph() {
         paragraph = shorten(paragraph)
     }	
 
-    paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
+    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
     paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
     																		
     const paragraphList = paragraph.split("\n")
@@ -503,7 +562,7 @@ function shorten(paragraph) {
 
 async function getNextParagraphTime() {
     let paragraph = await getParagraphs(paragraph_api_time)
-    paragraph = paragraph.replace(/[\u0022\u0027\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
+    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
     paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
     
     const paragraphList = paragraph.split("\n\n")
@@ -543,6 +602,7 @@ function reset() {
     document.getElementById("passage").innerText = ""
     document.getElementById("passageTime").innerText = ""
 
+    inputItem.focus();
     completed = false;
     started = false;
     wordMode = false;
@@ -744,19 +804,49 @@ function playSpaceBar() {
 }
 
 function generateCompletedModal() {
-    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm! Good job.`
-    modalSuccess.style.display = "block"
+    let remark = ""
+    if (speed > 100 && accuracy > 95) {
+        remark = "WOW! You're blazing fast!"
+    } else if (speed > 90 && accuracy > 95) {
+        remark =  "Well done! That was remarkable."
+    } else if ( speed > 75 && accuracy > 85 ) {
+        remark = "Great job! You're getting better!"
+    } else {
+        remark = "Not bad! Keep on practicing!"
+    }
+    if (wordMode) {
+        document.getElementById("resultsSuccess").innerHTML = `Congrats! You've completed the passage.`
+        document.getElementById("resultsSuccessDark").innerHTML = `Congrats! You've completed the passage.`
+    } else if (timeMode) {
+        document.getElementById("resultsSuccess").innerHTML = `Awesome! Thats one more minute of practice today.`
+        document.getElementById("resultsSuccessDark").innerHTML = `Awesome! Thats one more minute of practice today.`
+    }
+
+    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy! </br></br> ${remark}`
+    document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy! </br></br> ${remark}`
+
+    if (theme == 'light') {
+        modalSuccess.style.display = "block"
+    } else {
+        modalSuccessDark.style.display = "block"
+    }
     return
 }
 
 function generateFailedModal() {
-    modalFailed.style.display = "block"
+    if (theme == 'light') {
+        modalFailed.style.display = "block"
+    } else {
+        modalFailedDark.style.display = "block"
+    }
     return
 }
 
 function modalExit() {
     modalSuccess.style.display = "none";
     modalFailed.style.display = "none";
+    modalSuccessDark.style.display = "none";
+    modalFailedDark.style.display = "none";
 
     if (timeMode) {
         resetTime()
@@ -765,4 +855,13 @@ function modalExit() {
         resetWord()
         wordMode = true
     }
+}
+
+function home() {
+    reset();
+    document.getElementById("mySidenav").style.width = 0;
+    document.getElementById("main").style.display = "";
+    document.getElementById("flex-options").style.display = "";
+    document.getElementById("gameWord").style.display = "none";
+    document.getElementById("gameTime").style.display = "none";
 }
