@@ -37,6 +37,13 @@ var spanSuccessDark = document.getElementsByClassName("close")[2];
 var spanFailedDark = document.getElementsByClassName("close")[3];
 var modalHome = document.getElementsByClassName("button1");
 var modalTryAgain = document.getElementsByClassName("button2");
+var loaderWrapperWord = document.getElementById("loaderWrapperWord");
+var loaderWrapperTime = document.getElementById("loaderWrapperTime");
+var timeAxis = []
+var wpmAxis = []
+var accuracyAxis = []
+var statsChart = ""
+var chart = document.getElementById("chart").getContext('2d');
 
 
 window.onbeforeunload = () => {
@@ -44,11 +51,7 @@ window.onbeforeunload = () => {
 }
 
 window.onclick = function (event) {
-    if (event.target == modalSuccess || event.target == modalFailed || event.target == modalSuccessDark || event.target == modalFailedDark) {
-        modalExit()
-    } else {
-        inputItem.focus()
-    }
+    inputItem.focus()
 }
 
 for (let button of modalHome) {
@@ -77,22 +80,6 @@ for (let button of modalTryAgain) {
         modalExit()
     })
 }
-
-spanSuccess.addEventListener("click", () => {
-    modalExit();
-})
-
-spanFailed.addEventListener("click", () => {
-    modalExit();
-})
-
-spanSuccessDark.addEventListener("click", () => {
-    modalExit();
-})
-
-spanFailedDark.addEventListener("click", () => {
-    modalExit();
-})
 
 document.getElementById("slideOut").addEventListener("click", () => {
     document.getElementById("mySidenav").style.width = "250px";
@@ -253,6 +240,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
 document.getElementById("choice1").addEventListener("click", () => {
     window.scrollTo(0, 0);
     document.getElementById("mySidenav").style.width = 0;
+    startHeaders();
     reset();
     resetTime();
     document.getElementById("gameWord").style.display = "none"
@@ -266,6 +254,7 @@ document.getElementById("choice1").addEventListener("click", () => {
 
 document.getElementsByTagName("li")[0].addEventListener("click", () => {
     window.scrollTo(0, 0);
+    startHeaders();
     reset();
     resetTime();
     document.getElementById("gameWord").style.display = "none"
@@ -279,6 +268,7 @@ document.getElementsByTagName("li")[0].addEventListener("click", () => {
 
 document.getElementById("choice2").addEventListener("click", () => {
     window.scrollTo(0, 0);
+    startHeaders();
     reset();
     resetWord();
     document.getElementById("mySidenav").style.width = 0;
@@ -293,6 +283,7 @@ document.getElementById("choice2").addEventListener("click", () => {
 
 document.getElementsByTagName("li")[1].addEventListener("click", () => {
     window.scrollTo(0, 0);
+    startHeaders();
     reset();
     resetWord();
     document.getElementById("gameTime").style.display = "none"
@@ -306,6 +297,7 @@ document.getElementsByTagName("li")[1].addEventListener("click", () => {
 
 
 document.getElementById("buttonWord").addEventListener("click", () => {
+    startHeaders();
     reset();
     resetWord();
     document.getElementById("gameTime").style.display = "none"
@@ -319,6 +311,7 @@ document.getElementById("buttonWord").addEventListener("click", () => {
 });
 
 document.getElementById("buttonTime").addEventListener("click", () => {
+    startHeaders();
     reset();
     resetTime();
     document.getElementById("gameWord").style.display = "none"
@@ -338,19 +331,11 @@ document.getElementById("choiceHome").addEventListener("click", () => {
 
 
 document.getElementsByTagName("img")[0].addEventListener("click", () => {
-    reset();
-    document.getElementById("main").style.display = ""
-    document.getElementById("flex-options").style.display = ""
-    document.getElementById("gameWord").style.display = "none";
-    document.getElementById("gameTime").style.display = "none";
+    home()
 })
 
 document.getElementsByTagName("img")[1].addEventListener("click", () => {
-    reset();
-    document.getElementById("main").style.display = ""
-    document.getElementById("flex-options").style.display = ""
-    document.getElementById("gameWord").style.display = "none";
-    document.getElementById("gameTime").style.display = "none";
+    home()
 })
 
 inputItem.onpaste = e => e.preventDefault();
@@ -377,13 +362,17 @@ inputItem.addEventListener("input", () => {
         startingTime = new Date();
         countId = setInterval(() => {
             currentTime = new Date();
-            document.getElementById("timer").innerText = Math.floor((currentTime - startingTime) / 1000)
+            let time = Math.floor((currentTime - startingTime) / 1000)
+            document.getElementById("timer").innerText = time
             speed = Math.floor((((input.length - incorrect) / 5)) / (((currentTime - startingTime) / 1000) / 60))
             accuracy = Math.floor(((input.length - incorrect) / input.length) * 100)
             speed = speed < 0 ? 0 : speed
             accuracy = accuracy < 0 ? 0 : accuracy
             document.getElementById("speed").innerHTML = speed
             document.getElementById("accuracy").innerText = accuracy
+            wpmAxis.push(speed)
+            accuracyAxis.push(accuracy)
+            timeAxis.push(time)
         }, 1000)
 
     } else if (!started && timeMode) {
@@ -398,6 +387,9 @@ inputItem.addEventListener("input", () => {
             accuracy = accuracy < 0 ? 0 : accuracy
             document.getElementById("speedTime").innerHTML = speed
             document.getElementById("accuracyTime").innerText = accuracy
+            wpmAxis.push(speed)
+            accuracyAxis.push(accuracy)
+            timeAxis.push(Math.abs(timer-60))
 
             if (timer == 0) {
                 generateCompletedModal()
@@ -514,7 +506,11 @@ function getParagraphs(para_api) {
 }
 
 async function getNextParagraph() {
+    let spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime")
     let paragraph = ""
+
+    loaderWrapperWord.style.display = "flex"
+
     while (paragraph.length < 150) {
         paragraph = await getParagraphs(paragraph_api)
     }
@@ -525,9 +521,14 @@ async function getNextParagraph() {
 
     paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
     paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
+    paragraph = paragraph.replace("’","'")
+    paragraph = paragraph.replace("  ", " ")
     																		
     const paragraphList = paragraph.split("\n")
     document.getElementById("passage").innerText = ""
+
+    loaderWrapperWord.style.display = "none"
+
     for (let miniParagraph of paragraphList) {
         let para = document.createElement('p')
         for (let character of miniParagraph) {
@@ -561,12 +562,18 @@ function shorten(paragraph) {
 }
 
 async function getNextParagraphTime() {
+    loaderWrapperTime.style.display = "flex"
     let paragraph = await getParagraphs(paragraph_api_time)
     paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
     paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
-    
+    paragraph = paragraph.replace("’","'")
+    paragraph = paragraph.replace("  ", " ")
+
     const paragraphList = paragraph.split("\n\n")
     document.getElementById("passageTime").innerText = ""
+
+    loaderWrapperTime.style.display = "none"
+
     for (let miniParagraph of paragraphList) {
         let div = document.createElement('div')
         let para = document.createElement('p')
@@ -582,6 +589,7 @@ async function getNextParagraphTime() {
         document.getElementById("passageTime").appendChild(div)
     }
 
+    
     document.getElementById("bodyTime").scrollTo(0, 0)
     document.getElementById("body").scrollTo(0, 0)
 
@@ -589,11 +597,16 @@ async function getNextParagraphTime() {
 }
 
 function reset() {
-
+    if (statsChart != "") {
+        statsChart.destroy()
+    }
     document.getElementById("timer").innerText = "0"
     document.getElementById("speed").innerText = "0"
     document.getElementById("accuracy").innerText = "0"
     document.getElementById("inputArea").value = ""
+    wpmAxis = []
+    accuracyAxis = []
+    timeAxis = []
     clearInterval(countId);
 
     document.getElementById("bodyTime").scrollTo(0, 0)
@@ -695,77 +708,6 @@ function scrollUp() {
     return
 }
 
-var scroller = {
-    target: document.querySelector("#contents"),
-    ease: 0.05, // <= scroll speed
-    endY: 0,
-    y: 0,
-    resizeRequest: 1,
-    scrollRequest: 0,
-};
-
-
-var html = document.documentElement;
-var body = document.body;
-
-
-var requestId = null;
-
-TweenLite.set(scroller.target, {
-    rotation: 0.01,
-    force3D: true
-});
-
-// window.addEventListener("load", onLoad);
-// function onLoad() {
-//     updateScroller();
-//     window.focus();
-//     window.addEventListener("resize", onResize);
-//     document.addEventListener("scroll", onScroll);
-// }
-
-function updateScroller() {
-
-    var resized = scroller.resizeRequest > 0;
-
-    if (resized) {
-        // var height = scroller.target.clientHeight;
-        var height = parseInt(getComputedStyle(document.getElementById("main")).height)
-        body.style.height = height + "px";
-        scroller.resizeRequest = 0;
-    }
-
-    var scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
-
-    scroller.endY = scrollY;
-    scroller.y += (scrollY - scroller.y) * scroller.ease;
-
-    if (Math.abs(scrollY - scroller.y) < 0.05 || resized) {
-        scroller.y = scrollY;
-        scroller.scrollRequest = 0;
-    }
-
-    TweenLite.set(scroller.target, {
-        y: -scroller.y
-    });
-
-    requestId = scroller.scrollRequest > 0 ? requestAnimationFrame(updateScroller) : null;
-}
-
-function onScroll() {
-    scroller.scrollRequest++;
-    if (!requestId) {
-        requestId = requestAnimationFrame(updateScroller);
-    }
-}
-
-function onResize() {
-    scroller.resizeRequest++;
-    if (!requestId) {
-        requestId = requestAnimationFrame(updateScroller);
-    }
-}
-
 function playKeyPress() {
     var title = ""
     if (sound == "apple") {
@@ -804,6 +746,44 @@ function playSpaceBar() {
 }
 
 function generateCompletedModal() {
+    statsChart = new Chart(chart, {
+        type: 'line',
+        data: {
+            labels: timeAxis,
+            datasets: [{
+                data: wpmAxis,
+                label: "Words per Minute",
+                fill: true,
+                borderColor: "#3e95cd"
+            }, {
+                data: accuracyAxis,
+                label: "Accuracy",
+                fill: false,
+                borderColor: "#c45850"
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Words per Minute and Accuracy'
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        stepSize: 4
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis)) + 10,
+                        stepSize: 10
+                    }
+                }]
+            }
+        }
+    })
+
     let remark = ""
     if (speed > 100 && accuracy > 95) {
         remark = "WOW! You're blazing fast!"
@@ -822,8 +802,11 @@ function generateCompletedModal() {
         document.getElementById("resultsSuccessDark").innerHTML = `Awesome! Thats one more minute of practice today.`
     }
 
-    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy! </br></br> ${remark}`
-    document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy! </br></br> ${remark}`
+    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy!`
+    document.getElementById("remark").innerHTML = remark
+    
+    document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy!`
+    document.getElementById("remarkDark").innerHTML = remark
 
     if (theme == 'light') {
         modalSuccess.style.display = "block"
@@ -859,9 +842,50 @@ function modalExit() {
 
 function home() {
     reset();
+    document.getElementsByClassName("navLinks")[0].style.display = "";
+    document.getElementsByClassName("ml11")[0].style.display = "none";
     document.getElementById("mySidenav").style.width = 0;
     document.getElementById("main").style.display = "";
     document.getElementById("flex-options").style.display = "";
     document.getElementById("gameWord").style.display = "none";
     document.getElementById("gameTime").style.display = "none";
 }
+
+function startHeaders() {
+    document.getElementsByClassName("navLinks")[0].style.display = "none";
+    document.getElementsByClassName("ml11")[0].style.display = "flex";
+
+    var textWrapper = document.querySelector('.ml11 .letters');
+    textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w|\u0021)/g, "<span class='letter'>$&</span>");
+
+    anime.timeline({loop: false})
+    .add({
+        targets: '.ml11 .line',
+        scaleY: [0,1],
+        opacity: [0.5,1],
+        easing: "easeOutExpo",
+        duration: 700
+    })
+    .add({
+        targets: '.ml11 .line',
+        translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
+        easing: "easeOutExpo",
+        duration: 700,
+        delay: 100
+    }).add({
+        targets: '.ml11 .letter',
+        opacity: [0,1],
+        easing: "easeOutExpo",
+        duration: 600,
+        offset: '-=775',
+        delay: (el, i) => 34 * (i+1)
+    }).add({
+        targets: '.ml11 .line',
+        opacity: 0,
+        duration: 700,
+        easing: "easeOutExpo",
+        delay: 0
+      });;
+
+}
+

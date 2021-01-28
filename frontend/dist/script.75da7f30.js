@@ -869,6 +869,14 @@ try {
 }
 
 },{}],"script.js":[function(require,module,exports) {
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -916,17 +924,20 @@ var spanSuccessDark = document.getElementsByClassName("close")[2];
 var spanFailedDark = document.getElementsByClassName("close")[3];
 var modalHome = document.getElementsByClassName("button1");
 var modalTryAgain = document.getElementsByClassName("button2");
+var loaderWrapperWord = document.getElementById("loaderWrapperWord");
+var loaderWrapperTime = document.getElementById("loaderWrapperTime");
+var timeAxis = [];
+var wpmAxis = [];
+var accuracyAxis = [];
+var statsChart = "";
+var chart = document.getElementById("chart").getContext('2d');
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
 };
 
 window.onclick = function (event) {
-  if (event.target == modalSuccess || event.target == modalFailed || event.target == modalSuccessDark || event.target == modalFailedDark) {
-    modalExit();
-  } else {
-    inputItem.focus();
-  }
+  inputItem.focus();
 };
 
 var _iterator = _createForOfIteratorHelper(modalHome),
@@ -977,18 +988,6 @@ try {
   _iterator2.f();
 }
 
-spanSuccess.addEventListener("click", function () {
-  modalExit();
-});
-spanFailed.addEventListener("click", function () {
-  modalExit();
-});
-spanSuccessDark.addEventListener("click", function () {
-  modalExit();
-});
-spanFailedDark.addEventListener("click", function () {
-  modalExit();
-});
 document.getElementById("slideOut").addEventListener("click", function () {
   document.getElementById("mySidenav").style.width = "250px";
 });
@@ -1175,6 +1174,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", func
 document.getElementById("choice1").addEventListener("click", function () {
   window.scrollTo(0, 0);
   document.getElementById("mySidenav").style.width = 0;
+  startHeaders();
   reset();
   resetTime();
   document.getElementById("gameWord").style.display = "none";
@@ -1187,6 +1187,7 @@ document.getElementById("choice1").addEventListener("click", function () {
 });
 document.getElementsByTagName("li")[0].addEventListener("click", function () {
   window.scrollTo(0, 0);
+  startHeaders();
   reset();
   resetTime();
   document.getElementById("gameWord").style.display = "none";
@@ -1199,6 +1200,7 @@ document.getElementsByTagName("li")[0].addEventListener("click", function () {
 });
 document.getElementById("choice2").addEventListener("click", function () {
   window.scrollTo(0, 0);
+  startHeaders();
   reset();
   resetWord();
   document.getElementById("mySidenav").style.width = 0;
@@ -1212,6 +1214,7 @@ document.getElementById("choice2").addEventListener("click", function () {
 });
 document.getElementsByTagName("li")[1].addEventListener("click", function () {
   window.scrollTo(0, 0);
+  startHeaders();
   reset();
   resetWord();
   document.getElementById("gameTime").style.display = "none";
@@ -1223,6 +1226,7 @@ document.getElementsByTagName("li")[1].addEventListener("click", function () {
   wordMode = true;
 });
 document.getElementById("buttonWord").addEventListener("click", function () {
+  startHeaders();
   reset();
   resetWord();
   document.getElementById("gameTime").style.display = "none";
@@ -1235,6 +1239,7 @@ document.getElementById("buttonWord").addEventListener("click", function () {
   wordMode = true;
 });
 document.getElementById("buttonTime").addEventListener("click", function () {
+  startHeaders();
   reset();
   resetTime();
   document.getElementById("gameWord").style.display = "none";
@@ -1250,18 +1255,10 @@ document.getElementById("choiceHome").addEventListener("click", function () {
   home();
 });
 document.getElementsByTagName("img")[0].addEventListener("click", function () {
-  reset();
-  document.getElementById("main").style.display = "";
-  document.getElementById("flex-options").style.display = "";
-  document.getElementById("gameWord").style.display = "none";
-  document.getElementById("gameTime").style.display = "none";
+  home();
 });
 document.getElementsByTagName("img")[1].addEventListener("click", function () {
-  reset();
-  document.getElementById("main").style.display = "";
-  document.getElementById("flex-options").style.display = "";
-  document.getElementById("gameWord").style.display = "none";
-  document.getElementById("gameTime").style.display = "none";
+  home();
 });
 
 inputItem.onpaste = function (e) {
@@ -1289,13 +1286,17 @@ inputItem.addEventListener("input", function () {
     startingTime = new Date();
     countId = setInterval(function () {
       currentTime = new Date();
-      document.getElementById("timer").innerText = Math.floor((currentTime - startingTime) / 1000);
+      var time = Math.floor((currentTime - startingTime) / 1000);
+      document.getElementById("timer").innerText = time;
       speed = Math.floor((input.length - incorrect) / 5 / ((currentTime - startingTime) / 1000 / 60));
       accuracy = Math.floor((input.length - incorrect) / input.length * 100);
       speed = speed < 0 ? 0 : speed;
       accuracy = accuracy < 0 ? 0 : accuracy;
       document.getElementById("speed").innerHTML = speed;
       document.getElementById("accuracy").innerText = accuracy;
+      wpmAxis.push(speed);
+      accuracyAxis.push(accuracy);
+      timeAxis.push(time);
     }, 1000);
   } else if (!started && timeMode) {
     started = true;
@@ -1309,6 +1310,9 @@ inputItem.addEventListener("input", function () {
       accuracy = accuracy < 0 ? 0 : accuracy;
       document.getElementById("speedTime").innerHTML = speed;
       document.getElementById("accuracyTime").innerText = accuracy;
+      wpmAxis.push(speed);
+      accuracyAxis.push(accuracy);
+      timeAxis.push(Math.abs(timer - 60));
 
       if (timer == 0) {
         generateCompletedModal();
@@ -1437,37 +1441,42 @@ function getNextParagraph() {
 
 function _getNextParagraph() {
   _getNextParagraph = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var paragraph, paragraphList, _iterator8, _step8, miniParagraph, para, _iterator9, _step9, character, itemSpan;
+    var spanList, paragraph, paragraphList, _iterator8, _step8, miniParagraph, para, _iterator9, _step9, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime");
             paragraph = "";
+            loaderWrapperWord.style.display = "flex";
 
-          case 1:
+          case 3:
             if (!(paragraph.length < 150)) {
-              _context.next = 7;
+              _context.next = 9;
               break;
             }
 
-            _context.next = 4;
+            _context.next = 6;
             return getParagraphs(paragraph_api);
 
-          case 4:
+          case 6:
             paragraph = _context.sent;
-            _context.next = 1;
+            _context.next = 3;
             break;
 
-          case 7:
+          case 9:
             if (paragraph.length > 200) {
               paragraph = shorten(paragraph);
             }
 
             paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
+            paragraph = paragraph.replace("’", "'");
+            paragraph = paragraph.replace("  ", " ");
             paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
+            loaderWrapperWord.style.display = "none";
             _iterator8 = _createForOfIteratorHelper(paragraphList);
 
             try {
@@ -1500,7 +1509,7 @@ function _getNextParagraph() {
 
             return _context.abrupt("return");
 
-          case 15:
+          case 20:
           case "end":
             return _context.stop();
         }
@@ -1537,15 +1546,19 @@ function _getNextParagraphTime() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            loaderWrapperTime.style.display = "flex";
+            _context2.next = 3;
             return getParagraphs(paragraph_api_time);
 
-          case 2:
+          case 3:
             paragraph = _context2.sent;
             paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
+            paragraph = paragraph.replace("’", "'");
+            paragraph = paragraph.replace("  ", " ");
             paragraphList = paragraph.split("\n\n");
             document.getElementById("passageTime").innerText = "";
+            loaderWrapperTime.style.display = "none";
             _iterator10 = _createForOfIteratorHelper(paragraphList);
 
             try {
@@ -1582,7 +1595,7 @@ function _getNextParagraphTime() {
             document.getElementById("body").scrollTo(0, 0);
             return _context2.abrupt("return");
 
-          case 12:
+          case 16:
           case "end":
             return _context2.stop();
         }
@@ -1593,10 +1606,17 @@ function _getNextParagraphTime() {
 }
 
 function reset() {
+  if (statsChart != "") {
+    statsChart.destroy();
+  }
+
   document.getElementById("timer").innerText = "0";
   document.getElementById("speed").innerText = "0";
   document.getElementById("accuracy").innerText = "0";
   document.getElementById("inputArea").value = "";
+  wpmAxis = [];
+  accuracyAxis = [];
+  timeAxis = [];
   clearInterval(countId);
   document.getElementById("bodyTime").scrollTo(0, 0);
   document.getElementById("body").scrollTo(0, 0);
@@ -1686,70 +1706,6 @@ function scrollUp() {
   return;
 }
 
-var scroller = {
-  target: document.querySelector("#contents"),
-  ease: 0.05,
-  // <= scroll speed
-  endY: 0,
-  y: 0,
-  resizeRequest: 1,
-  scrollRequest: 0
-};
-var html = document.documentElement;
-var body = document.body;
-var requestId = null;
-TweenLite.set(scroller.target, {
-  rotation: 0.01,
-  force3D: true
-}); // window.addEventListener("load", onLoad);
-// function onLoad() {
-//     updateScroller();
-//     window.focus();
-//     window.addEventListener("resize", onResize);
-//     document.addEventListener("scroll", onScroll);
-// }
-
-function updateScroller() {
-  var resized = scroller.resizeRequest > 0;
-
-  if (resized) {
-    // var height = scroller.target.clientHeight;
-    var height = parseInt(getComputedStyle(document.getElementById("main")).height);
-    body.style.height = height + "px";
-    scroller.resizeRequest = 0;
-  }
-
-  var scrollY = window.pageYOffset || html.scrollTop || body.scrollTop || 0;
-  scroller.endY = scrollY;
-  scroller.y += (scrollY - scroller.y) * scroller.ease;
-
-  if (Math.abs(scrollY - scroller.y) < 0.05 || resized) {
-    scroller.y = scrollY;
-    scroller.scrollRequest = 0;
-  }
-
-  TweenLite.set(scroller.target, {
-    y: -scroller.y
-  });
-  requestId = scroller.scrollRequest > 0 ? requestAnimationFrame(updateScroller) : null;
-}
-
-function onScroll() {
-  scroller.scrollRequest++;
-
-  if (!requestId) {
-    requestId = requestAnimationFrame(updateScroller);
-  }
-}
-
-function onResize() {
-  scroller.resizeRequest++;
-
-  if (!requestId) {
-    requestId = requestAnimationFrame(updateScroller);
-  }
-}
-
 function playKeyPress() {
   var title = "";
 
@@ -1788,6 +1744,43 @@ function playSpaceBar() {
 }
 
 function generateCompletedModal() {
+  statsChart = new Chart(chart, {
+    type: 'line',
+    data: {
+      labels: timeAxis,
+      datasets: [{
+        data: wpmAxis,
+        label: "Words per Minute",
+        fill: true,
+        borderColor: "#3e95cd"
+      }, {
+        data: accuracyAxis,
+        label: "Accuracy",
+        fill: false,
+        borderColor: "#c45850"
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Words per Minute and Accuracy'
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            stepSize: 4
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            min: 0,
+            max: Math.max(Math.max.apply(Math, _toConsumableArray(accuracyAxis)), Math.max.apply(Math, _toConsumableArray(wpmAxis))) + 10,
+            stepSize: 10
+          }
+        }]
+      }
+    }
+  });
   var remark = "";
 
   if (speed > 100 && accuracy > 95) {
@@ -1797,7 +1790,7 @@ function generateCompletedModal() {
   } else if (speed > 75 && accuracy > 85) {
     remark = "Great job! You're getting better!";
   } else {
-    remark = "Good job! Let's strive keep improving!";
+    remark = "Not bad! Keep on practicing!";
   }
 
   if (wordMode) {
@@ -1805,11 +1798,13 @@ function generateCompletedModal() {
     document.getElementById("resultsSuccessDark").innerHTML = "Congrats! You've completed the passage.";
   } else if (timeMode) {
     document.getElementById("resultsSuccess").innerHTML = "Awesome! Thats one more minute of practice today.";
-    document.getElementById("resultsSuccessDark").innerHTML = "Awesome! Thats one extra minute of practice today.";
+    document.getElementById("resultsSuccessDark").innerHTML = "Awesome! Thats one more minute of practice today.";
   }
 
-  document.getElementById("statsSuccess").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm with ").concat(accuracy, "% accuracy! </br></br> ").concat(remark);
-  document.getElementById("statsSuccessDark").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm with ").concat(accuracy, "% accuracy! </br></br> ").concat(remark);
+  document.getElementById("statsSuccess").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm with ").concat(accuracy, "% accuracy!");
+  document.getElementById("remark").innerHTML = remark;
+  document.getElementById("statsSuccessDark").innerHTML = "You typed ".concat(inputItem.value.length, " characters at ").concat(speed, " wpm with ").concat(accuracy, "% accuracy!");
+  document.getElementById("remarkDark").innerHTML = remark;
 
   if (theme == 'light') {
     modalSuccess.style.display = "block";
@@ -1847,11 +1842,51 @@ function modalExit() {
 
 function home() {
   reset();
+  document.getElementsByClassName("navLinks")[0].style.display = "";
+  document.getElementsByClassName("ml11")[0].style.display = "none";
   document.getElementById("mySidenav").style.width = 0;
   document.getElementById("main").style.display = "";
   document.getElementById("flex-options").style.display = "";
   document.getElementById("gameWord").style.display = "none";
   document.getElementById("gameTime").style.display = "none";
+}
+
+function startHeaders() {
+  document.getElementsByClassName("navLinks")[0].style.display = "none";
+  document.getElementsByClassName("ml11")[0].style.display = "flex";
+  var textWrapper = document.querySelector('.ml11 .letters');
+  textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w|\u0021)/g, "<span class='letter'>$&</span>");
+  anime.timeline({
+    loop: false
+  }).add({
+    targets: '.ml11 .line',
+    scaleY: [0, 1],
+    opacity: [0.5, 1],
+    easing: "easeOutExpo",
+    duration: 700
+  }).add({
+    targets: '.ml11 .line',
+    translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
+    easing: "easeOutExpo",
+    duration: 700,
+    delay: 100
+  }).add({
+    targets: '.ml11 .letter',
+    opacity: [0, 1],
+    easing: "easeOutExpo",
+    duration: 600,
+    offset: '-=775',
+    delay: function delay(el, i) {
+      return 34 * (i + 1);
+    }
+  }).add({
+    targets: '.ml11 .line',
+    opacity: 0,
+    duration: 700,
+    easing: "easeOutExpo",
+    delay: 0
+  });
+  ;
 }
 },{"regenerator-runtime":"../node_modules/regenerator-runtime/runtime.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -1881,7 +1916,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49253" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57444" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

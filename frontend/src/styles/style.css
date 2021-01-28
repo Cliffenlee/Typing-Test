@@ -1,8 +1,67 @@
 @media only screen and (min-width: 992px) {
+    .ml11 {
+        display: none;
+        font-family:"SF UI Display Thin";
+        font-size: 20px;
+        color:#7e7e7e
+      }
+      
+      .ml11 .text-wrapper {
+        position: relative;
+        display: inline-block;
+        padding-top: 0.1em;
+        padding-right: 0.05em;
+        padding-bottom: 0.15em;
+      }
+      
+      .ml11 .line {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        height: 100%;
+        width: 3px;
+        background-color: #3c64b1;
+        transform-origin: 0 50%;
+      }
+      
+      .ml11 .line1 { 
+        top: 0; 
+        left: 0;
+      }
+      
+      .ml11 .letter {
+        display: inline-block;
+        line-height: 1em;
+      }
 
-    /* The Modal (background) */
-.modal {
-    font-family: 'SF UI Display Light';
+
+  .loaderWrapper {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .loader {
+    border: 12px solid #dddddd; 
+    border-top: 12px solid #b8b8b8; 
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* The Modal (background) */
+  .modal {
+    font-family: "SF UI Display Light";
     display: none;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -11,47 +70,679 @@
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
   }
-  
-  /* Add Animation */
-@-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
-}
 
-@keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
-}
+  /* Add Animation */
+  @-webkit-keyframes animatetop {
+    from {
+      top: -300px;
+      opacity: 0;
+    }
+    to {
+      top: 0;
+      opacity: 1;
+    }
+  }
+
+  @keyframes animatetop {
+    from {
+      top: -300px;
+      opacity: 0;
+    }
+    to {
+      top: 0;
+      opacity: 1;
+    }
+  }
 
   .modal-header-success {
     padding: 2vh 2vw;
-    background-color: #55bd55;
+    background-color: #3cb188;
     color: white;
-
   }
 
   .modal-header-failed {
     padding: 2vh 2vw;
     background-color: #c75353;
     color: white;
-
   }
 
-  .modal-header-success-dark{
+  .modal-header-success-dark {
     padding: 2vh 2vw;
     background-color: #62b657a6;
     color: white;
   }
 
-  .modal-header-failed-dark{
+  .modal-header-failed-dark {
+    padding: 2vh 2vw;
+    background-color: #f56f6fa6;
+    color: white;
+  }
+
+  .modal-content-dark {
+    background-color: #333333;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  .modal-body {
+    margin-top: 2vh;
+    padding: 2vh 2vw;
+  }
+  /* The Close Button */
+  .close {
+    color: rgba(255, 255, 255, 0.918);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #statsFailed,
+  #statsSuccess {
+    font-family: "SF UI Display Medium";
+    font-size: 1.4vw;
+  }
+
+  #statsFailedDark,
+  #statsSuccessDark {
+    font-family: "SF UI Display Medium";
+    font-size: 1.4vw;
+    color: #cccccc;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  .button {
+    background-color: #4caf50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+
+  .button1 {
+    margin-left: 2vw;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 100px 100px 100px 100px;
+    background-color: #868686;
+    color: #fefefe;
+  }
+
+  .button1:hover {
+    background-color: #747474;
+    color: fefefe;
+  }
+
+  .button2 {
+    margin-right: 2vw;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 100px 100px 100px 100px;
+    background-color: #3c64b1;
+    color: #fefefe;
+  }
+
+  .button2:hover {
+    background-color: #2f508d;
+    color: fefefe;
+  }
+
+  .modal-footer {
+    margin-top: 4vh;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .correctDark {
+    background-color: rgba(60, 101, 177, 0.4);
+  }
+
+  html {
+    overflow: auto;
+    width: 100vw;
+    height: 100vh;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  #sideNav {
+    display: none;
+  }
+
+  #main {
+    background: center no-repeat url("../images/HuskeyBackground.png"),
+      rgb(60, 100, 177, 0.06);
+    height: 95vh;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 0vh;
+  }
+
+  #title {
+    font-family: "SF UI Display Light";
+    color: lightgray;
+    font-size: 45px;
+    padding: 22vh 0vw 0vh 0vw;
+    margin: 0vh 0vw 0vh 0vw;
+  }
+
+  #subtitle {
+    font-family: "SF UI Display Bold";
+    color: #3c64b1;
+    font-size: 100px;
+    margin: 0vh 0vw 5vh 0vw;
+  }
+
+  #caption {
+    font-family: "SF UI Display Thin";
+    color: #aa9d9d;
+    font-size: 20px;
+  }
+
+  #gameWord {
+    background-color: transparent;
+    height: 95vh;
+  }
+
+  #gameTime {
+    background-color: transparent;
+    height: 95vh;
+  }
+
+  #passage,
+  #passageTime {
+    position: relative;
+    vertical-align: text-top;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    min-height: 40vh;
+    font-family: "SF UI Display Light";
+    font-size: 36px;
+    line-height: 200%;
+    color: #a0a0a0;
+  }
+
+  .charSpanTime {
+    white-space: pre-wrap;
+  }
+  #body,
+  #bodyTime {
+    overflow: hidden;
+    margin: 5vh 20vw;
+    background-color: #fbfbfd;
+    padding: 3vh;
+    border-radius: 20px;
+    height: 40vh;
+  }
+
+  span {
+    margin: 1px;
+  }
+
+  .current {
+    border-bottom: black, 1px;
+    background-color: yellow;
+  }
+
+  .correct {
+    background-color: #3c65b12a;
+  }
+
+  .incorrect {
+    background-color: rgba(230, 123, 123, 0.473);
+  }
+
+  #inputArea {
+    margin-top: -50vh;
+    color: white;
+    border: white;
+    outline: none;
+    resize: none;
+    position: fixed;
+    font-size: 1px;
+  }
+
+  .flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+    font-size: xx-large;
+  }
+
+  .flex1,
+  .flex2,
+  .flex3 {
+    margin: 0vh 5vw;
+    display: flex;
+    flex-direction: column;
+    font-weight: 700;
+    color: dimgray;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #miniFlex,
+  #miniFlexTime {
+    display: flex;
+    flex-direction: column;
+    height: 96px;
+    width: 96px;
+    font-size: 36px;
+    font-family: "SF UI Display Medium";
+    align-items: center;
+    border-radius: 50%;
+    background-color: #3c64b1;
+    color: #ffffff;
+  }
+
+  #seconds,
+  #secondsTime {
+    font-size: 14px;
+    font-family: "SF UI Display Thin";
+  }
+
+  #timer,
+  #timerTime {
+    margin-top: 13px;
+    font-size: 36px;
+    font-family: "SF UI Display Medium";
+  }
+  #speed,
+  #speedTime,
+  #accuracy,
+  #accuracyTime {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    font-size: 36px;
+    font-family: "SF UI Display Medium";
+    color: #3c64b1;
+    background-color: #f6f6f7;
+    border-radius: 20%;
+    height: 96px;
+    width: 96px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #time,
+  #timeTime,
+  #wpm,
+  #wpmTime,
+  #percent,
+  #percentTime {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    font-family: "SF UI Display Ultralight";
+    color: #3c64b1;
+    margin-top: 2vh;
+  }
+  
+  .navLinks {
+    /* display: flex; */
+    margin: 2vh 0vh;
+    padding: 0;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    animation-name: animatedBottom;
+    animation-duration: 0.4s;
+    animation-timing-function: ease;
+    -webkit-animation-name: animateBottom;
+    -webkit-animation-duration: 0.4s;
+    -webkit-animation-timing-function: ease;
+  }
+
+  .navLinks li {
+    display: inline-block;
+    padding: 0px 5vw;
+    color: #3c64b1;
+    font-family: "SF UI Display Light";
+    font-size: 20px;
+  }
+
+  .buttonMode {
+    cursor: pointer;
+    text-decoration: none;
+    background-color: transparent;
+    color: #3c64b1;
+    border: none;
+  }
+
+  header {
+    z-index: 1;
+    position: sticky;
+    top: 0;
+    width: 80vw;
+    height: 5vh;
+    min-height: 50px;
+    background-color: #f4f5f4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0vw 10vw;
+    margin: 0;
+  }
+
+  img {
+    cursor: pointer;
+    max-height: auto;
+    width: 5vw;
+  }
+
+  button {
+    font-size: 25px;
+  }
+
+  /* a.buttonTheme{
+        cursor: pointer;
+        display:inline-block;
+        padding:0.35em 1.2em;
+        border:0.1em solid #3C64B1;
+        border-radius:0.12em;
+        box-sizing: border-box;
+        text-decoration:none;
+        font-family: "SF UI Display Light";
+        color:#3C64B1;
+        text-align:center;
+        transition: all 0.2s;
+    } */
+
+  #options {
+    width: 65px;
+    height: 34px;
+    position: relative;
+    /* background-image: url("../images/SwitchBackground.png"); */
+  }
+
+  #options input {
+    height: 0;
+    width: 0;
+    opacity: 0;
+  }
+
+  #darkIcon {
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    height: 23px;
+    width: 17px;
+    /* background-image: url("../images/darkIcon.png"); */
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 34px;
+  }
+
+  .slider::before {
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    content: "";
+    border-radius: 50%;
+  }
+
+  #options input:checked + .slider {
+    background-color: #3c64b1;
+  }
+
+  #options input:checked + .slider:before {
+    -webkit-transform: translateX(31px);
+    -ms-transform: translateX(31px);
+    transform: translateX(31px);
+  }
+
+  a.buttonLogIn:hover {
+    color: grey;
+    background-color: #ffffff;
+    border: 0.1em solid grey;
+  }
+
+  #flex-options {
+    height: 80vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+  }
+  #timeMode,
+  #wordMode {
+    background-color: #fbfbfd;
+    align-items: center;
+    justify-content: center;
+    width: 40vw;
+  }
+
+  #titleTime,
+  #titleWord {
+    color: #a0a0a052;
+    font-family: "SF UI Display Bold";
+    font-size: 240px;
+  }
+
+  #subtitleTime,
+  #subtitleWord {
+    color: #3c64b1;
+    font-family: "SF UI Display Bold";
+    font-size: 64px;
+    margin-bottom: 2vh;
+  }
+
+  #captionTime,
+  #captionWord {
+    color: #a0a0a0;
+    font-family: "SF UI Display Light";
+    font-size: 18px;
+    margin-bottom: 5vh;
+  }
+
+  #buttonTime,
+  #buttonWord {
+    cursor: pointer;
+    background-color: #3c64b1;
+    color: #ffffff;
+    font-family: "SF UI Display Light";
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.35em 1.2em;
+  }
+
+  #divButtonTime,
+  #divButtonWord {
+    margin-bottom: 5vh;
+  }
+  #dividerTime,
+  #dividerMode {
+    margin: auto;
+    text-align: center;
+    width: 25vw;
+  }
+
+  .gameTitle {
+    text-align: center;
+    font-family: "SF UI Display Bold";
+    font-size: 64px;
+    color: #3c64b1;
+    margin-bottom: 3vh;
+    padding-top: 8vh;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+    .ml11 {
+        display: none;
+        font-family:"SF UI Display Thin";
+        font-size: 20px;
+        color:#7e7e7e
+      }
+      
+      .ml11 .text-wrapper {
+        position: relative;
+        display: inline-block;
+        padding-top: 0.1em;
+        padding-right: 0.05em;
+        padding-bottom: 0.15em;
+      }
+      
+      .ml11 .line {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        height: 100%;
+        width: 3px;
+        background-color: #3c64b1;
+        transform-origin: 0 50%;
+      }
+      
+      .ml11 .line1 { 
+        top: 0; 
+        left: 0;
+      }
+      
+      .ml11 .letter {
+        display: inline-block;
+        line-height: 1em;
+      }
+
+
+  .loaderWrapper {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .loader {
+    border: 12px solid #dddddd; 
+    border-top: 12px solid #b8b8b8; 
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .modal {
+    font-family: "SF UI Display Light";
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+  }
+
+  /* Add Animation */
+  @-webkit-keyframes animatetop {
+    from {
+      top: -300px;
+      opacity: 0;
+    }
+    to {
+      top: 0;
+      opacity: 1;
+    }
+  }
+
+  @keyframes animatetop {
+    from {
+      top: -300px;
+      opacity: 0;
+    }
+    to {
+      top: 0;
+      opacity: 1;
+    }
+  }
+
+  .modal-header-success {
+    padding: 2vh 2vw;
+    background-color: #55bd55;
+    color: white;
+  }
+
+  .modal-header-failed {
+    padding: 2vh 2vw;
+    background-color: #c75353;
+    color: white;
+  }
+
+  .modal-header-success-dark {
+    padding: 2vh 2vw;
+    background-color: #62b657a6;
+    color: white;
+  }
+
+  .modal-header-failed-dark {
     padding: 2vh 2vw;
     background-color: #f56f6fa6;
     color: white;
@@ -72,7 +763,7 @@
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
   }
-  
+
   .modal-body {
     margin-top: 2vh;
     padding: 2vh 2vw;
@@ -84,7 +775,7 @@
     font-size: 28px;
     font-weight: bold;
   }
-  
+
   .close:hover,
   .close:focus {
     color: black;
@@ -92,298 +783,318 @@
     cursor: pointer;
   }
 
-  #statsFailed, #statsSuccess {
-    font-family: 'SF UI Display Medium';
-      font-size: 1.4vw
+  #statsFailed,
+  #statsSuccess {
+    font-family: "SF UI Display Medium";
+    font-size: 40px;
   }
 
-  #statsFailedDark, #statsSuccessDark {
-    font-family: 'SF UI Display Medium';
-    font-size: 1.4vw;
-    color: #cccccc
+  #statsFailedDark,
+  #statsSuccessDark {
+    font-family: "SF UI Display Medium";
+    font-size: 40px;
+    color: #cccccc;
   }
-    * {
-        margin: 0;
-    }
+  * {
+    margin: 0;
+  }
 
-    .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 16px 32px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 16px;
-        margin: 4px 2px;
-        transition-duration: 0.4s;
-        cursor: pointer;
-      }
-      
-      .button1 {
-        margin-left: 2vw;
-        padding: 10px 30px;
-        border: none;
-        border-radius: 100px 100px 100px 100px;
-        background-color: #3C64B1; 
-        color: #fefefe; 
-      }
-      
-      .button1:hover {
-        background-color: #2f508d;
-        color: fefefe;
-      }
-      
-      .button2 {
-        margin-right: 2vw;
-        padding: 10px 30px;
-        border: none;
-        border-radius: 100px 100px 100px 100px;
-        background-color: #549e3dd7; 
-        color: #fefefe; 
-      }
-      
-      .button2:hover {
-        background-color: #498537d7;
-        color: fefefe;
-      }
+  .button {
+    background-color: #4caf50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
 
-      .modal-footer {
-        margin-top: 4vh;
-        display: flex;
-        justify-content: space-between;
-      }
-      
-      .correctDark {
-          background-color: rgba(60, 101, 177, 0.4);
-      }
+  .button1 {
+    margin-left: 2vw;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 100px 100px 100px 100px;
+    background-color: #3c64b1;
+    color: #fefefe;
+  }
 
-    html {
-        overflow: auto;
-        width: 100vw;
-        height: 100vh;
-    }::-webkit-scrollbar {
-        display:none;
-    }
+  .button1:hover {
+    background-color: #2f508d;
+    color: fefefe;
+  }
 
-    #sideNav {
-        display: none;
-    }
+  .button2 {
+    margin-right: 2vw;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 100px 100px 100px 100px;
+    background-color: #549e3dd7;
+    color: #fefefe;
+  }
 
-    #main {
-        background: center no-repeat url("../images/HuskeyBackground.png"),rgb(60,100,177,0.06);
-        height: 95vh;
-        width: auto;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        margin-bottom: 0vh;
-    }
+  .button2:hover {
+    background-color: #498537d7;
+    color: fefefe;
+  }
 
-    #title {
-        font-family: 'SF UI Display Light';
-        color: lightgray;
-        font-size: 45px;
-        padding: 22vh 0vw 0vh 0vw;
-        margin: 0vh 0vw 0vh 0vw;
-    }
+  .modal-footer {
+    margin-top: 4vh;
+    display: flex;
+    justify-content: space-between;
+  }
 
-    #subtitle {
-        font-family: 'SF UI Display Bold';
-        color: #3C64B1;
-        font-size: 100px;
-        margin: 0vh 0vw 5vh 0vw;
-    }
+  .correctDark {
+    background-color: rgba(60, 101, 177, 0.4);
+  }
 
-    #caption {
-        font-family: 'SF UI Display Thin';
-        color: #aa9d9d;
-        font-size: 20px;
-    }
+  html {
+    overflow: auto;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
-    #gameWord {
-        background-color: transparent;
-        height: 95vh;
-    }
+  #choice1,
+  #choice2,
+  #choiceHome {
+    font-family: "SF UI Display Light";
+  }
 
-    #gameTime{
-        background-color: transparent;
-        height: 95vh;
-    }
+  #sideNav {
+    position: absolute;
+    z-index: 1;
+  }
 
-    #passage, #passageTime{
-        position: relative;
-        vertical-align: text-top;
-        /* display: flex; */
-        justify-content: center;
-        align-items: center;
-        text-align: left;
-        min-height: 40vh;
-        font-family: 'SF UI Display Light';
-        font-size: 36px;
-        line-height: 200%;
-        color: #A0A0A0;
-    }
+  #main {
+    background: center no-repeat url("../images/HuskeyBackground.png"),
+      rgb(60, 100, 177, 0.06);
+    height: 100vh;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 0vh;
+  }
 
-    .charSpanTime {
-        white-space: pre-wrap;
-    }
-    #body, #bodyTime {
-        overflow: hidden;
-        margin: 5vh 20vw;
-        background-color: #FBFBFD;
-        padding: 3vh;
-        border-radius: 20px;
-        height: 40vh;
-    }
+  #title {
+    font-family: "SF UI Display Light";
+    color: #a0a0a0;
+    font-size: 45px;
+    padding: 22vh 0vw 0vh 0vw;
+    margin: 0vh 0vw 0vh 0vw;
+  }
 
-    span {
-        margin: 1px;
-    }
+  #subtitle {
+    font-family: "SF UI Display Bold";
+    color: #3c64b1;
+    font-size: 20vw;
+    margin: 0vh 0vw 5vh 0vw;
+  }
 
-    .current {
-        border-bottom: black, 1px;
-        background-color: yellow;
+  #caption {
+    font-family: "SF UI Display Thin";
+    color: #a0a0a0;
+    font-size: 3.5vw;
+  }
 
-    }
+  #gameWord {
+    background-color: transparent;
+    height: 100vh;
+  }
 
-    .correct {
-        background-color: #3c65b12a;
+  #gameTime {
+    background-color: transparent;
+    height: 100vh;
+  }
 
-    }
+  #passage,
+  #passageTime {
+    position: relative;
+    vertical-align: text-top;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    min-height: 40vh;
+    font-family: "SF UI Display Light";
+    font-size: 36px;
+    line-height: 200%;
+    color: #a0a0a0;
+  }
+  .charSpanTime {
+    white-space: pre-wrap;
+  }
+  #body,
+  #bodyTime {
+    overflow: hidden;
+    margin: 5vh 20vw;
+    background-color: #fbfbfd;
+    padding: 3vh;
+    border-radius: 20px;
+    height: 40vh;
+  }
 
-    .incorrect{
-        background-color: rgba(230, 123, 123, 0.473);
-    }
+  span {
+    margin: 1px;
+  }
 
-    #inputArea {
-        margin-top: -50vh;
-        color:white;
-        border: white;
-        outline:none;
-        resize: none;
-        position: fixed;
-        font-size: 1px;
-    }
+  .current {
+    border-bottom: black, 1px;
+    background-color: yellow;
+  }
 
-    .flex-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: 'Open Sans', sans-serif;
-        font-size: xx-large;
-    }
+  .correct {
+    background-color: #3c65b12a;
+  }
 
+  .incorrect {
+    background-color: rgba(230, 123, 123, 0.473);
+  }
 
-    .flex1, .flex2, .flex3 {
-        margin: 0vh 5vw;
-        display: flex;
-        flex-direction: column ;
-        font-weight: 700;
-        color: dimgray;
-        justify-content: center;
-        align-items: center;
-    }
+  #inputArea {
+    margin-top: -50vh;
+    color: white;
+    border: white;
+    outline: none;
+    resize: none;
+    position: fixed;
+    font-size: 1px;
+  }
 
+  .flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+    font-size: xx-large;
+  }
 
-    #miniFlex, #miniFlexTime {
-        display: flex;
-        flex-direction: column;
-        height: 96px;
-        width: 96px;
-        font-size: 36px;
-        font-family: "SF UI Display Medium";
-        align-items: center;
-        border-radius: 50%;
-        background-color: #3C64B1;
-        color: #FFFFFF;
-    }
+  .flex1,
+  .flex2,
+  .flex3 {
+    margin: 0vh 5vw;
+    display: flex;
+    flex-direction: column;
+    font-weight: 700;
+    color: dimgray;
+    justify-content: center;
+    align-items: center;
+  }
 
-    #seconds, #secondsTime {
-        font-size: 14px;
-        font-family: "SF UI Display Thin";
-    }
+  #miniFlex,
+  #miniFlexTime {
+    display: flex;
+    flex-direction: column;
+    height: 96px;
+    width: 96px;
+    font-size: 36px;
+    font-family: "SF UI Display Medium";
+    align-items: center;
+    border-radius: 50%;
+    background-color: #3c64b1;
+    color: #ffffff;
+  }
 
-    #timer, #timerTime {
-        margin-top: 13px;
-        font-size: 36px;
-        font-family: "SF UI Display Medium";
-    }
-    #speed, #speedTime, #accuracy, #accuracyTime {
-        display: flex;
-        padding: 0;
-        margin: 0;
-        font-size: 36px;
-        font-family: "SF UI Display Medium";
-        color: #3C64B1;
-        background-color: #F6F6F7;
-        border-radius: 20%;
-        height: 96px;
-        width: 96px;
-        justify-content: center;
-        align-items: center;
+  #seconds,
+  #secondsTime {
+    font-size: 14px;
+    font-family: "SF UI Display Thin";
+  }
 
-    }
+  #timer,
+  #timerTime {
+    margin-top: 13px;
+    font-size: 36px;
+    font-family: "SF UI Display Medium";
+  }
+  #speed,
+  #speedTime,
+  #accuracy,
+  #accuracyTime {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    font-size: 36px;
+    font-family: "SF UI Display Medium";
+    color: #3c64b1;
+    background-color: #f6f6f7;
+    border-radius: 20%;
+    height: 96px;
+    width: 96px;
+    justify-content: center;
+    align-items: center;
+  }
 
-    #time, #timeTime, #wpm, #wpmTime, #percent, #percentTime {
-        padding: 0;
-        margin: 0;
-        font-size: 14px;
-        font-family: "SF UI Display Ultralight";
-        color: #3C64B1;
-        margin-top: 2vh;;
-    }
-    .navLinks {
-        /* display: flex; */
-        margin: 2vh 0vh;
-        padding: 0;
-        justify-content: space-between;
-        align-items: center;
-        list-style: none;
-    }
+  #time,
+  #timeTime,
+  #wpm,
+  #wpmTime,
+  #percent,
+  #percentTime {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    font-family: "SF UI Display Ultralight";
+    color: #3c64b1;
+    margin-top: 2vh;
+  }
+  .navLinks {
+    /* display: flex; */
+    margin: 2vh 0vh;
+    padding: 0;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+  }
 
-    .navLinks li {
-        display: inline-block;
-        padding: 0px 5vw;
-        color: #3C64B1;
-        font-family: "SF UI Display Light";
-        font-size: 16px;
-    }
+  .navLinks li {
+    display: inline-block;
+    padding: 0px 5vw;
+    color: #3c64b1;
+    font-family: "SF UI Display Light";
+    font-size: 16px;
+  }
 
-    .buttonMode {
-        cursor: pointer;
-        text-decoration: none;
-        background-color: transparent;
-        color: #3C64B1;
-        border:none;
-    }
+  .buttonMode {
+    cursor: pointer;
+    text-decoration: none;
+    background-color: transparent;
+    color: #3c64b1;
+    border: none;
+  }
 
+  header {
+    z-index: 1;
+    position: sticky;
+    top: 0;
+    width: 80vw;
+    height: 5vh;
+    min-height: 50px;
+    background-color: #f4f5f4;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0vw 10vw;
+    margin: 0;
+  }
 
-    header{
-        z-index:1;
-        position: sticky;
-        top: 0;
-        width: 80vw;
-        height:5vh;
-        min-height: 50px;
-        background-color: #F4F5F4;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0vw 10vw;
-        margin: 0;
-    }
+  img {
+    cursor: pointer;
+    max-height: auto;
+    width: 5vw;
+  }
 
-    img {
-        cursor: pointer;
-        max-height: auto;
-        width: 5vw;
-    }
+  button {
+    font-size: 25px;
+  }
 
-    button {
-        font-size: 25px;
-    }
-
-    /* a.buttonTheme{
+  /* a.buttonTheme{
         cursor: pointer;
         display:inline-block;
         padding:0.35em 1.2em;
@@ -397,770 +1108,248 @@
         transition: all 0.2s;
     } */
 
-    #options {
-        width: 65px;
-        height: 34px;
-        position: relative;
-        /* background-image: url("../images/SwitchBackground.png"); */
-    }
-
-    #options input {
-        height: 0;
-        width: 0;
-        opacity: 0;
-    }
-
-    #darkIcon {
-        position: absolute;
-        right:5px;
-        top: 4px;
-        height: 23px;
-        width: 17px;
-        /* background-image: url("../images/darkIcon.png"); */
-    }
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: black;
-        -webkit-transition: .4s;
-        transition: .4s;
-        border-radius: 34px;
-    }
-
-    .slider::before {
-        position: absolute;
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 3px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-        content: "";
-        border-radius: 50%;
-    }
-
-    #options input:checked + .slider {
-        background-color: #3C64B1;
-    }
-
-    #options input:checked + .slider:before {
-        -webkit-transform: translateX(31px);
-        -ms-transform: translateX(31px);
-        transform: translateX(31px);
-    }
-
-    a.buttonLogIn:hover{
-        color:grey;
-        background-color:#FFFFFF;
-        border:0.1em solid grey;
-    }
-
-    #flex-options {
-        height: 80vh;
-        display:flex;
-        justify-content: space-between;
-        align-items: center;
-        overflow: hidden;
-    }
-    #timeMode, #wordMode {
-        background-color: #FBFBFD;
-        align-items: center;
-        justify-content: center;
-        width: 40vw;
-    }
-
-    #titleTime, #titleWord {
-        color: #a0a0a052;
-        font-family: "SF UI Display Bold";
-        font-size: 240px;
-    }
-
-    #subtitleTime, #subtitleWord {
-        color: #3C64B1;
-        font-family: "SF UI Display Bold";
-        font-size: 64px;
-        margin-bottom: 2vh;
-    }
-
-    #captionTime, #captionWord {
-        color: #A0A0A0;
-        font-family: "SF UI Display Light";
-        font-size: 18px;
-        margin-bottom: 5vh;
-    }
-
-    #buttonTime, #buttonWord {
-        cursor: pointer;
-        background-color: #3C64B1;
-        color: #FFFFFF;
-        font-family: "SF UI Display Light";
-        font-size: 18px;
-        text-align:center;
-        text-decoration: none;
-        padding:0.35em 1.2em;
-    }
-
-    #divButtonTime, #divButtonWord{
-        margin-bottom: 5vh;
-    }
-    #dividerTime, #dividerMode {
-        margin:auto;
-        text-align: center;
-        width: 25vw;
-    }
-
-    .gameTitle {
-        text-align: center;
-        font-family: "SF UI Display Bold";
-        font-size: 64px;
-        color: #3C64B1;
-        margin-bottom: 3vh;
-        padding-top: 8vh;
-    }
-
-
-}
-
-@media only screen and (max-width: 992px) {
-    .modal {
-        font-family: 'SF UI Display Light';
-        display: none;
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-        -webkit-animation-name: animatetop;
-        -webkit-animation-duration: 0.4s;
-        animation-name: animatetop;
-        animation-duration: 0.4s
-      }
-      
-      /* Add Animation */
-    @-webkit-keyframes animatetop {
-      from {top:-300px; opacity:0} 
-      to {top:0; opacity:1}
-    }
-    
-    @keyframes animatetop {
-      from {top:-300px; opacity:0}
-      to {top:0; opacity:1}
-    }
-    
-      .modal-header-success {
-        padding: 2vh 2vw;
-        background-color: #55bd55;
-        color: white;
-    
-      }
-    
-      .modal-header-failed {
-        padding: 2vh 2vw;
-        background-color: #c75353;
-        color: white;
-    
-      }
-    
-      .modal-header-success-dark{
-        padding: 2vh 2vw;
-        background-color: #62b657a6;
-        color: white;
-      }
-    
-      .modal-header-failed-dark{
-        padding: 2vh 2vw;
-        background-color: #f56f6fa6;
-        color: white;
-      }
-    
-      .modal-content-dark {
-        background-color: #333333;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        width: 80%; /* Could be more or less, depending on screen size */
-      }
-    
-      /* Modal Content/Box */
-      .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-      }
-      
-      .modal-body {
-        margin-top: 2vh;
-        padding: 2vh 2vw;
-      }
-      /* The Close Button */
-      .close {
-        color: rgba(255, 255, 255, 0.918);
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
-      
-      .close:hover,
-      .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-      }
-    
-      #statsFailed, #statsSuccess {
-        font-family: 'SF UI Display Medium';
-          font-size: 40px
-      }
-    
-      #statsFailedDark, #statsSuccessDark {
-        font-family: 'SF UI Display Medium';
-        font-size: 40px;
-        color: #cccccc
-      }
-        * {
-            margin: 0;
-        }
-    
-        .button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 16px 32px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-          }
-          
-          .button1 {
-            margin-left: 2vw;
-            padding: 10px 30px;
-            border: none;
-            border-radius: 100px 100px 100px 100px;
-            background-color: #3C64B1; 
-            color: #fefefe; 
-          }
-          
-          .button1:hover {
-            background-color: #2f508d;
-            color: fefefe;
-          }
-          
-          .button2 {
-            margin-right: 2vw;
-            padding: 10px 30px;
-            border: none;
-            border-radius: 100px 100px 100px 100px;
-            background-color: #549e3dd7; 
-            color: #fefefe; 
-          }
-          
-          .button2:hover {
-            background-color: #498537d7;
-            color: fefefe;
-          }
-    
-          .modal-footer {
-            margin-top: 4vh;
-            display: flex;
-            justify-content: space-between;
-          }
-          
-          .correctDark {
-              background-color: rgba(60, 101, 177, 0.4);
-          }
-
-    html {
-        overflow: auto;
-        width: 100vw;
-        height: 100vh;
-        background-color: white;
-    }::-webkit-scrollbar {
-        display:none;
-    }
-    
-    #choice1, #choice2, #choiceHome{
-        font-family: 'SF UI Display Light';
-    }
-
-    #sideNav {
-        position: absolute;
-        z-index: 1;
-    }
-
-    #main {
-        background: center no-repeat url("../images/HuskeyBackground.png"),rgb(60,100,177,0.06);
-        height: 100vh;
-        width: auto;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        margin-bottom: 0vh;
-    }
-
-    #title {
-        font-family: 'SF UI Display Light';
-        color: #A0A0A0;
-        font-size: 45px;
-        padding: 22vh 0vw 0vh 0vw;
-        margin: 0vh 0vw 0vh 0vw;
-    }
-
-    #subtitle {
-        font-family: 'SF UI Display Bold';
-        color: #3C64B1;
-        font-size: 20vw;
-        margin: 0vh 0vw 5vh 0vw;
-    }
-
-    #caption {
-        font-family: 'SF UI Display Thin';
-        color: #A0A0A0;
-        font-size: 3.5vw;
-    }
-
-    #gameWord {
-        background-color: transparent;
-        height: 100vh;
-    }
-
-    #gameTime{
-        background-color: transparent;
-        height: 100vh;
-    }
-
-    #passage, #passageTime{
-        position: relative;
-        vertical-align: text-top;
-        /* display: flex; */
-        justify-content: center;
-        align-items: center;
-        text-align: left;
-        min-height: 40vh;
-        font-family: 'SF UI Display Light';
-        font-size: 36px;
-        line-height: 200%;
-        color: #A0A0A0;
-    }
-    .charSpanTime {
-        white-space: pre-wrap;
-    }
-    #body, #bodyTime {
-        overflow: hidden;
-        margin: 5vh 20vw;
-        background-color: #FBFBFD;
-        padding: 3vh;
-        border-radius: 20px;
-        height: 40vh;
-    }
-
-    span {
-        margin: 1px;
-    }
-
-    .current {
-        border-bottom: black, 1px;
-        background-color: yellow;
-
-    }
-    
-
-    .correct {
-        background-color: #3c65b12a;
-
-    }
-
-    .incorrect{
-        background-color: rgba(230, 123, 123, 0.473);
-    }
-
-    #inputArea {
-        margin-top: -50vh;
-        color:white;
-        border: white;
-        outline:none;
-        resize: none;
-        position: fixed;
-        font-size: 1px;
-    }
-
-    .flex-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: 'Open Sans', sans-serif;
-        font-size: xx-large;
-    }
-
-
-    .flex1, .flex2, .flex3 {
-        margin: 0vh 5vw;
-        display: flex;
-        flex-direction: column ;
-        font-weight: 700;
-        color: dimgray;
-        justify-content: center;
-        align-items: center;
-    }
-
-
-    #miniFlex, #miniFlexTime {
-        display: flex;
-        flex-direction: column;
-        height: 96px;
-        width: 96px;
-        font-size: 36px;
-        font-family: "SF UI Display Medium";
-        align-items: center;
-        border-radius: 50%;
-        background-color: #3C64B1;
-        color: #FFFFFF;
-    }
-
-    #seconds, #secondsTime {
-        font-size: 14px;
-        font-family: "SF UI Display Thin";
-    }
-
-    #timer, #timerTime {
-        margin-top: 13px;
-        font-size: 36px;
-        font-family: "SF UI Display Medium";
-    }
-    #speed, #speedTime, #accuracy, #accuracyTime {
-        display: flex;
-        padding: 0;
-        margin: 0;
-        font-size: 36px;
-        font-family: "SF UI Display Medium";
-        color: #3C64B1;
-        background-color: #F6F6F7;
-        border-radius: 20%;
-        height: 96px;
-        width: 96px;
-        justify-content: center;
-        align-items: center;
-
-    }
-
-    #time, #timeTime, #wpm, #wpmTime, #percent, #percentTime {
-        padding: 0;
-        margin: 0;
-        font-size: 14px;
-        font-family: "SF UI Display Ultralight";
-        color: #3C64B1;
-        margin-top: 2vh;;
-    }
-    .navLinks {
-        /* display: flex; */
-        margin: 2vh 0vh;
-        padding: 0;
-        justify-content: space-between;
-        align-items: center;
-        list-style: none;
-    }
-
-    .navLinks li {
-        display: inline-block;
-        padding: 0px 5vw;
-        color: #3C64B1;
-        font-family: "SF UI Display Light";
-        font-size: 16px;
-    }
-
-    .buttonMode {
-        cursor: pointer;
-        text-decoration: none;
-        background-color: transparent;
-        color: #3C64B1;
-        border:none;
-    }
-
-
-    header{
-        z-index:1;
-        position: sticky;
-        top: 0;
-        width: 80vw;
-        height:5vh;
-        min-height: 50px;
-        background-color: #F4F5F4;
-        display: none;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0vw 10vw;
-        margin: 0;
-    }
-
-    img {
-        cursor: pointer;
-        max-height: auto;
-        width: 5vw;
-    }
-
-    button {
-        font-size: 25px;
-    }
-
-    /* a.buttonTheme{
-        cursor: pointer;
-        display:inline-block;
-        padding:0.35em 1.2em;
-        border:0.1em solid #3C64B1;
-        border-radius:0.12em;
-        box-sizing: border-box;
-        text-decoration:none;
-        font-family: "SF UI Display Light";
-        color:#3C64B1;
-        text-align:center;
-        transition: all 0.2s;
-    } */
-
-    #options {
-        width: 65px;
-        height: 34px;
-        position: relative;
-        /* background-image: url("../images/SwitchBackground.png"); */
-    }
-
-    #options input {
-        height: 0;
-        width: 0;
-        opacity: 0;
-    }
-
-    #darkIcon {
-        position: absolute;
-        right:5px;
-        top: 4px;
-        height: 23px;
-        width: 17px;
-        /* background-image: url("../images/darkIcon.png"); */
-    }
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: black;
-        -webkit-transition: .4s;
-        transition: .4s;
-        border-radius: 34px;
-    }
-
-    .slider::before {
-        position: absolute;
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 3px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-        content: "";
-        border-radius: 50%;
-    }
-
-    #options input:checked + .slider {
-        background-color: #3C64B1;
-    }
-
-    #options input:checked + .slider:before {
-        -webkit-transform: translateX(31px);
-        -ms-transform: translateX(31px);
-        transform: translateX(31px);
-    }
-
-    a.buttonLogIn:hover{
-        color:grey;
-        background-color:#FFFFFF;
-        border:0.1em solid grey;
-    }
-
-    #flex-options {
-        height: 200vh;
-        display:grid;
-        justify-content: center;
-        text-align: center;
-        align-items: center;
-        overflow: hidden;
-        margin-top: 10vh
-    }
-    #timeMode, #wordMode {
-        background-color: #FBFBFD;
-        align-items: center;
-        justify-content: center;
-        width: 100vw;
-        height: 100vh;
-        margin-bottom: 10vh;
-    }
-
-    #titleTime, #titleWord {
-        color: #a0a0a052;
-        font-family: "SF UI Display Bold";
-        font-size: 60vw;
-    }
-
-    #subtitleTime, #subtitleWord {
-        color: #3C64B1;
-        font-family: "SF UI Display Bold";
-        font-size: 20vw;
-        margin-bottom: 2vh;
-        position: abosulte;
-        left: 0px;
-        width: 100vw;
-    }
-
-    #captionTime, #captionWord {
-        color: #A0A0A0;
-        font-family: "SF UI Display Light";
-        font-size: 14px;
-        margin-bottom: 5vh;
-    }
-
-    #buttonTime, #buttonWord {
-        cursor: pointer;
-        background-color: #3C64B1;
-        color: #FFFFFF;
-        font-family: "SF UI Display Light";
-        font-size: 3vw;
-        text-align:center;
-        text-decoration: none;
-        padding:0.35em 1.2em;
-    }
-
-    #divButtonTime, #divButtonWord{
-        margin-bottom: 5vh;
-    }
-
-    #dividerTime, #dividerMode {
-        margin:auto;
-        width: 100vw;
-    }
-
-    .gameTitle {
-        text-align: center;
-        font-family: "SF UI Display Bold";
-        font-size: 64px;
-        color: #3C64B1;
-        margin-bottom: 3vh;
-        padding-top: 8vh;
-    }
-
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-
-
-    .sidenav {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: #3c65b1ed;
-        overflow-x: hidden;
-        transition: 0.5s;
-        padding-top: 60px;
-    }
-
-    .sidenav a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #f1f1f1e5;
-        display: block;
-        transition: 0.3s;
-    }
-
-    .sidenav a:hover {
-        color: #f1f1f1;
-    }
-
-    .sidenav .closebtn {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
-    }
-
+  #options {
+    width: 65px;
+    height: 34px;
+    position: relative;
+    /* background-image: url("../images/SwitchBackground.png"); */
+  }
+
+  #options input {
+    height: 0;
+    width: 0;
+    opacity: 0;
+  }
+
+  #darkIcon {
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    height: 23px;
+    width: 17px;
+    /* background-image: url("../images/darkIcon.png"); */
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 34px;
+  }
+
+  .slider::before {
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    content: "";
+    border-radius: 50%;
+  }
+
+  #options input:checked + .slider {
+    background-color: #3c64b1;
+  }
+
+  #options input:checked + .slider:before {
+    -webkit-transform: translateX(31px);
+    -ms-transform: translateX(31px);
+    transform: translateX(31px);
+  }
+
+  a.buttonLogIn:hover {
+    color: grey;
+    background-color: #ffffff;
+    border: 0.1em solid grey;
+  }
+
+  #flex-options {
+    height: 200vh;
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 10vh;
+  }
+  #timeMode,
+  #wordMode {
+    background-color: #fbfbfd;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    margin-bottom: 10vh;
+  }
+
+  #titleTime,
+  #titleWord {
+    color: #a0a0a052;
+    font-family: "SF UI Display Bold";
+    font-size: 60vw;
+  }
+
+  #subtitleTime,
+  #subtitleWord {
+    color: #3c64b1;
+    font-family: "SF UI Display Bold";
+    font-size: 20vw;
+    margin-bottom: 2vh;
+    position: abosulte;
+    left: 0px;
+    width: 100vw;
+  }
+
+  #captionTime,
+  #captionWord {
+    color: #a0a0a0;
+    font-family: "SF UI Display Light";
+    font-size: 14px;
+    margin-bottom: 5vh;
+  }
+
+  #buttonTime,
+  #buttonWord {
+    cursor: pointer;
+    background-color: #3c64b1;
+    color: #ffffff;
+    font-family: "SF UI Display Light";
+    font-size: 3vw;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.35em 1.2em;
+  }
+
+  #divButtonTime,
+  #divButtonWord {
+    margin-bottom: 5vh;
+  }
+
+  #dividerTime,
+  #dividerMode {
+    margin: auto;
+    width: 100vw;
+  }
+
+  .gameTitle {
+    text-align: center;
+    font-family: "SF UI Display Bold";
+    font-size: 64px;
+    color: #3c64b1;
+    margin-bottom: 3vh;
+    padding-top: 8vh;
+  }
+
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+
+  .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #3c65b1ed;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #f1f1f1e5;
+    display: block;
+    transition: 0.3s;
+  }
+
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
 }
 
 @font-face {
-    font-family: 'SF UI Display Ultralight';
-    font-style: normal;
-    font-weight: normal;
-    src: local('SF UI Display Ultralight'), url('../fonts/sf-ui-display-ultralight-58646b19bf205.woff') format('woff');
+  font-family: "SF UI Display Ultralight";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Ultralight"),
+    url("../fonts/sf-ui-display-ultralight-58646b19bf205.woff") format("woff");
 }
 
-
 @font-face {
-font-family: 'SF UI Display Thin';
-font-style: normal;
-font-weight: normal;
-src: local('SF UI Display Thin'), url('../fonts/sf-ui-display-thin-58646e9b26e8b.woff') format('woff');
+  font-family: "SF UI Display Thin";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Thin"),
+    url("../fonts/sf-ui-display-thin-58646e9b26e8b.woff") format("woff");
 }
 
-
 @font-face {
-font-family: 'SF UI Display Light';
-font-style: normal;
-font-weight: normal;
-src: local('SF UI Display Light'), url('../fonts/sf-ui-display-light-58646b33e0551.woff') format('woff');
+  font-family: "SF UI Display Light";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Light"),
+    url("../fonts/sf-ui-display-light-58646b33e0551.woff") format("woff");
 }
 
-
 @font-face {
-font-family: 'SF UI Display Medium';
-font-style: normal;
-font-weight: normal;
-src: local('SF UI Display Medium'), url('../fonts/sf-ui-display-medium-58646be638f96.woff') format('woff');
+  font-family: "SF UI Display Medium";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Medium"),
+    url("../fonts/sf-ui-display-medium-58646be638f96.woff") format("woff");
 }
 
-
 @font-face {
-font-family: 'SF UI Display Semibold';
-font-style: normal;
-font-weight: normal;
-src: local('SF UI Display Semibold'), url('../fonts/sf-ui-display-semibold-58646eddcae92.woff') format('woff');
+  font-family: "SF UI Display Semibold";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Semibold"),
+    url("../fonts/sf-ui-display-semibold-58646eddcae92.woff") format("woff");
 }
 
-
 @font-face {
-font-family: 'SF UI Display Bold';
-font-style: normal;
-font-weight: normal;
-src: local('SF UI Display Bold'), url('../fonts/sf-ui-display-bold-58646a511e3d9.woff') format('woff');
+  font-family: "SF UI Display Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Bold"),
+    url("../fonts/sf-ui-display-bold-58646a511e3d9.woff") format("woff");
 }
 
-
 @font-face {
-font-family: 'SF UI Display Heavy';
-font-style: normal;
-font-weight: normal;
-src: local('SF UI Display Heavy'), url('../fonts/sf-ui-display-heavy-586470160b9e5.woff') format('woff');
+  font-family: "SF UI Display Heavy";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Heavy"),
+    url("../fonts/sf-ui-display-heavy-586470160b9e5.woff") format("woff");
 }
 
-
 @font-face {
-font-family: 'SF UI Display Black';
-font-style: normal;
-font-weight: normal;
-src: local('SF UI Display Black'), url('../fonts/sf-ui-display-black-58646a6b80d5a.woff') format('woff');
+  font-family: "SF UI Display Black";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SF UI Display Black"),
+    url("../fonts/sf-ui-display-black-58646a6b80d5a.woff") format("woff");
 }
