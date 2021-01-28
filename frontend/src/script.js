@@ -1,6 +1,4 @@
 const regeneratorRuntime = require("regenerator-runtime");
-// import Scrollbar from 'smooth-scrollbar';
-// Scrollbar.init(document.querySelector('#mainBody'));
 AOS.init();
 
 const paragraph_api = "https://litipsum.com/api/2/json"
