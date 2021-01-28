@@ -1,4 +1,21 @@
 @media only screen and (min-width: 992px) {
+    .chart-container {
+        margin: 5vh 0vh;
+        padding: 0;
+        height: 40vh;
+        width: 100%;
+    }
+
+    #chart {
+        height: 100%;
+        width: 100%
+    }
+
+    #chartDark {
+        height: 100%;
+        width: 100%
+    }
+
     .ml11 {
         display: none;
         font-family:"SF UI Display Thin";
@@ -116,7 +133,7 @@
 
   .modal-header-success-dark {
     padding: 2vh 2vw;
-    background-color: #62b657a6;
+    background-color: #5eaa54a6;
     color: white;
   }
 
@@ -127,16 +144,24 @@
   }
 
   .modal-content-dark {
-    background-color: #333333;
-    margin: 15% auto; /* 15% from the top and centered */
+    background-color: #3f3f3f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin: 5% auto; /* 15% from the top and centered */
     padding: 20px;
     width: 80%; /* Could be more or less, depending on screen size */
   }
 
   /* Modal Content/Box */
   .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
     background-color: #fefefe;
-    margin: auto; /* 15% from the top and centered */
+    margin: 5% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */

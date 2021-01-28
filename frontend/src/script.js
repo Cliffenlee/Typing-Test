@@ -44,6 +44,7 @@ var wpmAxis = []
 var accuracyAxis = []
 var statsChart = ""
 var chart = document.getElementById("chart").getContext('2d');
+var chartDark = document.getElementById("chartDark").getContext('2d');
 
 
 window.onbeforeunload = () => {
@@ -102,6 +103,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
 
         document.getElementsByClassName("buttonTheme")[0].style.borderColor = "#F5F5F7"
         document.getElementsByClassName("buttonTheme")[0].style.color = "#F5F5F7"
+        document.getElementsByClassName("ml11")[0].style.color = "#F5F5F7"
         document.getElementById("main").style.backgroundColor = "#12161B"
         document.getElementById("subtitle").style.color = "#F5F5F7"
         document.getElementById("huskey").style.color = "#F5F5F7"
@@ -170,6 +172,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
 
         document.getElementsByClassName("buttonTheme")[0].style.borderColor = "#3C64B1"
         document.getElementsByClassName("buttonTheme")[0].style.color = "#3C64B1"
+        document.getElementsByClassName("ml11")[0].style.color = "#7e7e7e"
         document.getElementById("main").style.backgroundColor = "rgb(60,100,177,0.06)"
         document.getElementById("subtitle").style.color = "#3C64B1"
         document.getElementById("huskey").style.color = "#3C64B1"
@@ -746,43 +749,89 @@ function playSpaceBar() {
 }
 
 function generateCompletedModal() {
-    statsChart = new Chart(chart, {
-        type: 'line',
-        data: {
-            labels: timeAxis,
-            datasets: [{
-                data: wpmAxis,
-                label: "Words per Minute",
-                fill: true,
-                borderColor: "#3e95cd"
-            }, {
-                data: accuracyAxis,
-                label: "Accuracy",
-                fill: false,
-                borderColor: "#c45850"
-            }]
-        },
-        options: {
-            title: {
-                display: true,
-                text: 'Words per Minute and Accuracy'
-            },
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        stepSize: 4
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                        min: 0,
-                        max: Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis)) + 10,
-                        stepSize: 10
-                    }
+    if (theme == "light") {
+        statsChart = new Chart(chart, {
+            responsive: true,
+            type: 'line',
+            data: {
+                labels: timeAxis,
+                datasets: [{
+                    data: wpmAxis,
+                    label: "Words per Minute",
+                    fill: true,
+                    borderColor: "#3e95cd"
+                }, {
+                    data: accuracyAxis,
+                    label: "Accuracy",
+                    fill: false,
+                    borderColor: "#c45850"
                 }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            stepSize: 4
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: Math.ceil(Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis))/20)*20,
+                            stepSize: 20
+                        }
+                    }]
+                }
             }
-        }
-    })
+        })
+    } else {
+        statsChart = new Chart(chartDark, {
+
+            backgroundColor: "#7a7a7a",
+            responsive: true,
+            type: 'line',
+            data: {
+                labels: timeAxis,
+                datasets: [{
+                    data: wpmAxis,
+                    label: "Words per Minute",
+                    backgroundColor: "#313131",
+                    borderColor: "#3e95cd",
+                }, {
+                    data: accuracyAxis,
+                    label: "Accuracy",
+                    fill: false,
+                    borderColor: "#c45850"
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            stepSize: 4,
+                            fontColor: "#CCCCCC"
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: Math.floor(Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis))/20)*20 + 20,
+                            stepSize: 20,
+                            fontColor: "#CCCCCC"
+                        }
+                    }]
+                },
+                legend: {
+                    labels: {
+                       fontColor: '#CCCCCC'
+                    }
+                 },
+            }
+        })
+    }
+    
 
     let remark = ""
     if (speed > 100 && accuracy > 95) {
@@ -798,15 +847,15 @@ function generateCompletedModal() {
         document.getElementById("resultsSuccess").innerHTML = `Congrats! You've completed the passage.`
         document.getElementById("resultsSuccessDark").innerHTML = `Congrats! You've completed the passage.`
     } else if (timeMode) {
-        document.getElementById("resultsSuccess").innerHTML = `Awesome! Thats one more minute of practice today.`
-        document.getElementById("resultsSuccessDark").innerHTML = `Awesome! Thats one more minute of practice today.`
+        document.getElementById("resultsSuccess").innerHTML = `Awesome! Thats another minute of practice today.`
+        document.getElementById("resultsSuccessDark").innerHTML = `Awesome! Thats another minute of practice today.`
     }
 
-    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy!`
+    document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${speed} wpm</span> with <span style="color: #c45850;">${accuracy}% accuracy</span>!`
     document.getElementById("remark").innerHTML = remark
     
-    document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at ${speed} wpm with ${accuracy}% accuracy!`
-    document.getElementById("remarkDark").innerHTML = remark
+    document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${speed} wpm</span> with <span style="color: #c45850;">${accuracy}% accuracy</span>!`
+    document.getElementById("remarkDark").innerHTML = `<span style="color: #CCCCCC;">${remark}</span>`
 
     if (theme == 'light') {
         modalSuccess.style.display = "block"
