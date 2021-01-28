@@ -892,8 +892,8 @@ var regeneratorRuntime = require("regenerator-runtime"); // import Scrollbar fro
 
 
 AOS.init();
-var paragraph_api = "https://litipsum.com/api/1";
-var paragraph_api_time = "https://litipsum.com/api/5";
+var paragraph_api = "https://litipsum.com/api/2/json";
+var paragraph_api_time = "https://litipsum.com/api/7/json";
 var started = false;
 var completed = false;
 var inputItem = document.getElementById("inputArea");
@@ -950,6 +950,7 @@ try {
     button.addEventListener("click", function () {
       home();
       modalExit();
+      started = false;
     });
   }
 } catch (err) {
@@ -980,6 +981,7 @@ try {
         wordMode = false;
       }
 
+      started = false;
       modalExit();
     });
   }
@@ -1322,10 +1324,9 @@ inputItem.addEventListener("input", function () {
       timeAxis.push(Math.abs(timer - 60));
 
       if (timer == 0) {
+        clearInterval(countId);
         generateCompletedModal();
         completed = true;
-        started = false;
-        clearInterval(countId);
       }
     }, 1000);
   }
@@ -1393,7 +1394,6 @@ inputItem.addEventListener("input", function () {
     if (incorrectChain >= 15) {
       generateFailedModal();
       completed = true;
-      started = false;
       clearInterval(countId);
       return;
     } else {
@@ -1403,7 +1403,6 @@ inputItem.addEventListener("input", function () {
     if (wordMode && input.length >= spanList.length) {
       generateCompletedModal();
       completed = true;
-      started = false;
       clearInterval(countId);
     }
   }
@@ -1448,7 +1447,7 @@ function getNextParagraph() {
 
 function _getNextParagraph() {
   _getNextParagraph = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var spanList, paragraph, paragraphList, _iterator10, _step10, miniParagraph, para, _iterator11, _step11, character, itemSpan;
+    var spanList, paragraph, paragraphList, _iterator8, _step8, miniParagraph, para, _iterator9, _step9, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -1473,6 +1472,8 @@ function _getNextParagraph() {
             break;
 
           case 9:
+            paragraph = JSON.parse(paragraph).text[0];
+
             if (paragraph.length > 200) {
               paragraph = shorten(paragraph);
             }
@@ -1484,39 +1485,39 @@ function _getNextParagraph() {
             paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
             loaderWrapperWord.style.display = "none";
-            _iterator10 = _createForOfIteratorHelper(paragraphList);
+            _iterator8 = _createForOfIteratorHelper(paragraphList);
 
             try {
-              for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
-                miniParagraph = _step10.value;
+              for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+                miniParagraph = _step8.value;
                 para = document.createElement('p');
-                _iterator11 = _createForOfIteratorHelper(miniParagraph);
+                _iterator9 = _createForOfIteratorHelper(miniParagraph);
 
                 try {
-                  for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
-                    character = _step11.value;
+                  for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+                    character = _step9.value;
                     itemSpan = document.createElement('span');
                     itemSpan.className = "charSpan";
                     itemSpan.innerText = character;
                     para.appendChild(itemSpan);
                   }
                 } catch (err) {
-                  _iterator11.e(err);
+                  _iterator9.e(err);
                 } finally {
-                  _iterator11.f();
+                  _iterator9.f();
                 }
 
                 document.getElementById("passage").appendChild(para);
               }
             } catch (err) {
-              _iterator10.e(err);
+              _iterator8.e(err);
             } finally {
-              _iterator10.f();
+              _iterator8.f();
             }
 
             return _context.abrupt("return");
 
-          case 20:
+          case 21:
           case "end":
             return _context.stop();
         }
@@ -1547,7 +1548,7 @@ function getNextParagraphTime() {
 
 function _getNextParagraphTime() {
   _getNextParagraphTime = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var paragraph, paragraphList, _iterator12, _step12, miniParagraph, div, para, _iterator13, _step13, character, itemSpan;
+    var paragraph, paragraphList, _iterator10, _step10, miniParagraph, div, para, _iterator11, _step11, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -1559,50 +1560,52 @@ function _getNextParagraphTime() {
 
           case 3:
             paragraph = _context2.sent;
+            paragraph = JSON.parse(paragraph).text[0];
             paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
             paragraph = paragraph.replace("’", "'");
             paragraph = paragraph.replace("  ", " ");
-            paragraphList = paragraph.split("\n\n");
+            console.log(paragraph);
+            paragraphList = paragraph.split("\n");
             document.getElementById("passageTime").innerText = "";
             loaderWrapperTime.style.display = "none";
-            _iterator12 = _createForOfIteratorHelper(paragraphList);
+            _iterator10 = _createForOfIteratorHelper(paragraphList);
 
             try {
-              for (_iterator12.s(); !(_step12 = _iterator12.n()).done;) {
-                miniParagraph = _step12.value;
+              for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+                miniParagraph = _step10.value;
                 div = document.createElement('div');
                 para = document.createElement('p');
-                _iterator13 = _createForOfIteratorHelper(miniParagraph);
+                _iterator11 = _createForOfIteratorHelper(miniParagraph);
 
                 try {
-                  for (_iterator13.s(); !(_step13 = _iterator13.n()).done;) {
-                    character = _step13.value;
+                  for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
+                    character = _step11.value;
                     itemSpan = document.createElement('span');
                     itemSpan.className = "charSpanTime";
                     itemSpan.innerText = character;
                     para.appendChild(itemSpan);
                   }
                 } catch (err) {
-                  _iterator13.e(err);
+                  _iterator11.e(err);
                 } finally {
-                  _iterator13.f();
+                  _iterator11.f();
                 }
 
                 div.appendChild(para);
                 document.getElementById("passageTime").appendChild(div);
               }
             } catch (err) {
-              _iterator12.e(err);
+              _iterator10.e(err);
             } finally {
-              _iterator12.f();
+              _iterator10.f();
             }
 
             document.getElementById("bodyTime").scrollTo(0, 0);
             document.getElementById("body").scrollTo(0, 0);
             return _context2.abrupt("return");
 
-          case 16:
+          case 18:
           case "end":
             return _context2.stop();
         }
@@ -1751,40 +1754,6 @@ function playSpaceBar() {
 }
 
 function generateCompletedModal() {
-  var avgWpm = 0;
-  var avgAccuracy = 0;
-
-  var _iterator8 = _createForOfIteratorHelper(wpmAxis),
-      _step8;
-
-  try {
-    for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-      var wpm = _step8.value;
-      avgWpm += wpm;
-    }
-  } catch (err) {
-    _iterator8.e(err);
-  } finally {
-    _iterator8.f();
-  }
-
-  var _iterator9 = _createForOfIteratorHelper(accuracyAxis),
-      _step9;
-
-  try {
-    for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
-      var acc = _step9.value;
-      avgAccuracy += acc;
-    }
-  } catch (err) {
-    _iterator9.e(err);
-  } finally {
-    _iterator9.f();
-  }
-
-  avgWpm = Math.floor(avgWpm / wpmAxis.length);
-  avgAccuracy = Math.floor(avgAccuracy / accuracyAxis.length);
-
   if (theme == "light") {
     statsChart = new Chart(chart, {
       responsive: true,
@@ -1869,11 +1838,11 @@ function generateCompletedModal() {
 
   var remark = "";
 
-  if (avgWpm > 100 && avgAccuracy > 95) {
+  if (speed > 100 && accuracy > 95) {
     remark = "WOW! You're blazing fast!";
-  } else if (avgWpm > 90 && avgAccuracy > 95) {
+  } else if (speed > 90 && accuracy > 95) {
     remark = "Well done! That was remarkable.";
-  } else if (avgWpm > 75 && avgAccuracy > 85) {
+  } else if (speed > 75 && accuracy > 85) {
     remark = "Great job! You're getting better!";
   } else {
     remark = "Not bad! Keep on practicing!";
@@ -1887,9 +1856,9 @@ function generateCompletedModal() {
     document.getElementById("resultsSuccessDark").innerHTML = "Awesome! Thats another minute of practice today.";
   }
 
-  document.getElementById("statsSuccess").innerHTML = "You typed ".concat(inputItem.value.length, " characters at <span style=\"color: #3e95cd;\">").concat(avgWpm, " wpm</span> with <span style=\"color: #c45850;\">").concat(avgAccuracy, "% accuracy</span>!");
+  document.getElementById("statsSuccess").innerHTML = "You typed ".concat(inputItem.value.length, " characters at <span style=\"color: #3e95cd;\">").concat(speed, " wpm</span> with <span style=\"color: #c45850;\">").concat(accuracy, "% accuracy</span>!");
   document.getElementById("remark").innerHTML = remark;
-  document.getElementById("statsSuccessDark").innerHTML = "You typed ".concat(inputItem.value.length, " characters at <span style=\"color: #3e95cd;\">").concat(avgWpm, " wpm</span> with <span style=\"color: #c45850;\">").concat(avgAccuracy, "% accuracy</span>!");
+  document.getElementById("statsSuccessDark").innerHTML = "You typed ".concat(inputItem.value.length, " characters at <span style=\"color: #3e95cd;\">").concat(speed, " wpm</span> with <span style=\"color: #c45850;\">").concat(accuracy, "% accuracy</span>!");
   document.getElementById("remarkDark").innerHTML = "<span style=\"color: #CCCCCC;\">".concat(remark, "</span>");
 
   if (theme == 'light') {
@@ -2002,7 +1971,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63395" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49826" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -3,9 +3,8 @@ const regeneratorRuntime = require("regenerator-runtime");
 // Scrollbar.init(document.querySelector('#mainBody'));
 AOS.init();
 
-const paragraph_api = "https://litipsum.com/api/1"
-
-const paragraph_api_time = "https://litipsum.com/api/5"
+const paragraph_api = "https://litipsum.com/api/2/json"
+const paragraph_api_time = "https://litipsum.com/api/7/json"
 
 var started = false
 var completed = false
@@ -59,6 +58,7 @@ for (let button of modalHome) {
     button.addEventListener("click", () => {
         home()
         modalExit()
+        started = false;
     })
 }
 
@@ -78,6 +78,7 @@ for (let button of modalTryAgain) {
             wordMode = false;
         }
 
+        started = false;
         modalExit()
     })
 }
@@ -399,10 +400,9 @@ inputItem.addEventListener("input", () => {
             timeAxis.push(Math.abs(timer-60))
 
             if (timer == 0) {
+                clearInterval(countId);
                 generateCompletedModal()
                 completed = true;
-                started = false;
-                clearInterval(countId);
 
             }
         }, 1000)
@@ -461,7 +461,6 @@ inputItem.addEventListener("input", () => {
         if (incorrectChain >= 15) {
             generateFailedModal()
             completed = true;
-            started = false;
             clearInterval(countId);
             return
         } else {
@@ -471,7 +470,6 @@ inputItem.addEventListener("input", () => {
         if (wordMode && input.length >= spanList.length) {
             generateCompletedModal()
             completed = true;
-            started = false;
             clearInterval(countId);
         }
     }
@@ -522,6 +520,8 @@ async function getNextParagraph() {
         paragraph = await getParagraphs(paragraph_api)
     }
 
+    paragraph = JSON.parse(paragraph).text[0]
+
     if (paragraph.length > 200) {
         paragraph = shorten(paragraph)
     }	
@@ -530,7 +530,7 @@ async function getNextParagraph() {
     paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
     paragraph = paragraph.replace("’","'")
     paragraph = paragraph.replace("  ", " ")
-    																		
+    
     const paragraphList = paragraph.split("\n")
     document.getElementById("passage").innerText = ""
 
@@ -571,12 +571,17 @@ function shorten(paragraph) {
 async function getNextParagraphTime() {
     loaderWrapperTime.style.display = "flex"
     let paragraph = await getParagraphs(paragraph_api_time)
+
+    paragraph = JSON.parse(paragraph).text[0]
+
+
     paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
     paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
     paragraph = paragraph.replace("’","'")
     paragraph = paragraph.replace("  ", " ")
 
-    const paragraphList = paragraph.split("\n\n")
+    console.log(paragraph)
+    const paragraphList = paragraph.split("\n")
     document.getElementById("passageTime").innerText = ""
 
     loaderWrapperTime.style.display = "none"
