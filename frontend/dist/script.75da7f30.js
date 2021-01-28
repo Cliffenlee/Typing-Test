@@ -893,7 +893,7 @@ var regeneratorRuntime = require("regenerator-runtime"); // import Scrollbar fro
 
 AOS.init();
 var paragraph_api = "https://litipsum.com/api/2/json";
-var paragraph_api_time = "https://litipsum.com/api/7/json";
+var paragraph_api_time = "https://litipsum.com/api/20/json";
 var started = false;
 var completed = false;
 var inputItem = document.getElementById("inputArea");
@@ -932,6 +932,8 @@ var accuracyAxis = [];
 var statsChart = "";
 var chart = document.getElementById("chart").getContext('2d');
 var chartDark = document.getElementById("chartDark").getContext('2d');
+var previousPointer = 0;
+var currentPointer = 0;
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
@@ -1351,45 +1353,64 @@ inputItem.addEventListener("input", function () {
 
   if (!completed) {
     var incorrectCount = 0;
+    var previousIncorrect = true;
+    currentPointer = input.length;
 
-    var _iterator7 = _createForOfIteratorHelper(spanList),
-        _step7;
+    if (currentPointer >= spanList.length) {
+      generateCompletedModal();
+      completed = true;
+      clearInterval(countId);
+      return;
+    }
 
-    try {
-      for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-        var _item2 = _step7.value;
+    if (currentPointer <= previousPointer) {
+      spanList[currentPointer].classList.remove("incorrect");
+      spanList[currentPointer].classList.remove("correct");
+      spanList[currentPointer].classList.remove("correctDark");
+      previousPointer == 0 ? previousPointer = -1 : previousPointer--;
+    } else {
+      if (input[currentPointer - 1] === spanList[currentPointer - 1].innerText) {
+        spanList[currentPointer - 1].classList.remove("incorrect");
+        theme == "dark" ? spanList[currentPointer - 1].classList.add("correctDark") : spanList[currentPointer - 1].classList.add("correct");
 
-        if (_item2.classList.contains("incorrect")) {
-          incorrectCount++;
+        if (currentPointer == 1) {
+          previousPointer = 0;
+        } else if (currentPointer == 0) {
+          previousPointer = -1;
+        } else {
+          previousPointer++;
+        }
+      } else {
+        spanList[currentPointer - 1].classList.remove("correct");
+        spanList[currentPointer - 1].classList.remove("correctDark");
+        spanList[currentPointer - 1].classList.add("incorrect");
+
+        if (currentPointer == 1) {
+          previousPointer = 0;
+        } else if (currentPointer == 0) {
+          previousPointer = -1;
+        } else {
+          previousPointer++;
         }
       }
-    } catch (err) {
-      _iterator7.e(err);
-    } finally {
-      _iterator7.f();
+    }
+
+    for (var item in input) {
+      if (spanList[item].classList.contains("incorrect")) {
+        incorrectCount++;
+
+        if (previousIncorrect) {
+          incorrectChain++;
+        }
+
+        previousIncorrect = true;
+      } else {
+        previousIncorrect = false;
+        incorrectChain = 1;
+      }
     }
 
     incorrect = incorrectCount;
-
-    for (var item in spanList) {
-      if (item <= input.length) {
-        if (input[item] == null) {
-          spanList[item].classList.remove("incorrect");
-          spanList[item].classList.remove("correct");
-          spanList[item].classList.remove("correctDark");
-        } else if (input[item] != spanList[item].innerText) {
-          incorrectChain++; // theme == "dark" ? spanList[item].classList.remove("correctDark") : spanList[item].classList.remove("correct")
-
-          spanList[item].classList.remove("correct");
-          spanList[item].classList.remove("correctDark");
-          spanList[item].classList.add("incorrect");
-        } else if (input[item] === spanList[item].innerText) {
-          incorrectChain = 0;
-          spanList[item].classList.remove("incorrect");
-          theme == "dark" ? spanList[item].classList.add("correctDark") : spanList[item].classList.add("correct");
-        }
-      }
-    }
 
     if (incorrectChain >= 15) {
       generateFailedModal();
@@ -1447,7 +1468,7 @@ function getNextParagraph() {
 
 function _getNextParagraph() {
   _getNextParagraph = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var spanList, paragraph, paragraphList, _iterator8, _step8, miniParagraph, para, _iterator9, _step9, character, itemSpan;
+    var spanList, paragraph, paragraphList, _iterator7, _step7, miniParagraph, para, _iterator8, _step8, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -1485,34 +1506,34 @@ function _getNextParagraph() {
             paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
             loaderWrapperWord.style.display = "none";
-            _iterator8 = _createForOfIteratorHelper(paragraphList);
+            _iterator7 = _createForOfIteratorHelper(paragraphList);
 
             try {
-              for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-                miniParagraph = _step8.value;
+              for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+                miniParagraph = _step7.value;
                 para = document.createElement('p');
-                _iterator9 = _createForOfIteratorHelper(miniParagraph);
+                _iterator8 = _createForOfIteratorHelper(miniParagraph);
 
                 try {
-                  for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
-                    character = _step9.value;
+                  for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+                    character = _step8.value;
                     itemSpan = document.createElement('span');
                     itemSpan.className = "charSpan";
                     itemSpan.innerText = character;
                     para.appendChild(itemSpan);
                   }
                 } catch (err) {
-                  _iterator9.e(err);
+                  _iterator8.e(err);
                 } finally {
-                  _iterator9.f();
+                  _iterator8.f();
                 }
 
                 document.getElementById("passage").appendChild(para);
               }
             } catch (err) {
-              _iterator8.e(err);
+              _iterator7.e(err);
             } finally {
-              _iterator8.f();
+              _iterator7.f();
             }
 
             return _context.abrupt("return");
@@ -1548,7 +1569,7 @@ function getNextParagraphTime() {
 
 function _getNextParagraphTime() {
   _getNextParagraphTime = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var paragraph, paragraphList, _iterator10, _step10, miniParagraph, div, para, _iterator11, _step11, character, itemSpan;
+    var paragraph, paragraphList, _iterator9, _step9, miniParagraph, div, para, _iterator10, _step10, character, itemSpan;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -1565,47 +1586,46 @@ function _getNextParagraphTime() {
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
             paragraph = paragraph.replace("’", "'");
             paragraph = paragraph.replace("  ", " ");
-            console.log(paragraph);
             paragraphList = paragraph.split("\n");
             document.getElementById("passageTime").innerText = "";
             loaderWrapperTime.style.display = "none";
-            _iterator10 = _createForOfIteratorHelper(paragraphList);
+            _iterator9 = _createForOfIteratorHelper(paragraphList);
 
             try {
-              for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
-                miniParagraph = _step10.value;
+              for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+                miniParagraph = _step9.value;
                 div = document.createElement('div');
                 para = document.createElement('p');
-                _iterator11 = _createForOfIteratorHelper(miniParagraph);
+                _iterator10 = _createForOfIteratorHelper(miniParagraph);
 
                 try {
-                  for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
-                    character = _step11.value;
+                  for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+                    character = _step10.value;
                     itemSpan = document.createElement('span');
                     itemSpan.className = "charSpanTime";
                     itemSpan.innerText = character;
                     para.appendChild(itemSpan);
                   }
                 } catch (err) {
-                  _iterator11.e(err);
+                  _iterator10.e(err);
                 } finally {
-                  _iterator11.f();
+                  _iterator10.f();
                 }
 
                 div.appendChild(para);
                 document.getElementById("passageTime").appendChild(div);
               }
             } catch (err) {
-              _iterator10.e(err);
+              _iterator9.e(err);
             } finally {
-              _iterator10.f();
+              _iterator9.f();
             }
 
             document.getElementById("bodyTime").scrollTo(0, 0);
             document.getElementById("body").scrollTo(0, 0);
             return _context2.abrupt("return");
 
-          case 18:
+          case 17:
           case "end":
             return _context2.stop();
         }
@@ -1637,6 +1657,7 @@ function reset() {
   started = false;
   wordMode = false;
   timeMode = false;
+  previousPointer = 0;
   timer = 60;
   incorrectChain = 0;
   scrollOffSet = 0;

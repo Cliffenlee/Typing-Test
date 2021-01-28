@@ -4,7 +4,7 @@ const regeneratorRuntime = require("regenerator-runtime");
 AOS.init();
 
 const paragraph_api = "https://litipsum.com/api/2/json"
-const paragraph_api_time = "https://litipsum.com/api/7/json"
+const paragraph_api_time = "https://litipsum.com/api/20/json"
 
 var started = false
 var completed = false
@@ -44,7 +44,8 @@ var accuracyAxis = []
 var statsChart = ""
 var chart = document.getElementById("chart").getContext('2d');
 var chartDark = document.getElementById("chartDark").getContext('2d');
-
+var previousPointer = 0
+var currentPointer = 0
 
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
@@ -149,7 +150,7 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         document.getElementById("body").style.backgroundColor = "rgba(0, 0, 0, 0.2)"
 
         let spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime")
-        
+
         for (let item of spanList) {
             if (item.classList.contains("correct")) {
                 item.classList.remove("correct")
@@ -226,9 +227,9 @@ document.getElementsByClassName("buttonTheme")[0].addEventListener("click", () =
         //     lightCorrect.classList.remove("correctDark")
         //     lightCorrect.classList.add("correct")
         // }
-        
+
         let spanList = wordMode ? document.getElementsByClassName("charSpan") : document.getElementsByClassName("charSpanTime")
-        
+
         for (let item of spanList) {
             if (item.classList.contains("correctDark")) {
                 item.classList.remove("correctDark")
@@ -397,7 +398,7 @@ inputItem.addEventListener("input", () => {
             document.getElementById("accuracyTime").innerText = accuracy
             wpmAxis.push(speed)
             accuracyAxis.push(accuracy)
-            timeAxis.push(Math.abs(timer-60))
+            timeAxis.push(Math.abs(timer - 60))
 
             if (timer == 0) {
                 clearInterval(countId);
@@ -429,43 +430,72 @@ inputItem.addEventListener("input", () => {
     if (!completed) {
 
         let incorrectCount = 0;
+        let previousIncorrect = true;
 
-        for (let item of spanList) {
-            if (item.classList.contains("incorrect")) {
-                incorrectCount++;
-            }
+        currentPointer = input.length
+
+        if (currentPointer >= spanList.length) {
+            generateCompletedModal()
+            completed = true;
+            clearInterval(countId);
+            return
         }
-        incorrect = incorrectCount;
 
-        for (let item in spanList) {
-            if (item <= input.length) {
-                if (input[item] == null) {
-                    spanList[item].classList.remove("incorrect")
-                    spanList[item].classList.remove("correct")
-                    spanList[item].classList.remove("correctDark")
-                    
-                } else if (input[item] != spanList[item].innerText) {
-                    incorrectChain++
-                    // theme == "dark" ? spanList[item].classList.remove("correctDark") : spanList[item].classList.remove("correct")
-                    spanList[item].classList.remove("correct")
-                    spanList[item].classList.remove("correctDark")
-                    spanList[item].classList.add("incorrect")
-                } else if (input[item] === spanList[item].innerText) {
-                    incorrectChain = 0
-                    spanList[item].classList.remove("incorrect")
-                    theme == "dark" ? spanList[item].classList.add("correctDark") : spanList[item].classList.add("correct")
+        if (currentPointer <= previousPointer) {
+            spanList[currentPointer].classList.remove("incorrect")
+            spanList[currentPointer].classList.remove("correct")
+            spanList[currentPointer].classList.remove("correctDark")
+            previousPointer == 0 ? previousPointer = -1 : previousPointer--
+        } else {
+            if (input[currentPointer - 1] === spanList[currentPointer - 1].innerText) {
+                spanList[currentPointer - 1].classList.remove("incorrect")
+                theme == "dark" ? spanList[currentPointer - 1].classList.add("correctDark") : spanList[currentPointer - 1].classList.add("correct")
+
+                if (currentPointer == 1) {
+                    previousPointer = 0
+                } else if (currentPointer == 0) {
+                    previousPointer = -1
+                } else {
+                    previousPointer++
+                }
+            } else {
+                spanList[currentPointer - 1].classList.remove("correct")
+                spanList[currentPointer - 1].classList.remove("correctDark")
+                spanList[currentPointer - 1].classList.add("incorrect")
+
+                if (currentPointer == 1) {
+                    previousPointer = 0
+                } else if (currentPointer == 0) {
+                    previousPointer = -1
+                } else {
+                    previousPointer++
                 }
             }
         }
 
+        for (let item in input) {
+            if (spanList[item].classList.contains("incorrect")) {
+                incorrectCount++;
+                if (previousIncorrect) {
+                    incorrectChain ++
+                }
+                previousIncorrect = true;
+            } else {
+                previousIncorrect = false;
+                incorrectChain = 1;
+            }
+        }
+        
+        incorrect = incorrectCount;
+
         if (incorrectChain >= 15) {
-            generateFailedModal()
+            generateFailedModal();
             completed = true;
             clearInterval(countId);
-            return
-        } else {
-            incorrectChain = 0
-        }
+            return;
+          } else {
+            incorrectChain = 0;
+          }
 
         if (wordMode && input.length >= spanList.length) {
             generateCompletedModal()
@@ -524,13 +554,13 @@ async function getNextParagraph() {
 
     if (paragraph.length > 200) {
         paragraph = shorten(paragraph)
-    }	
+    }
 
-    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
-    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
-    paragraph = paragraph.replace("’","'")
+    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"')
+    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'")
+    paragraph = paragraph.replace("’", "'")
     paragraph = paragraph.replace("  ", " ")
-    
+
     const paragraphList = paragraph.split("\n")
     document.getElementById("passage").innerText = ""
 
@@ -575,12 +605,11 @@ async function getNextParagraphTime() {
     paragraph = JSON.parse(paragraph).text[0]
 
 
-    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g,'"')
-    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g,"'")
-    paragraph = paragraph.replace("’","'")
+    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"')
+    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'")
+    paragraph = paragraph.replace("’", "'")
     paragraph = paragraph.replace("  ", " ")
 
-    console.log(paragraph)
     const paragraphList = paragraph.split("\n")
     document.getElementById("passageTime").innerText = ""
 
@@ -601,7 +630,7 @@ async function getNextParagraphTime() {
         document.getElementById("passageTime").appendChild(div)
     }
 
-    
+
     document.getElementById("bodyTime").scrollTo(0, 0)
     document.getElementById("body").scrollTo(0, 0)
 
@@ -632,6 +661,7 @@ function reset() {
     started = false;
     wordMode = false;
     timeMode = false;
+    previousPointer = 0;
     timer = 60;
     incorrectChain = 0
     scrollOffSet = 0;
@@ -787,7 +817,7 @@ function generateCompletedModal() {
                     yAxes: [{
                         ticks: {
                             min: 0,
-                            max: Math.ceil(Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis))/20)*20,
+                            max: Math.ceil(Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis)) / 20) * 20,
                             stepSize: 20
                         }
                     }]
@@ -826,7 +856,7 @@ function generateCompletedModal() {
                     yAxes: [{
                         ticks: {
                             min: 0,
-                            max: Math.floor(Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis))/20)*20 + 20,
+                            max: Math.floor(Math.max(Math.max(...accuracyAxis), Math.max(...wpmAxis)) / 20) * 20 + 20,
                             stepSize: 20,
                             fontColor: "#CCCCCC"
                         }
@@ -834,20 +864,20 @@ function generateCompletedModal() {
                 },
                 legend: {
                     labels: {
-                       fontColor: '#CCCCCC'
+                        fontColor: '#CCCCCC'
                     }
-                 },
+                },
             }
         })
     }
-    
+
 
     let remark = ""
     if (speed > 100 && accuracy > 95) {
         remark = "WOW! You're blazing fast!"
     } else if (speed > 90 && accuracy > 95) {
-        remark =  "Well done! That was remarkable."
-    } else if ( speed > 75 && accuracy > 85 ) {
+        remark = "Well done! That was remarkable."
+    } else if (speed > 75 && accuracy > 85) {
         remark = "Great job! You're getting better!"
     } else {
         remark = "Not bad! Keep on practicing!"
@@ -862,7 +892,7 @@ function generateCompletedModal() {
 
     document.getElementById("statsSuccess").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${speed} wpm</span> with <span style="color: #c45850;">${accuracy}% accuracy</span>!`
     document.getElementById("remark").innerHTML = remark
-    
+
     document.getElementById("statsSuccessDark").innerHTML = `You typed ${inputItem.value.length} characters at <span style="color: #3e95cd;">${speed} wpm</span> with <span style="color: #c45850;">${accuracy}% accuracy</span>!`
     document.getElementById("remarkDark").innerHTML = `<span style="color: #CCCCCC;">${remark}</span>`
 
@@ -916,34 +946,34 @@ function startHeaders() {
     var textWrapper = document.querySelector('.ml11 .letters');
     textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w|\u0021)/g, "<span class='letter'>$&</span>");
 
-    anime.timeline({loop: false})
-    .add({
-        targets: '.ml11 .line',
-        scaleY: [0,1],
-        opacity: [0.5,1],
-        easing: "easeOutExpo",
-        duration: 700
-    })
-    .add({
-        targets: '.ml11 .line',
-        translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
-        easing: "easeOutExpo",
-        duration: 700,
-        delay: 100
-    }).add({
-        targets: '.ml11 .letter',
-        opacity: [0,1],
-        easing: "easeOutExpo",
-        duration: 600,
-        offset: '-=775',
-        delay: (el, i) => 34 * (i+1)
-    }).add({
-        targets: '.ml11 .line',
-        opacity: 0,
-        duration: 700,
-        easing: "easeOutExpo",
-        delay: 0
-      });;
+    anime.timeline({ loop: false })
+        .add({
+            targets: '.ml11 .line',
+            scaleY: [0, 1],
+            opacity: [0.5, 1],
+            easing: "easeOutExpo",
+            duration: 700
+        })
+        .add({
+            targets: '.ml11 .line',
+            translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
+            easing: "easeOutExpo",
+            duration: 700,
+            delay: 100
+        }).add({
+            targets: '.ml11 .letter',
+            opacity: [0, 1],
+            easing: "easeOutExpo",
+            duration: 600,
+            offset: '-=775',
+            delay: (el, i) => 34 * (i + 1)
+        }).add({
+            targets: '.ml11 .line',
+            opacity: 0,
+            duration: 700,
+            easing: "easeOutExpo",
+            delay: 0
+        });;
 
 }
 
