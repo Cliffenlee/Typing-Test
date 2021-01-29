@@ -603,7 +603,6 @@ async function getNextParagraphTime() {
     
     while (paragraph.length < 1000) {
         paragraph = await getParagraphs(paragraph_api_time)
-        console.log(paragraph.length)
     }
 
 
