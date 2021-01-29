@@ -887,13 +887,11 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-var regeneratorRuntime = require("regenerator-runtime"); // import Scrollbar from 'smooth-scrollbar';
-// Scrollbar.init(document.querySelector('#mainBody'));
-
+var regeneratorRuntime = require("regenerator-runtime");
 
 AOS.init();
-var paragraph_api = "https://litipsum.com/api/2/json";
-var paragraph_api_time = "https://litipsum.com/api/20/json";
+var paragraph_api = "https://litipsum.com/api/1/json";
+var paragraph_api_time = "https://litipsum.com/api/7";
 var started = false;
 var completed = false;
 var inputItem = document.getElementById("inputArea");
@@ -1501,6 +1499,7 @@ function _getNextParagraph() {
 
             paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
+            paragraph = paragraph.replace(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ");
             paragraph = paragraph.replace("’", "'");
             paragraph = paragraph.replace("  ", " ");
             paragraphList = paragraph.split("\n");
@@ -1538,7 +1537,7 @@ function _getNextParagraph() {
 
             return _context.abrupt("return");
 
-          case 21:
+          case 22:
           case "end":
             return _context.stop();
         }
@@ -1576,14 +1575,27 @@ function _getNextParagraphTime() {
         switch (_context2.prev = _context2.next) {
           case 0:
             loaderWrapperTime.style.display = "flex";
-            _context2.next = 3;
+            paragraph = "";
+
+          case 2:
+            if (!(paragraph.length < 1000)) {
+              _context2.next = 9;
+              break;
+            }
+
+            _context2.next = 5;
             return getParagraphs(paragraph_api_time);
 
-          case 3:
+          case 5:
             paragraph = _context2.sent;
-            paragraph = JSON.parse(paragraph).text[0];
+            console.log(paragraph.length);
+            _context2.next = 2;
+            break;
+
+          case 9:
             paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
             paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
+            paragraph = paragraph.replace(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ");
             paragraph = paragraph.replace("’", "'");
             paragraph = paragraph.replace("  ", " ");
             paragraphList = paragraph.split("\n");
@@ -1625,7 +1637,7 @@ function _getNextParagraphTime() {
             document.getElementById("body").scrollTo(0, 0);
             return _context2.abrupt("return");
 
-          case 17:
+          case 22:
           case "end":
             return _context2.stop();
         }
@@ -1992,7 +2004,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49826" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62774" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

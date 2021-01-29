@@ -1,8 +1,8 @@
 const regeneratorRuntime = require("regenerator-runtime");
 AOS.init();
 
-const paragraph_api = "https://litipsum.com/api/2/json"
-const paragraph_api_time = "https://litipsum.com/api/20/json"
+const paragraph_api = "https://litipsum.com/api/1/json"
+const paragraph_api_time = "https://litipsum.com/api/7"
 
 var started = false
 var completed = false
@@ -599,9 +599,12 @@ function shorten(paragraph) {
 
 async function getNextParagraphTime() {
     loaderWrapperTime.style.display = "flex"
-    let paragraph = await getParagraphs(paragraph_api_time)
-
-    paragraph = JSON.parse(paragraph).text[0]
+    let paragraph = ""
+    
+    while (paragraph.length < 1000) {
+        paragraph = await getParagraphs(paragraph_api_time)
+        console.log(paragraph.length)
+    }
 
 
     paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"')
