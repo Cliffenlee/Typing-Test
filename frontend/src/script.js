@@ -483,7 +483,7 @@ inputItem.addEventListener("input", () => {
                 incorrectChain = 1;
             }
         }
-        
+
         incorrect = incorrectCount;
 
         if (incorrectChain >= 15) {
@@ -554,11 +554,11 @@ async function getNextParagraph() {
         paragraph = shorten(paragraph)
     }
 
-    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"')
-    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'")
-    paragraph = paragraph.replace(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ")
-    paragraph = paragraph.replace("’", "'")
-    paragraph = paragraph.replace("  ", " ")
+    paragraph = paragraph.replaceAll(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"')
+    paragraph = paragraph.replaceAll(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'")
+    paragraph = paragraph.replaceAll(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ")
+    paragraph = paragraph.replaceAll("’", "'")
+    paragraph = paragraph.replaceAll("  ", " ")
 
     const paragraphList = paragraph.split("\n")
     document.getElementById("passage").innerText = ""
@@ -600,17 +600,17 @@ function shorten(paragraph) {
 async function getNextParagraphTime() {
     loaderWrapperTime.style.display = "flex"
     let paragraph = ""
-    
+
     while (paragraph.length < 1000) {
         paragraph = await getParagraphs(paragraph_api_time)
     }
 
 
-    paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"')
-    paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'")
-    paragraph = paragraph.replace(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ")
-    paragraph = paragraph.replace("’", "'")
-    paragraph = paragraph.replace("  ", " ")
+    paragraph = paragraph.replaceAll(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"')
+    paragraph = paragraph.replaceAll(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'")
+    paragraph = paragraph.replaceAll(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ")
+    paragraph = paragraph.replaceAll("’", "'")
+    paragraph = paragraph.replaceAll("  ", " ")
 
     const paragraphList = paragraph.split("\n")
     document.getElementById("passageTime").innerText = ""
@@ -946,7 +946,7 @@ function startHeaders() {
     document.getElementsByClassName("ml11")[0].style.display = "flex";
 
     var textWrapper = document.querySelector('.ml11 .letters');
-    textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w|\u0021)/g, "<span class='letter'>$&</span>");
+    textWrapper.innerHTML = textWrapper.textContent.replaceAll(/([^\x00-\x80]|\w|\u0021)/g, "<span class='letter'>$&</span>");
 
     anime.timeline({ loop: false })
         .add({
@@ -955,7 +955,7 @@ function startHeaders() {
             opacity: [0.5, 1],
             easing: "easeOutExpo",
             duration: 700
-        })
+            })
         .add({
             targets: '.ml11 .line',
             translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
@@ -978,4 +978,3 @@ function startHeaders() {
         });;
 
 }
-

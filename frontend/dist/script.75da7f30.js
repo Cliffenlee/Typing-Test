@@ -1497,11 +1497,11 @@ function _getNextParagraph() {
               paragraph = shorten(paragraph);
             }
 
-            paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
-            paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
-            paragraph = paragraph.replace(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ");
-            paragraph = paragraph.replace("’", "'");
-            paragraph = paragraph.replace("  ", " ");
+            paragraph = paragraph.replaceAll(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
+            paragraph = paragraph.replaceAll(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
+            paragraph = paragraph.replaceAll(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ");
+            paragraph = paragraph.replaceAll("’", "'");
+            paragraph = paragraph.replaceAll("  ", " ");
             paragraphList = paragraph.split("\n");
             document.getElementById("passage").innerText = "";
             loaderWrapperWord.style.display = "none";
@@ -1579,7 +1579,7 @@ function _getNextParagraphTime() {
 
           case 2:
             if (!(paragraph.length < 1000)) {
-              _context2.next = 9;
+              _context2.next = 8;
               break;
             }
 
@@ -1588,16 +1588,15 @@ function _getNextParagraphTime() {
 
           case 5:
             paragraph = _context2.sent;
-            console.log(paragraph.length);
             _context2.next = 2;
             break;
 
-          case 9:
-            paragraph = paragraph.replace(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
-            paragraph = paragraph.replace(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
-            paragraph = paragraph.replace(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ");
-            paragraph = paragraph.replace("’", "'");
-            paragraph = paragraph.replace("  ", " ");
+          case 8:
+            paragraph = paragraph.replaceAll(/[\u0022\u02BA\u02DD\u02EE\u02F6\u05F2\u05F4\u1CD3\u201C\u201D\u201F\u2033\u2036\u3003\uFF02]/g, '"');
+            paragraph = paragraph.replaceAll(/[\u0027\u0060\u00B4\u02B9\u02BB\u02BC\u02BD\u02BE\u02C8\u02CA\u02CB\u02F4\u0374\u0384\u055A\u055D\u05D9\u05F3\u07F4\u07F5]/g, "'");
+            paragraph = paragraph.replaceAll(/[\u0020\u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2029\u202f\u205f]/g, " ");
+            paragraph = paragraph.replaceAll("’", "'");
+            paragraph = paragraph.replaceAll("  ", " ");
             paragraphList = paragraph.split("\n");
             document.getElementById("passageTime").innerText = "";
             loaderWrapperTime.style.display = "none";
@@ -1637,7 +1636,7 @@ function _getNextParagraphTime() {
             document.getElementById("body").scrollTo(0, 0);
             return _context2.abrupt("return");
 
-          case 22:
+          case 21:
           case "end":
             return _context2.stop();
         }
@@ -1943,7 +1942,7 @@ function startHeaders() {
   document.getElementsByClassName("navLinks")[0].style.display = "none";
   document.getElementsByClassName("ml11")[0].style.display = "flex";
   var textWrapper = document.querySelector('.ml11 .letters');
-  textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w|\u0021)/g, "<span class='letter'>$&</span>");
+  textWrapper.innerHTML = textWrapper.textContent.replaceAll(/([^\x00-\x80]|\w|\u0021)/g, "<span class='letter'>$&</span>");
   anime.timeline({
     loop: false
   }).add({
@@ -2004,7 +2003,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62774" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62290" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
