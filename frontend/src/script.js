@@ -522,9 +522,9 @@ inputItem.addEventListener("keydown", (e) => {
         return
     }
 
-    if (inputItem === document.activeElement && !completed) {
-        playKeyPress()
-    }
+    // if (inputItem === document.activeElement && !completed) {
+    //     playKeyPress()
+    // }
 
     if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
         e.preventDefault();

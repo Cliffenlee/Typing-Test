@@ -1443,11 +1443,10 @@ inputItem.addEventListener("keydown", function (e) {
     }
 
     return;
-  }
+  } // if (inputItem === document.activeElement && !completed) {
+  //     playKeyPress()
+  // }
 
-  if (inputItem === document.activeElement && !completed) {
-    playKeyPress();
-  }
 
   if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) > -1) {
     e.preventDefault();
@@ -2003,7 +2002,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62290" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62583" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
